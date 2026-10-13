@@ -9,7 +9,8 @@ const { chromium } = require('playwright-core');
 
 const EDGE = 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
 const ROOT = path.resolve(__dirname, '..');
-const HOST = 'https://victorelugbaju.github.io';
+const HOST = 'https://victorelugbaju.github.io/portfolio-project';
+const BASE = '/portfolio-project';
 const PORT = 8802;
 
 const TYPES = {
@@ -20,6 +21,8 @@ const TYPES = {
 
 const server = http.createServer((req, res) => {
   let p = decodeURIComponent(req.url.split('?')[0]);
+  if (p === BASE) p = BASE + '/';
+  if (p.startsWith(BASE)) p = p.slice(BASE.length) || '/'; else p = '/__outside__';
   let file = path.join(ROOT, p);
   // GitHub Pages: /about -> /about/index.html
   if (!path.extname(p)) {
@@ -36,10 +39,10 @@ const server = http.createServer((req, res) => {
 });
 
 const PAGES = [
-  ['/', 'Home'], ['/about/', 'About'], ['/design-system/', 'Design system'],
-  ['/work/', 'Work index'], ['/work/seamfix/', 'Seamfix'], ['/work/sprout/', 'Sprout'],
-  ['/work/groovia/', 'Groovia'], ['/work/craveau/', 'Craveau'],
-  ['/deliberately-missing', '404'],
+  ['/portfolio-project/', 'Home'], ['/portfolio-project/about/', 'About'], ['/portfolio-project/design-system/', 'Design system'],
+  ['/portfolio-project/work/', 'Work index'], ['/portfolio-project/work/seamfix/', 'Seamfix'], ['/portfolio-project/work/sprout/', 'Sprout'],
+  ['/portfolio-project/work/groovia/', 'Groovia'], ['/portfolio-project/work/craveau/', 'Craveau'],
+  ['/portfolio-project/deliberately-missing', '404'],
 ];
 
 const EXPECTED_MISSING = /(seamfix|craveau)-(persona|[1-4])\.png/;
@@ -90,10 +93,10 @@ server.listen(PORT, async () => {
     log(errs.length === 0, 'no JS errors' + (errs.length ? ' -> ' + errs.join(' | ') : ''));
     log(d.overflow <= 1, 'no horizontal overflow (' + d.overflow + 'px)');
     log(d.stale.length === 0, 'no leftover .html links' + (d.stale.length ? ' -> ' + d.stale.join(', ') : ''));
-    if (url !== '/deliberately-missing') {
+    if (label !== '404') {
       log(!!d.canonical && d.canonical.startsWith(HOST), 'canonical on new host: ' + d.canonical);
       log(d.ogUrl === d.canonical, 'og:url matches canonical');
-      log(!!d.icon && d.icon.startsWith('/img/brand/'), 'favicon from /img/brand/ (' + d.icon + ')');
+      log(!!d.icon && d.icon.startsWith('/portfolio-project/img/brand/'), 'favicon from /img/brand/ (' + d.icon + ')');
       seenCanon.push(d.canonical);
     }
     await page.close();
@@ -108,14 +111,14 @@ server.listen(PORT, async () => {
   const locs = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
   console.log('\n[sitemap — ' + locs.length + ' urls]');
   for (const loc of locs) {
-    const local = loc.replace(HOST, 'http://localhost:' + PORT);
+    const local = loc.replace('https://victorelugbaju.github.io', 'http://localhost:' + PORT);
     const r = await page.request.get(local);
-    log(r.status() === 200, loc.replace(HOST, '') + '  -> ' + r.status());
+    log(r.status() === 200, loc.replace('https://victorelugbaju.github.io', '') + '  -> ' + r.status());
   }
 
   // the CV
   console.log('\n[CV]');
-  const r = await page.request.get('http://localhost:' + PORT + '/docs/Victor_Elugbaju_CV.pdf');
+  const r = await page.request.get('http://localhost:' + PORT + '/portfolio-project/docs/Victor_Elugbaju_CV.pdf');
   log(r.status() === 200, '/docs/Victor_Elugbaju_CV.pdf -> ' + r.status());
   await page.close();
 

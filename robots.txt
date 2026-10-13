@@ -6,4 +6,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://victorelugbaju.github.io/sitemap.xml
+Sitemap: https://victorelugbaju.github.io/portfolio-project/sitemap.xml
