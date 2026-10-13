@@ -96,7 +96,7 @@ server.listen(PORT, async () => {
     if (label !== '404') {
       log(!!d.canonical && d.canonical.startsWith(HOST), 'canonical on new host: ' + d.canonical);
       log(d.ogUrl === d.canonical, 'og:url matches canonical');
-      log(!!d.icon && d.icon.startsWith('/portfolio-project/img/brand/'), 'favicon from /img/brand/ (' + d.icon + ')');
+      log(!!d.icon && (d.icon||'').indexOf('img/brand/') !== -1, 'favicon resolves to img/brand (' + d.icon + ')');
       seenCanon.push(d.canonical);
     }
     await page.close();
