@@ -1,0 +1,10 @@
+# Victor Elugbaju — portfolio
+# Everything here is meant to be found. Nothing is private.
+
+User-agent: *
+Allow: /
+
+# Dead code, kept only as a local reference. No reason for it to be indexed.
+Disallow: /backup/
+
+Sitemap: https://victor-elugbaju.netlify.app/sitemap.xml

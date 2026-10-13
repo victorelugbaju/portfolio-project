@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Selected Work — Victor Elugbaju, Product Designer</title>
+    <meta
+      name="description"
+      content="Every project, up close — enterprise systems, fintech and consumer product concepts by Victor Elugbaju, product designer."
+    />
+    <!-- ============================================================
+       IDENTITY, SHARING AND ICONS   (added 2026-10-05)
+
+       canonical and the og:/twitter: URLs are the only absolute URLs in
+       this file. They point at https://victor-elugbaju.netlify.app
+       — if that host ever changes, it changes here, in robots.txt and in
+       sitemap.xml, and nowhere else.
+
+       Icon paths are deliberately RELATIVE ("../favicon.svg"), not
+       root-relative. Root-relative would break every local preview opened
+       as a file:// URL, which is how this site is checked in a browser.
+
+       og:image must be absolute — a scraper fetches it from its own
+       server, with no page context to resolve a relative path against.
+       ============================================================ -->
+    <link rel="canonical" href="https://victor-elugbaju.netlify.app/work/" />
+
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="../favicon.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+    <meta name="theme-color" content="#0D0D0B" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Victor Elugbaju" />
+    <meta property="og:title" content="Selected Work — Victor Elugbaju, Product Designer" />
+    <meta
+      property="og:description"
+      content="Every project, up close — enterprise systems, fintech and consumer product concepts by Victor Elugbaju, product designer."
+    />
+    <meta property="og:url" content="https://victor-elugbaju.netlify.app/work/" />
+    <meta property="og:image" content="https://victor-elugbaju.netlify.app/img/og-cover.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Victor Elugbaju — Product Designer. Finance, consumer health and enterprise systems."
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Selected Work — Victor Elugbaju, Product Designer" />
+    <meta
+      name="twitter:description"
+      content="Every project, up close — enterprise systems, fintech and consumer product concepts by Victor Elugbaju, product designer."
+    />
+    <meta name="twitter:image" content="https://victor-elugbaju.netlify.app/img/og-cover.png" />
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- One level down from the root, so every shared asset is ../ -->
+    <link rel="stylesheet" href="../css/style.css" />
+
+    <!-- Same pre-paint JS flag as the other pages. The work-index header
+         hides its lines in their start state, so that state must only
+         exist where something can undo it — without .js a script failure
+         eats the headline. Inline and in <head> or the type flashes. -->
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body class="page">
+    <!-- ============================================================
+       NAV — links point back to the homepage's sections. Work is the
+       current page, so it carries the active state and points at itself.
+       ============================================================ -->
+    <header class="nav">
+      <a class="nav__mark" href="../index.html">
+        <span class="nav__mark-name">Victor Elugbaju</span>
+      </a>
+
+      <nav class="nav__links">
+        <a class="nav__link" href="index.html" aria-current="page">Work</a>
+        <a class="nav__link" href="../about.html">About</a>
+        <a class="nav__link" href="../index.html#experience">Experience</a>
+        <a class="nav__link" href="mailto:victorajibolaelugbaju@gmail.com"
+          >Contact</a
+        >
+      </nav>
+
+      <!-- Phones only — display:none above 768px. A disclosure button,
+           so aria-expanded carries the state and the label stays put;
+           the two visible words are decoration and hidden from the
+           accessibility tree, or the button would be named "Menu Close". -->
+      <button
+        class="nav__burger"
+        id="navBurger"
+        type="button"
+        aria-label="Menu"
+        aria-expanded="false"
+        aria-controls="navMenu"
+      >
+        <span class="nav__burger-label meta" aria-hidden="true">
+          <span class="nav__burger-word">Menu</span>
+          <span class="nav__burger-word">Close</span>
+        </span>
+        <span class="nav__burger-bars" aria-hidden="true">
+          <span class="nav__burger-bar"></span>
+          <span class="nav__burger-bar"></span>
+        </span>
+      </button>
+    </header>
+
+    <!-- ============================================================
+       MOBILE MENU — the site's contents as a numbered index.
+
+       Not a dropdown. Below 768px the four mono links become a full
+       sheet, set in display serif and numbered — the same language
+       the work index uses — so the menu reads as part of the system
+       rather than as a phone affordance bolted on.
+
+       Sits under the bar (z-90 against the nav's z-100), so the mark
+       and the burger stay live and in place while it opens.
+       ============================================================ -->
+    <div class="nav-menu" id="navMenu">
+      <div class="nav-menu__inner">
+        <div class="nav-menu__rule" aria-hidden="true"></div>
+
+        <div class="nav-menu__eyebrow">
+          <span class="meta meta--mute">Index</span>
+          <span class="meta meta--mute">Sections 01–04</span>
+        </div>
+
+        <nav class="nav-menu__list" aria-label="Main">
+          <a class="nav-menu__item" href="index.html" aria-current="page">
+            <span class="nav-menu__index meta">01</span>
+            <span class="nav-menu__line"
+              ><span class="nav-menu__word">Work</span></span
+            >
+          </a>
+          <a class="nav-menu__item" href="../about.html">
+            <span class="nav-menu__index meta">02</span>
+            <span class="nav-menu__line"
+              ><span class="nav-menu__word">About</span></span
+            >
+          </a>
+          <a class="nav-menu__item" href="../index.html#experience">
+            <span class="nav-menu__index meta">03</span>
+            <span class="nav-menu__line"
+              ><span class="nav-menu__word">Experience</span></span
+            >
+          </a>
+          <a class="nav-menu__item" href="mailto:victorajibolaelugbaju@gmail.com">
+            <span class="nav-menu__index meta">04</span>
+            <span class="nav-menu__line"
+              ><span class="nav-menu__word">Contact</span></span
+            >
+          </a>
+        </nav>
+
+        <div class="nav-menu__foot">
+          <a
+            class="nav-menu__mail"
+            href="mailto:victorajibolaelugbaju@gmail.com"
+            >victorajibolaelugbaju@gmail.com</a
+          >
+
+          <div class="nav-menu__foot-row">
+            <div class="nav-menu__social">
+              <a
+                class="meta"
+                href="https://linkedin.com/in/victor-elugbaju"
+                target="_blank"
+                rel="noopener"
+                >LinkedIn</a
+              >
+              <a
+                class="meta"
+                href="https://behance.net/victorelugbaju"
+                target="_blank"
+                rel="noopener"
+                >Behance</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main>
+      <!-- ============================================================
+         WORK HERO — the oversized opening statement.
+
+         Reuses the About page's .about-hero / .about-hero__statement so
+         the line-reveal and scroll-reveal already apply. Only the copy
+         and the #workStatement id are page-specific.
+         ============================================================ -->
+      <section class="about-hero about-hero--work">
+        <div class="about-hero__eyebrow">
+          <span class="meta">Selected Work</span>
+          <span class="meta meta--mute">Victor Elugbaju</span>
+        </div>
+
+        <!-- One .hero__line, deliberately: the statement is a single line
+             now, and a second span would reveal an empty mask. -->
+        <h1 class="about-hero__statement" id="workStatement">
+          <span class="hero__line"
+            ><span class="hero__line-inner"
+              >My projects, up <em>close</em>.</span
+            ></span
+          >
+        </h1>
+      </section>
+
+      <!-- ============================================================
+         PROJECT INDEX — alternating feature spreads.
+
+         One <a> per row wraps both halves (media + panel), the same
+         single-target pattern as the homepage card. Even rows carry
+         .project--flip to swap the sides. Nested flex, never CSS Grid,
+         so it lands as clean auto-layout on a Figma import.
+
+         Project images live at img/<name>.png (3:2, 1200×800 minimum).
+         Each spec card removes itself once its image loads — same
+         fallback the homepage grid uses.
+         ============================================================ -->
+      <section class="work-index">
+        <div class="section__head">
+          <span class="meta meta--mute">Index — All projects</span>
+          <span class="meta meta--mute">2025 — 2026</span>
+        </div>
+
+        <div class="projects" id="workIndex">
+          <!-- 01 — Seamfix -->
+          <article class="project">
+            <a class="project__link" href="seamfix.html">
+              <div class="project__media">
+                <div class="card__frame">
+                  <img
+                    class="card__img"
+                    src="../img/seamfix.png"
+                    alt="Seamfix asset tracking system"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="card__placeholder">
+                    <span class="meta meta--signal">Image needed</span>
+                    <span class="card__spec"
+                      >3:2 at <code>img/seamfix.png</code> — 1200×800
+                      minimum.</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="project__panel">
+                <div class="project__head">
+                  <span class="project__index meta">01</span>
+                  <span class="meta meta--mute">Enterprise · 2026</span>
+                </div>
+
+                <h2 class="project__title">Seamfix</h2>
+                <p class="project__desc">Asset Tracking Management System</p>
+
+                <p class="project__summary">
+                  One system, four permission-scoped views — Admin, Asset
+                  Manager, Employee, Auditor. 110+ screens across 21 flows:
+                  asset and user management, maintenance, audit monitoring,
+                  reporting and session control.
+                </p>
+
+                <ul class="project__tags">
+                  <li class="project__tag meta">Enterprise</li>
+                  <li class="project__tag meta">Role-based access</li>
+                  <li class="project__tag meta">Design systems</li>
+                  <li class="project__tag meta">Dashboard</li>
+                </ul>
+
+                <span class="project__view">
+                  <span class="meta">View case study</span>
+                  <span class="project__view-arrow" aria-hidden="true">→</span>
+                </span>
+              </div>
+            </a>
+          </article>
+
+          <!-- 02 — Craveau. Ordered by completion year (newest first), so
+               Craveau sits with Seamfix in 2026 rather than at the end.
+               project--flip must keep alternating with POSITION, not travel
+               with the project — the zig-zag is positional, so reordering
+               these rows means moving the class too. -->
+          <article class="project project--flip">
+            <a class="project__link" href="craveau.html">
+              <div class="project__media">
+                <div class="card__frame">
+                  <img
+                    class="card__img"
+                    src="../img/craveau.png"
+                    alt="Craveau food delivery app"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="card__placeholder">
+                    <span class="meta meta--signal">Image needed</span>
+                    <span class="card__spec"
+                      >3:2 at <code>img/craveau.png</code> — 1200×800
+                      minimum.</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="project__panel">
+                <div class="project__head">
+                  <span class="project__index meta">02</span>
+                  <span class="meta meta--mute">Food delivery · 2026</span>
+                </div>
+
+                <h2 class="project__title">Craveau</h2>
+                <p class="project__desc">Food Delivery App</p>
+
+                <p class="project__summary">
+                  A concept built around quick browsing, fast checkout and clear
+                  order tracking. Onboarding through post-purchase, designed to
+                  cut the steps between deciding what to eat and knowing it's on
+                  its way.
+                </p>
+
+                <ul class="project__tags">
+                  <li class="project__tag meta">Food delivery</li>
+                  <li class="project__tag meta">Mobile app</li>
+                  <li class="project__tag meta">Checkout</li>
+                  <li class="project__tag meta">Order tracking</li>
+                </ul>
+
+                <span class="project__view">
+                  <span class="meta">View case study</span>
+                  <span class="project__view-arrow" aria-hidden="true">→</span>
+                </span>
+              </div>
+            </a>
+          </article>
+
+          <!-- 03 — Sprout -->
+          <article class="project">
+            <a class="project__link" href="sprout.html">
+              <div class="project__media">
+                <div class="card__frame">
+                  <img
+                    class="card__img"
+                    src="../img/sprout.png"
+                    alt="Sprout savings app"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="card__placeholder">
+                    <span class="meta meta--signal">Image needed</span>
+                    <span class="card__spec"
+                      >3:2 at <code>img/sprout.png</code> — 1200×800
+                      minimum.</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="project__panel">
+                <div class="project__head">
+                  <span class="project__index meta">03</span>
+                  <span class="meta meta--mute">Fintech · 2025</span>
+                </div>
+
+                <h2 class="project__title">Sprout</h2>
+                <p class="project__desc">Savings &amp; Personal Finance</p>
+
+                <p class="project__summary">
+                  A self-directed concept in personal finance. Goal-based
+                  savings, automated contributions, spending insights and
+                  progress tracking — designed to make saving feel like progress
+                  rather than deprivation.
+                </p>
+
+                <ul class="project__tags">
+                  <li class="project__tag meta">Fintech</li>
+                  <li class="project__tag meta">Mobile</li>
+                  <li class="project__tag meta">Personal finance</li>
+                  <li class="project__tag meta">Data visualisation</li>
+                </ul>
+
+                <span class="project__view">
+                  <span class="meta">View case study</span>
+                  <span class="project__view-arrow" aria-hidden="true">→</span>
+                </span>
+              </div>
+            </a>
+          </article>
+
+          <!-- 04 — Groovia -->
+          <article class="project project--flip">
+            <a class="project__link" href="groovia.html">
+              <div class="project__media">
+                <div class="card__frame">
+                  <img
+                    class="card__img"
+                    src="../img/groovia.png"
+                    alt="Groovia grocery app"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="card__placeholder">
+                    <span class="meta meta--signal">Image needed</span>
+                    <span class="card__spec"
+                      >3:2 at <code>img/groovia.png</code> — 1200×800
+                      minimum.</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="project__panel">
+                <div class="project__head">
+                  <span class="project__index meta">04</span>
+                  <span class="meta meta--mute">E-commerce · 2025</span>
+                </div>
+
+                <h2 class="project__title">Groovia</h2>
+                <p class="project__desc">Grocery Shopping App</p>
+
+                <p class="project__summary">
+                  A collaboration with Jadesola Olaitan, built around list-first
+                  shopping for busy homes. Saved lists, quick selection and
+                  scheduled delivery rather than open-ended browsing.
+                </p>
+
+                <ul class="project__tags">
+                  <li class="project__tag meta">E-commerce</li>
+                  <li class="project__tag meta">Mobile</li>
+                  <li class="project__tag meta">Shopping</li>
+                  <li class="project__tag meta">Product discovery</li>
+                </ul>
+
+                <span class="project__view">
+                  <span class="meta">View case study</span>
+                  <span class="project__view-arrow" aria-hidden="true">→</span>
+                </span>
+              </div>
+            </a>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- ============================================================
+         CTA — close the page on the same note as the About page: one
+         statement, a primary action, a way back to the homepage.
+         ============================================================ -->
+      <section class="section section--cta" id="contact">
+        <div class="section__head">
+          <span class="meta meta--mute">Contact</span>
+        </div>
+
+        <!-- .cta__lead is load-bearing, not decorative: .cta is a flex row,
+             so without this wrapper the headline, subheading and actions
+             become three side-by-side columns — which is what put the
+             subheading beside the headline and wrapped it onto four lines. -->
+        <div class="cta">
+          <div class="cta__lead">
+            <h2 class="cta__display cta__display--lg">
+              Let's<br />
+              <em>Connect.</em>
+            </h2>
+          </div>
+
+          <div class="cta__actions">
+            <a
+              class="btn btn--primary"
+              href="mailto:victorajibolaelugbaju@gmail.com"
+            >
+              <span class="btn__label">Start a conversation</span>
+              <span class="btn__arrow" aria-hidden="true">→</span>
+            </a>
+
+            <a class="btn btn--ghost" href="../about.html">
+              <span class="btn__label">Read about me</span>
+            </a>
+
+            <a class="btn btn--ghost" href="../index.html">
+              <span class="btn__label">Back to home</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+    <footer class="footer">
+      <span class="meta meta--mute">© 2026 Victor Elugbaju</span>
+    </footer>
+
+    <!-- Cursor-following VIEW disc. Outer element is translated by JS
+         every frame; inner scales via CSS class. On this page it triggers
+         over each project row (.project__link). Same component as the
+         homepage grid. -->
+    <div class="view-badge" id="viewBadge" aria-hidden="true">
+      <div class="view-badge__inner">
+        <span class="view-badge__label">View</span>
+      </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+  </body>
+</html>

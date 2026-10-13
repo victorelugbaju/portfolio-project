@@ -1,0 +1,4774 @@
+/* ============================================================
+   VICTOR ELUGBAJU — PORTFOLIO
+   Art direction: THE SYSTEM — Swiss editorial, type-led.
+
+   FIGMA IMPORT CONTRACT — do not break these:
+   1. Flex + gap/padding for all rhythm. Never margin.
+      → maps 1:1 onto Figma auto-layout.
+   2. No ::before / ::after for anything visible.
+      → pseudo-elements aren't in the DOM; they vanish on import.
+   3. No clip-path, no CSS-drawn shapes.
+      → they flatten. Shapes are SVG or nothing.
+   4. Google Fonts only.
+      → native in Figma, so type doesn't substitute to Roboto.
+   5. Borders are fine. They import as strokes.
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   TOKENS
+   ------------------------------------------------------------ */
+/* ------------------------------------------------------------
+   THEME — dark is the default. Light is the override.
+
+   This is NOT an inversion. Straight-swapping #FAFAF7 and #0A0A0A
+   produces a harsh, vibrating page. Three things change on their
+   own terms:
+
+   1. SIGNAL. #FF3D00 at full chroma on near-black halates — it
+      blooms and vibrates, worst at 11px mono. Dark gets #FF5A2B:
+      lifted luminance, lower saturation, same perceived punch.
+   2. HAIRLINES. Perception is asymmetric — a 14% black rule on
+      paper reads stronger than a 14% white rule on black. Dark
+      rules are lifted to 18%/10% to hold the same weight.
+   3. SURFACES. Neither end is pure. Warm near-black (#0D0D0B),
+      warm off-white (#F2F1EC). Pure #000/#FFF reads as a browser
+      default, not as printed matter.
+   ------------------------------------------------------------ */
+:root {
+  color-scheme: dark;
+
+  --paper:        #0D0D0B;
+  --paper-warm:   #191816;   /* elevated — LIGHTER than paper in dark */
+  --ink:          #F2F1EC;
+  --signal:       #FF5A2B;
+
+  --ink-70:       rgba(242, 241, 236, 0.72);
+  --ink-50:       rgba(242, 241, 236, 0.52);
+  --ink-30:       rgba(242, 241, 236, 0.32);
+  --rule:         rgba(242, 241, 236, 0.18);
+  --rule-soft:    rgba(242, 241, 236, 0.10);
+
+  --signal-wash:      rgba(255, 90, 43, 0.09);
+  --signal-wash-soft: rgba(255, 90, 43, 0.05);
+  --signal-line:      rgba(255, 90, 43, 0.28);
+
+  /* The source is already mono and already low-key — a dark coat
+     on a dark ground. It arrives near --paper, so it sits as a
+     barely-lifted panel and the head emerges out of the page
+     rather than out of a box. Do NOT pull brightness down here;
+     the old value (0.88) was speced for a bright studio shot and
+     turned this one to mud. Sepia only warms it into the paper. */
+  --portrait-grade: grayscale(100%) sepia(0.20) contrast(1.02) brightness(1);
+
+  /* Hero only. The About portrait stays mono — two duotones on one
+     page would make the treatment decoration instead of a statement. */
+  --portrait-duotone: url(#duotone-dark);
+
+  /* Type */
+  --font-display: "Instrument Serif", Georgia, serif;
+  --font-body:    "Inter Tight", system-ui, sans-serif;
+  --font-mono:    "Geist Mono", ui-monospace, monospace;
+
+  /* Scale — display is fluid, meta is fixed.
+     Instrument Serif is Regular-only: emphasis comes from
+     scale and italic, never weight. */
+  --t-display:    clamp(3.25rem, 8.5vw, 8.5rem);
+  --t-display-sm: clamp(2.5rem, 6vw, 5.5rem);
+  --t-title:      clamp(1.75rem, 3.2vw, 3rem);
+  --t-lead:       clamp(1rem, 1.15vw, 1.1875rem);
+  --t-body:       0.9375rem;
+  --t-meta:       0.6875rem;
+
+  /* Grid */
+  --cols:         12;
+  --gutter:       24px;
+  --margin:       clamp(20px, 4vw, 64px);
+  --maxw:         1560px;
+
+  /* Motion — surgical, not decorative. */
+  --ease:         cubic-bezier(0.2, 0, 0, 1);
+  --fast:         120ms;
+  --base:         280ms;
+  --slow:         640ms;
+}
+
+
+
+/* ------------------------------------------------------------
+   RESET
+   ------------------------------------------------------------ */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+/* blockquote is in this list for the same reason as everything else:
+   its UA margin (1em 40px) is rhythm the flex/gap contract has to own,
+   not the browser. ol brings a padding-left: 40px of its own, which is
+   the same problem wearing a different hat. */
+body,
+h1, h2, h3, p, ul, ol, li, figure, blockquote {
+  margin: 0;
+  padding: 0;
+}
+
+ul, ol { list-style: none; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+img { max-width: 100%; display: block; }
+
+
+/* ------------------------------------------------------------
+   PAGE
+   ------------------------------------------------------------ */
+/* Filter definitions only — never rendered. */
+.svg-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.page {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  line-height: 1.5;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Short pages — 404, and anything else whose content does not fill the
+   viewport. Without this the footer sits wherever the content stops and
+   leaves a band of dead paper beneath it, which reads as a broken page
+   rather than a short one.
+
+   Flex column + flex:1 on main, not position:fixed: a fixed footer would
+   overlay content on a page that later grows, and it would not survive the
+   Figma import as a layout. This is the same flex/gap vocabulary used
+   everywhere else here.
+
+   Added 2026-10-05 for 404.html. Harmless on long pages — main simply
+   grows past the minimum. */
+.page--short {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page--short main {
+  flex: 1 0 auto;
+}
+
+/* .footer centres itself with `margin-left/right: auto` against a max-width.
+   That is correct in normal block flow, but as a FLEX ITEM those auto margins
+   stop meaning "fill, then centre" and start meaning "shrink to content, then
+   centre" — the footer collapsed from 1280px to 267px the first time this was
+   applied, taking its top hairline with it. An explicit width restores the
+   block behaviour; the max-width and auto margins still do the centring on
+   wide screens. Same reason .nav is unaffected: it has no auto margins. */
+.page--short > .footer {
+  width: 100%;
+}
+
+/* ------------------------------------------------------------
+   LIGHTBOX — added 2026-10-05
+
+   The case-study boards are downscaled 7x-14x on a phone, so their type
+   is unreadable at rest. This is the way back to full size.
+
+   Contract notes: no pseudo-elements, no clip-path, flex and gap only,
+   so the component survives the Figma import like everything else. The
+   overlay element is created by main.js rather than written into eight
+   pages — see the LIGHTBOX block there for why.
+
+   Hidden via the [hidden] attribute, not a class, so it stays invisible
+   on any page where JS never runs.
+   ------------------------------------------------------------ */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200; /* above the nav (100) and the mobile sheet (90) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: clamp(14px, 4vw, 40px);
+  background: rgba(13, 13, 11, 0.96);
+}
+
+.lightbox[hidden] { display: none; }
+
+.lightbox__close {
+  align-self: flex-end;
+  flex: none;
+  padding: 10px 16px;
+  min-height: 44px; /* a real touch target, not a 20px word */
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.lightbox__close:hover,
+.lightbox__close:focus-visible {
+  color: var(--signal);
+  border-color: var(--signal-line);
+}
+
+/* The stage scrolls; the image inside it is NOT fitted to the viewport.
+   Fitting was the first attempt and it defeated the whole feature: the
+   persona board came out at 359px on a phone against 348px inline, and
+   1056px on desktop against 1176px inline — i.e. the "enlarged" view was
+   smaller than the page. Natural size plus pan is what makes the type
+   readable, which is the entire reason this component exists. */
+.lightbox__stage {
+  display: block;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0; /* lets the stage shrink inside the flex column */
+  overflow: auto;
+  /* Momentum scrolling on iOS, and panning that does not fight the
+     browser's own pinch-zoom. */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.lightbox__img {
+  display: block;
+  /* margin:auto centres it while it is narrower than the stage, and is
+     simply ignored once it is wider — no media query needed. */
+  margin: auto;
+  max-width: none;
+  max-height: none;
+  width: auto;
+  height: auto;
+  border-radius: 2px;
+}
+
+/* Deliberately two classes deep. Both elements carry .meta, whose
+   `white-space: nowrap` is defined LATER in this file — at equal
+   specificity the later rule wins, so a single-class selector here loses
+   and the caption runs off the right edge of a phone, which is exactly
+   what the first build did. Scoping to .lightbox outranks it without
+   moving either block. */
+.lightbox .lightbox__caption,
+.lightbox .lightbox__hint {
+  flex: none;
+  text-align: center;
+  max-width: 60ch;
+  white-space: normal;
+}
+
+.lightbox .lightbox__hint { opacity: 0.7; }
+
+/* The affordance. Without it nothing says these images do anything —
+   and a cursor change is invisible on the device that needs this most,
+   so phones get a persistent hint instead. */
+.card__frame .card__img[role="button"] { cursor: zoom-in; }
+
+.card__frame .card__img[role="button"]:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+}
+
+
+
+/* ------------------------------------------------------------
+   META — the mono voice. Every label, spec, and stamp.
+   ------------------------------------------------------------ */
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--t-meta);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.meta--mute   { color: var(--ink-50); }
+.meta--signal { color: var(--signal); }
+
+.meta--signal {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* Real element, not a pseudo — so it imports. */
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--signal);
+  flex: none;
+}
+
+
+/* ------------------------------------------------------------
+   NAV
+   ------------------------------------------------------------ */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--gutter);
+  padding: 22px var(--margin);
+  max-width: var(--maxw);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.nav__mark {
+  display: flex;
+  align-items: center;
+}
+
+.nav__mark-name {
+  font-family: var(--font-mono);
+  font-size: var(--t-meta);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.nav__link {
+  font-family: var(--font-mono);
+  font-size: var(--t-meta);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--fast) var(--ease),
+              color var(--fast) var(--ease);
+}
+
+.nav__link:hover {
+  color: var(--signal);
+  border-bottom-color: var(--signal);
+}
+
+/* Anchor targets have to clear the fixed bar.
+
+   Without this a jump to #work parks that section's top edge at y=0,
+   which is UNDER the bar — so the heading the reader was just sent to
+   is the one thing they cannot see. It read as "the link did nothing".
+
+   scroll-padding on the scroll container, not scroll-margin on each
+   target: there is one bar, so there is one number, and it covers
+   every anchor on every page including ones added later.
+
+   Bar height plus air. The mobile bar is shorter — the mobile block
+   trims this to match rather than leaving a 30px hole above headings
+   on the screens most people read this on. */
+html { scroll-padding-top: 92px; }
+
+
+/* ------------------------------------------------------------
+   MOBILE NAV — "THE INDEX"
+
+   Below 768px the four mono links become a full-height sheet: the
+   site's contents set as a numbered list in display serif. That is
+   the same numbering language the work index and the principles
+   use, so the menu reads as part of the system rather than as a
+   phone affordance bolted onto it. It is a table of contents, not
+   a dropdown.
+
+   The sheet sits UNDER the bar — z-90 against the nav's z-100 — so
+   the mark and the burger stay live and in place while it opens.
+   Nothing moves that doesn't have to.
+
+   FIGMA CONTRACT: the burger bars, the drawn rule and the label
+   swap are all real elements. The reveal frames are overflow:hidden
+   (same device as .hero__line), never clip-path.
+
+   HOW THIS FILE IS ORGANISED — the split is deliberate:
+
+     ACTIVATION  lives in the 768px query below. Which elements are
+                 display:none, and the bar's mobile rhythm.
+     APPEARANCE  lives at top level, after that query. Every rule
+                 about how the burger and the sheet actually look.
+
+   Both components are display:none by default, so the appearance
+   rules cost nothing above the breakpoint. Keeping them out of the
+   query is what lets design-system.html force a static specimen on
+   at its own width and have it look exactly like the shipped thing
+   — a specimen that could drift from the real component is worse
+   than no specimen at all.
+   ------------------------------------------------------------ */
+.nav__burger { display: none; }
+.nav-menu    { display: none; }
+
+@media (max-width: 768px) {
+  /* Scoped to this block deliberately — the desktop bar's rhythm is
+     set by its own padding and shouldn't learn a height it doesn't
+     use. Only the sheet needs to know where the bar ends. */
+  :root { --nav-h: 60px; }
+
+  .nav {
+    align-items: center;
+    padding: 8px var(--margin);
+    border-bottom: 1px solid transparent;
+    transition: background var(--base) var(--ease),
+                border-color var(--base) var(--ease);
+  }
+
+  /* A fixed bar over live content is unreadable the moment the page
+     moves under it. Past the first screenful it earns a ground and a
+     rule. Scoped to mobile on purpose: .nav is capped at --maxw and
+     centred, so a background above 1560px renders as a floating band
+     rather than a header. */
+  .nav.is-solid {
+    background: var(--paper);
+    border-bottom-color: var(--rule-soft);
+  }
+
+  /* While the sheet is open its own ground already covers the
+     viewport behind the bar, and the sheet draws its own rule. Two
+     hairlines 1px apart is a printing error, not a header. */
+  :root.nav-menu-open .nav {
+    background: transparent;
+    border-bottom-color: transparent;
+  }
+
+  .nav__links { display: none; }
+
+  /* Activation, and nothing else. Everything about how these two LOOK
+     is at top level below, outside any query. They are display:none by
+     default so those rules cost nothing above the breakpoint — and
+     keeping appearance out of the query is what lets design-system.html
+     force a static specimen on at its own width and have it look
+     exactly like the shipped component. Appearance in one place,
+     activation in another. */
+  .nav__burger { display: flex; }
+  .nav-menu    { display: flex; }
+}
+
+
+/* --- The control -------------------------------------------- */
+/* Runs to the right margin edge: the easiest 44px on a phone to hit
+   with a thumb is the one against the edge of the screen.
+
+   min-height, not padding, sets the target. The contents are a 13px
+   label and a 10px stack of bars, so padding alone left this at 36px
+   — under the 44px floor, and invisibly so, since the button LOOKS
+   fine at any size. */
+.nav__burger {
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 0 0 16px;
+}
+
+/* A clipping frame holding both words stacked. MENU rides up and
+   out as CLOSE arrives — the same reveal the headline uses, at the
+   scale of a label. min-width stops the five-letter word from
+   jogging the bars 7px left every time it opens. */
+.nav__burger-label {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 1.2em;
+  min-width: 40px;
+  color: var(--ink-70);
+  transition: color var(--fast) var(--ease);
+}
+
+.nav__burger-word {
+  flex: none;
+  height: 1.2em;
+  text-align: right;
+  transition: transform var(--base) var(--ease);
+}
+
+.nav__burger-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 26px;
+  flex: none;
+}
+
+.nav__burger-bar {
+  width: 100%;
+  height: 2px;
+  background: var(--ink);
+  transition: transform var(--base) var(--ease),
+              background var(--fast) var(--ease);
+}
+
+/* Two bars, not three. With a word already saying MENU beside it a
+   third line is decoration, and two cross into a cleaner X.
+
+   STATE LIVES IN aria-expanded AND NOWHERE ELSE. The bars, the
+   label swap and the sheet all key off that one attribute, so the
+   X on screen and the state a screen reader announces cannot drift
+   apart — there is no second class to forget to set.
+
+   Bar centres sit 8px apart (2px bar + 6px gap), so each travels
+   4px to meet in the middle. */
+.nav__burger[aria-expanded="true"] .nav__burger-bar:nth-child(1) {
+  transform: translateY(4px) rotate(45deg);
+}
+
+.nav__burger[aria-expanded="true"] .nav__burger-bar:nth-child(2) {
+  transform: translateY(-4px) rotate(-45deg);
+}
+
+.nav__burger[aria-expanded="true"] .nav__burger-word {
+  transform: translateY(-100%);
+}
+
+.nav__burger[aria-expanded="true"] .nav__burger-label { color: var(--ink); }
+
+/* --- The sheet ---------------------------------------------- */
+/* visibility, not the hidden attribute: display:none would kill
+   every transition below, and opacity alone would leave a
+   full-screen sheet in the tab order and the accessibility tree
+   while it is invisible. visibility does both jobs, and delaying
+   it by the fade length on close lets the sheet finish leaving
+   before it stops existing. */
+.nav-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  flex-direction: column;
+  background: var(--paper);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity var(--base) var(--ease),
+              visibility 0s linear var(--base);
+}
+
+.nav-menu.is-open {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 200ms var(--ease),
+              visibility 0s linear 0s;
+}
+
+.nav-menu__inner {
+  display: flex;
+  flex-direction: column;
+  /* 100dvh, not 100vh. On iOS and Android 100vh is measured with the
+     URL bar retracted, so a sheet sized to it hangs its foot behind
+     browser chrome that is still on screen. vh first as the fallback
+     for anything that doesn't know dvh. */
+  height: 100vh;
+  height: 100dvh;
+  /* Fallback is not decoration. --nav-h is declared inside the 768px
+     query, so anything rendering this rule outside it — the design
+     system's static specimen — would resolve an undefined variable,
+     which invalidates the whole shorthand and drops the padding to 0. */
+  padding: var(--nav-h, 60px) var(--margin) clamp(22px, 4vh, 36px);
+  overflow-y: auto;
+}
+
+/* The opening beat: a hairline draws left-to-right under the bar
+   before the list arrives. A real element with transform:scaleX
+   because a border-bottom can't animate, and this has to read as
+   the system drawing itself rather than a panel appearing. */
+.nav-menu__rule {
+  flex: none;
+  height: 1px;
+  background: var(--rule);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 520ms var(--ease);
+}
+
+.nav-menu.is-open .nav-menu__rule { transform: scaleX(1); }
+
+/* The sheet's own eyebrow. Without it the list floats in the middle of
+   a black field with 450px of nothing above it, which reads as an
+   unfinished layout rather than as space. A split meta row anchors the
+   top edge and states what the thing is — the same device, and the same
+   two-item split, as .about-hero__eyebrow--split. */
+.nav-menu__eyebrow {
+  flex: none;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 18px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--base) var(--ease),
+              transform var(--base) var(--ease);
+}
+
+.nav-menu.is-open .nav-menu__eyebrow {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 100ms;
+}
+
+/* flex: 1 so the foot is pushed to the bottom edge on a tall phone
+   and simply follows the list on a short one. */
+.nav-menu__list {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* The row padding is what fills the sheet. At the old 10–18px the four
+   rows came to ~280px of an 844px screen and the composition collapsed
+   into a band floating in the middle; 3vh puts them at ~440px, so the
+   list, the eyebrow and the foot together own the page. Tune the vh
+   term first if the rhythm ever needs moving — it is the one number
+   that decides how full the sheet reads. */
+.nav-menu__item {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(14px, 4vw, 22px);
+  padding: clamp(14px, 3vh, 30px) 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+/* The foot draws its own top rule directly below this one. */
+.nav-menu__item:last-child { border-bottom: none; }
+
+.nav-menu__index {
+  color: var(--ink-30);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 520ms var(--ease),
+              transform 520ms var(--ease),
+              color var(--fast) var(--ease);
+}
+
+.nav-menu__line {
+  display: block;
+  overflow: hidden;
+}
+
+.nav-menu__word {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 11vw, 3.5rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  /* Height comes from the padded box so the descender in "j" isn't
+     shaved off by the frame — same fix as .hero__line-inner. */
+  padding-top: 0.06em;
+  padding-bottom: 0.14em;
+  transform: translateY(110%);
+  transition: transform 720ms var(--ease),
+              color var(--fast) var(--ease);
+}
+
+.nav-menu.is-open .nav-menu__word { transform: translateY(0); }
+
+.nav-menu.is-open .nav-menu__index {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* One custom property per row drives both the number and the word,
+   so the stagger is four numbers to tune rather than eight rules to
+   keep in sync. */
+.nav-menu__word,
+.nav-menu__index { transition-delay: var(--row-delay, 0ms); }
+
+.nav-menu.is-open .nav-menu__item:nth-child(1) { --row-delay: 140ms; }
+.nav-menu.is-open .nav-menu__item:nth-child(2) { --row-delay: 200ms; }
+.nav-menu.is-open .nav-menu__item:nth-child(3) { --row-delay: 260ms; }
+.nav-menu.is-open .nav-menu__item:nth-child(4) { --row-delay: 320ms; }
+
+/* Closing is not opening in reverse. A stagger on the way out makes
+   a reader wait to get back to the page they asked for, so the
+   whole sheet leaves at once and quickly. */
+.nav-menu:not(.is-open) .nav-menu__word,
+.nav-menu:not(.is-open) .nav-menu__index,
+.nav-menu:not(.is-open) .nav-menu__foot { transition-duration: 200ms; }
+
+/* Touch has no hover, so :active carries the whole feedback burden
+   here — it is the only confirmation a thumb ever gets. */
+.nav-menu__item:active .nav-menu__word,
+.nav-menu__item:active .nav-menu__index { color: var(--signal); }
+
+.nav-menu__item[aria-current="page"] .nav-menu__word,
+.nav-menu__item[aria-current="page"] .nav-menu__index { color: var(--signal); }
+
+/* --- The foot ------------------------------------------------ */
+.nav-menu__foot {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule-soft);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--base) var(--ease),
+              transform var(--base) var(--ease);
+}
+
+.nav-menu.is-open .nav-menu__foot {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 380ms;
+}
+
+.nav-menu__mail {
+  font-size: var(--t-lead);
+  line-height: 1.3;
+  color: var(--ink-70);
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--rule);
+  /* An address is a single unbreakable token; without this it
+     overflows the sheet on a 320px screen instead of wrapping. */
+  overflow-wrap: anywhere;
+}
+
+.nav-menu__mail:active {
+  color: var(--signal);
+  border-bottom-color: var(--signal);
+}
+
+.nav-menu__foot-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px 18px;
+}
+
+.nav-menu__social {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.nav-menu__social a {
+  color: var(--ink-50);
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+  transition: color var(--fast) var(--ease),
+              border-color var(--fast) var(--ease);
+}
+
+.nav-menu__social a:active {
+  color: var(--signal);
+  border-bottom-color: var(--signal);
+}
+
+/* A phone held sideways is ~375px tall with the URL bar in it. The
+   display scale that reads as a statement in portrait turns the sheet
+   into a scrolling list here; pull it down until the four rows and the
+   foot fit on one screen again. */
+@media (max-width: 768px) and (max-height: 480px) {
+  .nav-menu__word { font-size: clamp(1.5rem, 6.5vh, 2rem); }
+  .nav-menu__item { padding: 8px 0; }
+
+  /* First thing cut when there is no room. It exists to hold the top of
+     a tall composition together, and there is no tall composition here
+     — keeping it costs the foot the last of its clearance. */
+  .nav-menu__eyebrow { display: none; }
+}
+
+
+
+
+/* ------------------------------------------------------------
+   HERO
+   ------------------------------------------------------------ */
+/* ------------------------------------------------------------
+   HERO
+
+   THE FOUR NUMBERS THAT MATTER — tune these by eye in Live Server,
+   everything else follows from them:
+
+   --hero-portrait-w     how far left the portrait reaches
+   --hero-portrait-fade  where the dissolve finishes (0% = hard edge)
+   --hero-name-size      display scale, and therefore how far the
+                         name crosses into the portrait
+   --hero-face-x         horizontal framing of the face inside the
+                         column — the collision knob
+
+   THE COLLISION: your key light comes from frame-left, so the duotone
+   turns the LEFT of your face vermilion — exactly where vermilion type
+   crosses. Two defences: the mask keeps that band well under full
+   opacity, and --hero-face-x pushes the lit side right, away from the
+   type. If "Elugbaju." ever fights your cheek, move --hero-face-x
+   first; it costs nothing.
+   ------------------------------------------------------------ */
+.hero {
+  --hero-portrait-w:    58vw;
+  --hero-portrait-fade: 64%;
+  --hero-face-x:        62%;
+
+  /* min(vw, svh) — the name is width-scaled UNTIL height becomes the
+     tighter constraint, then height wins. A pure vw value renders at
+     ~317px on a 1920-wide screen, and two lines of that eat 646px,
+     which pushes the rail past the fold on any laptop-height viewport.
+     The whole point of the rail is being seen without scrolling, so
+     height gets a vote.
+     Budget at 1920×900: 108 pad + 34 eyebrow + 551 name + 55 rail
+     + gaps + 27 pad ≈ 822 of 900. ~78px of slack, which space-between
+     hands back to the gaps. */
+  --hero-name-size:     clamp(3rem, min(15.5vw, 30svh), 15rem);
+
+  position: relative;
+  display: flex;
+  min-height: 100svh;
+  border-bottom: 1px solid var(--rule);
+  overflow: hidden;          /* contains the bleed */
+}
+
+/* --- Portrait --------------------------------------------------- */
+/* No border, no frame. The mask dissolves it leftward into the page
+   so it has no edge to draw — it stops being a picture and becomes
+   part of the surface. */
+.hero__portrait {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  width: var(--hero-portrait-w);
+  overflow: hidden;
+
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0%, #000 var(--hero-portrait-fade)),
+    linear-gradient(to bottom, #000 0%, #000 74%, transparent 99%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0%, #000 var(--hero-portrait-fade)),
+    linear-gradient(to bottom, #000 0%, #000 74%, transparent 99%);
+  mask-composite: intersect;
+}
+
+.hero__portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--hero-face-x) 24%;
+  filter: var(--portrait-duotone);
+  transform: scale(1.06);
+  will-change: transform;
+}
+
+/* --- Column ----------------------------------------------------- */
+.hero__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(20px, 2.6svh, 38px);
+  flex: 1;
+  width: 100%;
+  max-width: var(--maxw);
+  margin-left: auto;
+  margin-right: auto;
+  /* Top padding only has to clear the nav (~74px) plus air. The old
+     18vh was buying breathing room that the rail was paying for. gap
+     is a MINIMUM here — space-between spends any surplus height on it,
+     so a tall screen still breathes. */
+  padding: clamp(96px, 12svh, 150px) var(--margin) clamp(24px, 3svh, 44px);
+}
+
+.hero__eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--rule-soft);
+  max-width: 54%;
+}
+
+/* --- Display ---------------------------------------------------- */
+.hero__display {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-display);
+  font-size: var(--hero-name-size);
+  font-weight: 400;
+  line-height: 0.82;
+  letter-spacing: -0.04em;
+}
+
+/* The surname carries the signal. No <em> — italicising a surname is
+   semantically wrong and reads as a typo at this scale. */
+.hero__line:nth-child(2) .hero__line-inner { color: var(--signal); }
+
+/* The clipping frame. Height comes from the inner's padded box, so
+   descenders in "complex" and "things" don't get shaved off — the
+   classic mask-reveal bug. */
+.hero__line {
+  display: block;
+  overflow: hidden;
+}
+
+.hero__line-inner {
+  display: block;
+  padding-top: 0.06em;
+  padding-bottom: 0.14em;
+  transition: transform 900ms var(--ease);
+}
+
+/* The hidden start state exists ONLY when JS is present to undo it.
+   Unconditionally, a script failure would leave the headline parked
+   below its clipping frame and the hero would render blank. */
+:root.js .hero__line-inner { transform: translateY(110%); }
+
+.hero__display.is-in .hero__line-inner { transform: translateY(0); }
+
+.hero__line:nth-child(1) .hero__line-inner { transition-delay: 90ms; }
+.hero__line:nth-child(2) .hero__line-inner { transition-delay: 200ms; }
+
+/* --- Rail ------------------------------------------------------- */
+/* Label over value, split by vertical hairlines. The telemetry idea
+   is Mauricio's; the execution is the same rule system the rest of
+   this page is built from, so it belongs here rather than quoting him. */
+.hero__rail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: clamp(20px, 3vw, 48px);
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  max-width: 54%;
+}
+
+.hero__rail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 14px;
+  border-left: 1px solid var(--rule-soft);
+}
+
+.hero__rail-item:first-child {
+  padding-left: 0;
+  border-left: none;
+}
+
+.hero__rail-value {
+  font-family: var(--font-mono);
+  font-size: var(--t-meta);
+  letter-spacing: 0.06em;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.meta-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+
+/* ------------------------------------------------------------
+   SECTION
+   ------------------------------------------------------------ */
+/* Vertical padding is deliberately modest because it DOUBLES between
+   stacked sections — 130px top and bottom put 260px of air between two
+   blocks of content, which reads as a broken page rather than as a
+   generous one. The hairline between them is already doing the
+   separating; the padding only has to keep it from crowding. */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 4vh, 48px);
+  padding: clamp(52px, 7vh, 84px) var(--margin);
+  max-width: var(--maxw);
+  margin-left: auto;
+  margin-right: auto;
+  border-bottom: 1px solid var(--rule);
+}
+
+.section__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.section__action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-50);
+  transition: color var(--fast) var(--ease);
+}
+
+.section__action:hover { color: var(--signal); }
+
+.section__action-arrow {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1;
+  transition: transform var(--base) var(--ease);
+}
+
+.section__action:hover .section__action-arrow { transform: translateX(4px); }
+
+
+/* ------------------------------------------------------------
+   WORK GRID — 2×2.
+
+   Nested flex, never CSS Grid. grid-template-columns imports to
+   Figma as absolutely-positioned junk; a flex column of flex rows
+   lands as clean nested auto-layout.
+
+   align-items: stretch (flex default) keeps both cards in a row the
+   same height regardless of how much copy each carries — that's what
+   holds the 2×2 square instead of letting it ladder.
+   ------------------------------------------------------------ */
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gutter);
+}
+
+.grid__row {
+  display: flex;
+  gap: var(--gutter);
+}
+
+.grid__row > .card { flex: 1 1 0; min-width: 0; }
+
+
+/* --- Card ------------------------------------------------------- */
+/* No border on the card itself. The frame and the rules do the
+   containing — a box drawn around a box is what makes a Swiss page
+   look like Bootstrap. */
+.card { display: flex; }
+
+.card__link {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.card__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.card__num {
+  color: var(--ink-30);
+  transition: color var(--base) var(--ease);
+}
+
+.card:hover .card__num { color: var(--signal); }
+
+
+/* --- Frame ------------------------------------------------------ */
+.card__frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  background: var(--paper-warm);
+  border: 1px solid var(--rule-soft);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+
+.card__img {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1);
+  transition: transform 900ms var(--ease);
+}
+
+/* Slow push-in. The frame clips it, so the crop tightens instead of
+   the card growing — nothing around it moves. */
+.card:hover .card__img { transform: scale(1.04); }
+
+/* Hidden until the image genuinely fails. Same lesson the portrait
+   taught: never make the happy path depend on JS revealing it. */
+.card__placeholder {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: none;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px;
+  border: 1px dashed var(--signal);
+  border-radius: 2px;
+  background: var(--signal-wash-soft);
+}
+
+.card__frame.is-empty .card__placeholder { display: flex; }
+.card__frame.is-empty .card__img { display: none; }
+
+.card__spec {
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--ink-50);
+}
+
+.card__spec code {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--signal);
+}
+
+
+/* --- Body ------------------------------------------------------- */
+.card__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  flex: 1;
+}
+
+.card__text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+.card__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.2vw, 2.25rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  transition: color var(--base) var(--ease);
+}
+
+
+.card:hover .card__title { color: var(--signal); }
+
+/* The card's subtitle carries what the project actually IS, so it was
+   under-set at body size — it read as caption under a serif title
+   twice its size. --t-lead lifts it into the same voice as the About
+   copy and closes that gap. Brightened to ink-70 to match: at the
+   larger size, ink-50 read washed out rather than quiet. */
+.card__desc {
+  font-size: var(--t-lead);
+  color: var(--ink-70);
+  line-height: 1.35;
+}
+
+
+/* --- Points ----------------------------------------------------- */
+.card__points {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 8px;
+}
+
+/* A hairline instead of a bullet glyph. Same rule system as everything
+   else, and it survives the Figma import as a stroke. */
+.card__point {
+  display: flex;
+  font-size: var(--t-body);
+  line-height: 1.5;
+  color: var(--ink-70);
+  padding-left: 14px;
+  border-left: 1px solid var(--rule);
+  text-wrap: pretty;
+}
+
+/* Loud, like the Now rows. An unanswered outcome must never be able to
+   ship looking finished. */
+.card__point--todo {
+  color: var(--signal);
+  font-style: italic;
+  border-left-color: var(--signal);
+}
+
+
+/* --- Tags ------------------------------------------------------- */
+.card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 6px;
+  flex: none;
+}
+
+.card__tag {
+  padding: 5px 10px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  color: var(--ink-50);
+  transition: color var(--base) var(--ease);
+}
+
+.card:hover .card__tag { color: var(--ink-70); }
+
+
+/* ------------------------------------------------------------
+   RESERVED SLOT — not a project.
+
+   Deliberately inert: no cursor, no hover lift, no VIEW badge. A
+   placeholder that behaves like a card teaches visitors the grid is
+   broken. Deliberately loud: it must not reach launch looking like
+   finished work.
+   ------------------------------------------------------------ */
+.card--slot { cursor: default; }
+
+.card__frame--slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--signal-wash-soft);
+  border: 1px dashed var(--signal);
+}
+
+.card__slot-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border: 1px solid var(--signal-line);
+  border-radius: 50%;
+}
+
+.card__slot-plus {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--signal);
+}
+
+.card__title--slot {
+  color: var(--signal);
+  font-style: italic;
+}
+
+
+/* ------------------------------------------------------------
+   STACKED SCROLL — homepage project panels.
+
+   Each panel is position:sticky at a slightly lower offset than the
+   one before it, so scrolling slides each new project up over the
+   last and leaves a stack of edges pinned under the nav.
+
+   Two hard constraints, both easy to break later:
+     1. NOTHING in the ancestor chain (.stack, .section, main) may
+        take overflow:hidden or a transform — either one turns that
+        ancestor into the containing block and sticky dies silently.
+     2. Each panel needs an opaque background. Sticky only controls
+        position; without a fill the covered panel shows through and
+        the whole effect reads as a rendering bug.
+   ------------------------------------------------------------ */
+.stack {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Runway for the last panel — see the note in index.html. This is a
+   real sibling box on purpose: margin-bottom on the last card and
+   padding-bottom on .stack were both measured and both fail, for
+   different reasons. Don't "simplify" it back into either. */
+.stack__runway {
+  flex: none;
+  height: clamp(160px, 26vh, 300px);
+}
+
+.stack__card {
+  position: sticky;
+  top: var(--stack-top, 84px);
+  /* Height comes from the 3:2 media, not a viewport fraction — a vh
+     min-height would letterbox the image on short screens. */
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  /* Clips the media to the radius. Safe on the sticky element itself —
+     only an ANCESTOR's overflow would break the pinning. */
+  overflow: hidden;
+}
+
+/* The staggered landing points. 84px clears the fixed nav (~60px);
+   each panel after it lands 16px lower so the covered edges read as
+   a deck rather than one flat plane. */
+.stack__card:nth-child(1) { --stack-top: 84px; }
+.stack__card:nth-child(2) { --stack-top: 100px; }
+.stack__card:nth-child(3) { --stack-top: 116px; }
+.stack__card:nth-child(4) { --stack-top: 132px; }
+
+/* Overrides .card__link, which is a 16px-gap column by default. */
+.stack__inner {
+  flex-direction: row;
+  align-items: stretch;
+  gap: 0;
+  min-height: inherit;
+}
+
+/* The zig-zag. Positional, like .project--flip on the work index —
+   it alternates with the slot, it does not travel with the project. */
+.stack__card--flip .stack__inner { flex-direction: row-reverse; }
+
+.stack__media {
+  display: flex;
+  flex: 1.25 1 0;
+  min-width: 0;
+}
+
+/* 3:2 — the source boards are 1200×800, so the frame holds that ratio
+   and caps at the asset's true width rather than stretching to the
+   panel height. Above 1200px it stops growing instead of upscaling. */
+.stack__media .card__frame {
+  aspect-ratio: 3 / 2;
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+  border: none;
+  border-radius: 0;
+}
+
+.stack__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: clamp(24px, 3vw, 44px);
+}
+
+/* margin-top:auto pins this to the bottom of the panel, so the read
+   affordance sits on a consistent line no matter how much copy each
+   project carries. */
+.stack__view {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  color: var(--ink-50);
+  transition: color var(--base) var(--ease);
+}
+
+.card:hover .stack__view { color: var(--signal); }
+
+.stack__view-arrow {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1;
+  transition: transform var(--base) var(--ease);
+}
+
+.card:hover .stack__view-arrow { transform: translateX(6px); }
+
+
+/* --- The section's exit ----------------------------------------
+   Display scale and full width, because the old section-head link
+   was 13px tall, the same muted grey as the caption opposite it,
+   and sat above the work rather than after it. Deliberately not a
+   .btn — filled/outlined shapes stay reserved for the closing CTA.
+   ------------------------------------------------------------ */
+.work-more {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  margin-top: clamp(40px, 6vh, 80px);
+  padding: clamp(26px, 4vh, 44px) 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  transition: color var(--base) var(--ease);
+}
+
+.work-more:hover,
+.work-more:focus-visible { color: var(--signal); }
+
+.work-more__arrow {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.4em;
+  line-height: 1;
+  color: var(--signal);
+  transition: transform var(--base) var(--ease);
+}
+
+.work-more:hover .work-more__arrow,
+.work-more:focus-visible .work-more__arrow { transform: translateX(10px); }
+
+/* --- Back variant — wayfinding, not an exit --------------------
+   Same component at the TOP of a case study, pointing back to the
+   index. Two things change and both are forced by the position:
+
+   1. Scale. .work-more is sized to close a page, and at display
+      scale directly above an <h1> it outshouts the title it is
+      supposed to be introducing. A back link is wayfinding — it
+      should be findable, not loud.
+   2. Direction. The arrow leads on the left and travels left on
+      hover. An arrow that says "back" and moves right is telling
+      the reader two different things.
+
+   No margin-top: it opens the page rather than following content,
+   and .about-hero__nav already owns the gap to whatever is next.
+   ---------------------------------------------------------------- */
+.work-more--back {
+  justify-content: flex-start;
+  gap: 16px;
+  margin-top: 0;
+  padding: clamp(14px, 2vh, 20px) 0;
+  font-size: clamp(1.0625rem, 1.6vw, 1.375rem);
+  border-top: none;
+}
+
+.work-more--back:hover .work-more__arrow,
+.work-more--back:focus-visible .work-more__arrow {
+  transform: translateX(-10px);
+}
+
+
+/* ------------------------------------------------------------
+   VIEW BADGE — cursor-following disc.
+   The one moment of unrationed signal on the page.
+   ------------------------------------------------------------ */
+.view-badge {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Split deliberately: JS translates the OUTER every frame, CSS scales
+   the INNER. One element doing both means the rAF loop overwrites the
+   transition sixty times a second and the scale never animates. */
+.view-badge__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: var(--signal);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 260ms var(--ease), transform 260ms var(--ease);
+}
+
+.view-badge.is-active .view-badge__inner {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.view-badge__label {
+  font-family: var(--font-mono);
+  font-size: var(--t-meta);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+
+
+/* ------------------------------------------------------------
+   ABOUT
+   The system holds here. No softer corners, no warmer grid.
+   Warmth is carried entirely by the copy and one portrait.
+   ------------------------------------------------------------ */
+.about {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--about-gap);
+  --about-gap: clamp(32px, 5vw, 80px);
+}
+
+/* Half the row, gap discounted, so portrait and copy split the section
+   evenly. Basis is fixed (0 0) — letting it grow or shrink is what pulls
+   it off the halfway line. */
+.about__portrait {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 0 0 calc(50% - (var(--about-gap) / 2));
+}
+
+/* 3:2 landscape crop. aspect-ratio (not padding hacks) so the frame
+   imports to Figma as a plain fixed-size rectangle.
+   Was 4:5 portrait — at half the row width that stood up as a slab
+   taller than the copy beside it. Landscape keeps the half-width
+   footprint but drops the height to roughly a third of it. */
+.portrait__frame {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  width: 100%;
+  background: var(--paper-warm);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+/* Permanent warm monochrome. No colour reveal — deliberate.
+   The source is a suit-and-tie studio shot on cool grey seamless:
+   in colour the maroon tie goes muddy against --signal, and the
+   cold background reads as a hole in the warm paper. Mono kills
+   the tie, warms the seamless into the page, and turns a
+   corporate headshot into a press portrait.
+   If a candid ever replaces it, bring the hover reveal back.
+
+   NOTE: CSS filters do NOT survive the Figma import — you'll get
+   the raw, ungraded file there. Grade it in Figma yourself. */
+.portrait__img {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: var(--portrait-grade);
+  transition: filter var(--base) var(--ease);
+}
+
+/* The spec card is hidden by default and only appears if the image
+   genuinely fails. Earlier this was inverted — placeholder shown,
+   image display:none until JS proved the load — which made the
+   happy path depend on a race. It isn't the placeholder's job to
+   get out of the way; the image sits at z-index 2 and covers it. */
+.portrait__placeholder {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: none;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 18px;
+  border: 1px dashed var(--signal);
+  border-radius: 2px;
+  background: var(--signal-wash-soft);
+}
+
+.portrait__frame.is-empty .portrait__placeholder { display: flex; }
+.portrait__frame.is-empty .portrait__img { display: none; }
+
+.portrait__spec {
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--ink-50);
+}
+
+.portrait__spec code {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--signal);
+}
+
+.portrait__caption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 9px;
+  border-top: 1px solid var(--rule);
+}
+
+/* Basis dropped from 440 to 320: the portrait now claims a hard half, and
+   a 440 basis alongside it wraps the copy under the photo well before the
+   900px breakpoint means it to. */
+.about__body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  flex: 1 1 320px;
+  max-width: 640px;
+}
+
+/* font-weight is not redundant — this is an h2 now, and Instrument Serif
+   ships Regular only. Without it the browser synthesises a faux bold. */
+.about__lead {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+/* The positioning line lives here now that the hero is the name.
+   Italic + signal is the same emphasis the hero used to carry. */
+.about__lead em {
+  font-style: italic;
+  color: var(--signal);
+}
+
+.about__text {
+  font-size: var(--t-lead);
+  line-height: 1.6;
+  color: var(--ink-70);
+  text-wrap: pretty;
+}
+
+
+/* --- Skills chips ------------------------------------------------
+   Same chip as .card__tag — deliberately the same object, not a
+   second one that merely looks similar. If that border or radius
+   ever moves, these two move together.
+   ------------------------------------------------------------ */
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 6px;
+}
+
+.skills__chip {
+  padding: 5px 10px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  color: var(--ink-50);
+  transition: color var(--base) var(--ease);
+}
+
+.skills__chip:hover { color: var(--ink-70); }
+
+
+/* ------------------------------------------------------------
+   NOW — the "Currently" index.
+   The device that dates the site as alive. Keep it current
+   or delete it; a stale Now row is worse than no Now row.
+   ------------------------------------------------------------ */
+.now {
+  display: flex;
+  flex-direction: column;
+  padding-top: 12px;
+}
+
+.now__row {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(16px, 3vw, 40px);
+  padding: 13px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.now__row:first-child { border-top: 1px solid var(--rule); }
+
+.now__row .meta { flex: 0 0 118px; }
+
+.now__value {
+  font-size: var(--t-body);
+  line-height: 1.4;
+  color: var(--ink);
+  flex: 1 1 auto;
+}
+
+/* Deliberately loud. This is unfinished content and it should
+   be impossible to ship it by accident. */
+.now__row.is-todo {
+  background: var(--signal-wash);
+  border-bottom-color: var(--signal-line);
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.now__value--todo {
+  color: var(--signal);
+  font-style: italic;
+}
+
+
+/* ------------------------------------------------------------
+   APPROACH
+   ------------------------------------------------------------ */
+/* ------------------------------------------------------------
+   PRINCIPLES — one row of four.
+
+   Three devices are doing the work here, in order of importance:
+
+   1. OVERSIZED NUMERALS. The Swiss move — Müller-Brockmann sets
+      figures as architecture, not as labels. An 11px mono "01" is a
+      caption; a 5rem serif 01 is composition. This is most of the
+      difference between "designed" and "laid out".
+   2. RULES THAT DRAW. Each column's hairline is a real element that
+      scales from 0 on scroll, staggered — the system assembles
+      itself rather than arriving finished.
+   3. FOCUS ON HOVER. Hovering one column dims the other three. The
+      page stops being a wall of equal text and starts responding.
+
+   flex-basis 240px with wrap, NOT nowrap: four in a row at >=1200px,
+   then 2×2, then stacked. Forcing nowrap holds the row and rags the
+   body copy to death at 200px.
+   ------------------------------------------------------------ */
+.principles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gutter);
+}
+
+.principle {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1 1 240px;
+  min-width: 0;
+  padding-top: 22px;
+  padding-left: 22px;
+  border-top: 1px solid var(--rule);
+}
+
+/* Raised to (0,2,0) on purpose. .reveal also sets `transition` on this
+   element and is declared later in the file at equal specificity, so a
+   plain `.principle` rule loses the whole shorthand and the hover
+   indent snaps. Both sets of transitions have to live on the winner. */
+.principles .principle {
+  transition: padding-left var(--base) var(--ease),
+              opacity var(--slow) var(--ease),
+              transform var(--slow) var(--ease);
+}
+
+/* Rules go BETWEEN columns, not before the first — so column one's
+   text still aligns to the page margin like every other section. */
+.principle:first-child {
+  padding-left: 0;
+}
+
+.principle:first-child .principle__rule { display: none; }
+
+/* A real element rather than border-left, because a border can't be
+   animated from zero height. transform-origin: top makes it draw
+   downward. */
+.principle__rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background: var(--rule);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 800ms var(--ease),
+              background var(--base) var(--ease);
+}
+
+.principle.is-in .principle__rule { transform: scaleY(1); }
+
+/* Numerals as architecture. Instrument Serif ships Regular only, so
+   the weight has to come from scale — which is the whole point. */
+.principle__num {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 4.5vw, 4.75rem);
+  line-height: 0.8;
+  letter-spacing: -0.03em;
+  color: var(--ink-30);
+  transition: color var(--base) var(--ease);
+}
+
+.principle__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 1.6vw, 1.75rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  transition: color var(--base) var(--ease);
+}
+
+.principle__text {
+  font-size: var(--t-body);
+  line-height: 1.55;
+  color: var(--ink-70);
+  text-wrap: pretty;
+  transition: color var(--base) var(--ease);
+}
+
+/* FOCUS — dim the siblings.
+   Colour, never opacity: .reveal already animates opacity on these
+   same elements, and two systems writing one property is the bug we
+   already fixed once on .hero__display. */
+.principles:hover .principle__num   { color: var(--rule); }
+.principles:hover .principle__title { color: var(--ink-30); }
+.principles:hover .principle__text  { color: var(--ink-30); }
+
+.principles .principle:hover { padding-left: 30px; }
+.principles .principle:hover .principle__rule { background: var(--signal); }
+.principles .principle:hover .principle__num   { color: var(--signal); }
+.principles .principle:hover .principle__title { color: var(--ink); }
+.principles .principle:hover .principle__text  { color: var(--ink-70); }
+
+/* The first column has no rule to light, so it gets no indent either —
+   otherwise it lurches sideways against nothing. */
+.principles .principle:first-child:hover { padding-left: 0; }
+
+
+/* ------------------------------------------------------------
+   TOOLKIT — the tools, as a 4-across index.
+
+   FOUR ACROSS, NOT A 4×4. Eight tools fill two rows exactly. The
+   basis is a computed quarter rather than a fixed px, so the row
+   holds at four and a ninth tool starts a third row instead of
+   re-flowing the grid. Never CSS Grid — same reason as .grid.
+
+   MONOCHROME UNTIL TOUCHED. Every mark sits at --ink-50 and blooms
+   to its own brand colour on hover, carried by --tool-brand on the
+   card. This is the one place the page shows a colour that isn't
+   --signal, and it stays rationed: the colour exists only under the
+   cursor, one card at a time, and leaves with it. A wall of eight
+   brand logos at full chroma would be the loudest thing on the site
+   and would say nothing about the work.
+
+   Colour rides on `color`, never fill/stroke directly, so a mark can
+   be an <svg fill="currentColor">, a stroked <svg>, or a typographic
+   monogram and all three light up identically.
+
+   FOCUS ON HOVER — hovering the set dims the other seven, the same
+   device .principles uses. Colour, never opacity: .reveal already
+   owns opacity on these cards.
+   ------------------------------------------------------------ */
+.toolkit {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gutter);
+}
+
+/* Fixed basis, no grow. Growing would let a trailing partial row
+   stretch its cards wider than the full rows above — the ladder that
+   makes a tidy grid look broken. */
+.tool {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  flex: 0 1 calc((100% - (3 * var(--gutter))) / 4);
+  min-width: 0;
+  padding: 28px 18px 22px;
+  border: 1px solid var(--rule-soft);
+  border-radius: 2px;
+  background: var(--paper-warm);
+  text-align: center;
+  transition: border-color var(--base) var(--ease),
+              background var(--base) var(--ease),
+              box-shadow var(--base) var(--ease);
+}
+
+/* Fixed box so a 16-unit octocat and a 57-unit Figma mark still sit
+   on one optical baseline. */
+.tool__mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  color: var(--ink-50);
+  transition: color var(--base) var(--ease);
+}
+
+/* Every mark file is drawn on a square canvas, so one square box holds
+   them all on the same optical baseline. object-fit keeps a tall mark
+   (Figma) from stretching to fill it. */
+.tool__logo {
+  display: block;
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+/* The typographic alternative to a drawn mark — Adobe and Notion draw
+   their own icons this way, so it isn't a substitute for a logo, it
+   IS the logo's form. Keeps the set consistent without shipping eight
+   hand-traced approximations. */
+.tool__mono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+}
+
+.tool__name {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ink-70);
+  transition: color var(--base) var(--ease);
+}
+
+.tool__role {
+  white-space: normal;
+  line-height: 1.4;
+  transition: color var(--base) var(--ease);
+}
+
+/* HOVER — the border takes the tool's own colour and glows.
+
+   The marks are full-colour at rest and never change; the whole
+   interaction lives in the frame. box-shadow does the glow rather
+   than a second element: it's a shadow, not a drawn shape, so it
+   doesn't breach the no-CSS-shapes rule, and it costs no DOM.
+   The inset ring thickens the border to 2px without a layout shift —
+   changing border-width itself would reflow the card by a pixel. */
+.toolkit .tool:hover {
+  border-color: var(--tool-brand, var(--signal));
+  background: var(--paper);
+  box-shadow:
+    inset 0 0 0 1px var(--tool-brand, var(--signal)),
+    0 0 28px -10px var(--tool-brand, var(--signal));
+}
+
+.toolkit .tool:hover .tool__name { color: var(--ink); }
+.toolkit .tool:hover .tool__role { color: var(--ink-50); }
+
+/* FigJam has no public SVG mark, so its monogram carries the brand
+   colour permanently — the same always-on treatment the seven real
+   logos get, rather than a grey box sitting among them. */
+.tool--figjam .tool__mark { color: #a259ff; }
+
+/* Brand values — these drive the hover frame only, since each mark
+   file already carries its own colours. Notion and GitHub ship
+   black-and-white marks (their files are set to white for this dark
+   ground), so --ink is the correct brand value for both. */
+.tool--figma       { --tool-brand: #f24e1e; }
+.tool--figjam      { --tool-brand: #a259ff; }
+.tool--vscode      { --tool-brand: #0098ff; }
+.tool--claude      { --tool-brand: #d97757; }
+.tool--illustrator { --tool-brand: #ff9a00; }
+.tool--canva       { --tool-brand: #00c4cc; }
+.tool--notion      { --tool-brand: var(--ink); }
+.tool--github      { --tool-brand: var(--ink); }
+
+
+/* ------------------------------------------------------------
+   WORDS — testimonials.
+
+   An index you drive, not a carousel. Nothing here is a new object;
+   it's three devices already on the page, turned to a new job:
+
+   1. THE SWAP. One stage, one quote. The .hero__line clipping frame,
+      reused rather than re-invented — the outgoing quote fades in
+      200ms, the incoming rises out of its own mask. They never
+      collide, because the old one is gone before the new one clears
+      the frame.
+   2. THE INDEX. .principle's drawn rule and dim-the-siblings focus,
+      turned vertical.
+   3. THE READOUT. 01 / 04 in the section head — the hero rail's
+      telemetry voice.
+
+   CLICK, NOT HOVER, drives it. Hover-swap flickers the quote every
+   time a cursor crosses the list on its way somewhere else, and it
+   hands keyboard users nothing. No autoplay either: this is the one
+   block on the page someone is mid-sentence in.
+
+   HEIGHT: only the INACTIVE panels go absolute. The active one stays
+   in normal flow, so the stage measures itself against whatever quote
+   is showing — no JS height math, no min-height guess, and nothing to
+   overflow if a quote runs long. The cost is that the stage resizes
+   instantly on swap rather than gliding; keep the four quotes within
+   a line or so of each other and it never reads as a jump.
+   ------------------------------------------------------------ */
+
+.words {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: clamp(36px, 5vw, 80px);
+}
+
+.words__stage {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2vw, 24px);
+  flex: 1 1 460px;
+  min-width: 0;
+}
+
+/* A real glyph in a real element — a mark this size is editorial
+   rather than decoration, and it exists at all only because Instrument
+   Serif draws a proper one.
+
+   THE TWO MAGIC NUMBERS ARE MEASURED, NOT TASTE. Instrument Serif's
+   “ is a small mark parked high in a big em box: its ink is 0.225em
+   tall and floats between 0.79em and 0.565em above the baseline, with
+   the rest of the box empty. Set naively it renders a fifth of its own
+   font-size and hangs in dead air.
+
+     line-height: 0.9  → puts the line box's top exactly on the ink's
+                         top (0.99 ascent + (0.9 − 1.3)/2 = 0.79).
+     height: 0.225em   → crops the box to the ink. The empty two-thirds
+                         below simply overflows, and gap can do its job.
+
+   Recompute both if --font-display ever changes; they are properties
+   of this typeface, not of this layout.
+
+   NOT signal: the todo slots have to stay the loudest thing in this
+   section until they hold real sentences. Once they do, this is the
+   first thing worth trying in --signal. */
+.words__mark {
+  font-family: var(--font-display);
+  font-size: clamp(5.5rem, 11vw, 11rem);
+  line-height: 0.9;
+  height: 0.225em;
+  color: var(--ink-30);
+  flex: none;
+}
+
+/* The gap is here for the no-JS fallback ONLY, and it costs nothing to
+   carry: an absolutely-positioned child is not a flex item, so once JS
+   is driving this there is exactly one item in the box and gap has
+   nothing to sit between. Without it the four quotes fall down the page
+   as one run-on block, each attribution butted against the next
+   sentence. */
+.words__panels {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 5vw, 64px);
+  width: 100%;
+}
+
+.quote {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* The start state exists only where JS is there to drive it. Without
+   JS all four quotes stay in normal flow and read as a plain list,
+   which is a perfectly good fallback — the alternative is four quotes
+   stacked on one square of paper.
+   visibility, not just opacity: hidden takes a panel out of the
+   accessibility tree AND the tab order, so the three you aren't
+   reading aren't read to you either. Its delay matches the fade so
+   the outgoing quote doesn't blink out mid-transition. */
+:root.js .quote:not(.is-active) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms var(--ease),
+              visibility 0s linear 220ms;
+}
+
+/* Same clipping frame as .hero__line, and the padding is the same fix
+   for the same bug: without it the mask shaves the descenders. */
+.quote__frame {
+  display: block;
+  overflow: hidden;
+}
+
+.quote__inner {
+  display: block;
+  padding-top: 0.04em;
+  padding-bottom: 0.12em;
+  transition: transform 760ms var(--ease);
+}
+
+:root.js .quote__inner { transform: translateY(105%); }
+:root.js .quote.is-active .quote__inner { transform: translateY(0); }
+
+/* The sentence lands, then it gets signed. */
+:root.js .quote.is-active .quote__body .quote__inner { transition-delay: 120ms; }
+:root.js .quote.is-active .quote__foot .quote__inner { transition-delay: 260ms; }
+
+.quote__body .quote__inner {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.7vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.16;
+  letter-spacing: -0.02em;
+  text-wrap: pretty;
+}
+
+/* The rule stays put while the attribution rises into it. */
+.quote__foot {
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+}
+
+.quote__attr {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.quote__name {
+  font-family: var(--font-mono);
+  font-size: var(--t-meta);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.quote__role {
+  white-space: normal;
+  line-height: 1.4;
+}
+
+
+/* --- Index ------------------------------------------------------ */
+/* Hidden by default and revealed by :root.js — the inverse of the
+   .hero__line rule, and for the inverse reason. This is a switch, not
+   content: with no JS it would sit there looking clickable and doing
+   nothing, which is worse than not being there. */
+.words__index { display: none; }
+
+:root.js .words__index {
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 360px;
+}
+
+/* No transition on the row itself — .reveal is applied to these by JS
+   and its `transition` shorthand would clobber anything declared here
+   at the same specificity. The row's motion lives on its children
+   instead, where the two systems can't reach each other. */
+.words__row {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+  text-align: left;
+  padding: 16px 0 16px 20px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.words__row:first-child { border-top: 1px solid var(--rule-soft); }
+
+.words__row:focus-visible {
+  outline: 1px solid var(--signal);
+  outline-offset: 3px;
+}
+
+/* A real element, not border-left: the rule DRAWS on select, and a
+   border can't animate from zero height. The 20px of padding above is
+   the column it draws in. */
+.words__row-rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background: var(--rule);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 420ms var(--ease),
+              background var(--base) var(--ease);
+}
+
+.words__row-num {
+  color: var(--ink-30);
+  flex: none;
+  transition: color var(--base) var(--ease);
+}
+
+.words__row-body {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Serif, like .xp__org — this index and the experience chronology are
+   the same kind of object, and they sit one section apart. */
+.words__row-name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ink-70);
+  transition: color var(--base) var(--ease);
+}
+
+.words__row-role {
+  white-space: normal;
+  line-height: 1.4;
+  transition: color var(--base) var(--ease);
+}
+
+.words__row.is-active .words__row-rule {
+  transform: scaleY(1);
+  background: var(--signal);
+}
+
+.words__row.is-active .words__row-num  { color: var(--signal); }
+.words__row.is-active .words__row-name { color: var(--ink); }
+
+/* FOCUS — hovering the list dims every row, the active one included;
+   the cursor outranks the selection while it's in here. Colour, never
+   opacity: .reveal already owns opacity on these rows.
+   Specificity is load-bearing — these need to outrank .is-active
+   above, hence the redundant .words__row in the middle. */
+.words__index:hover .words__row .words__row-num  { color: var(--rule); }
+.words__index:hover .words__row .words__row-name { color: var(--ink-30); }
+.words__index:hover .words__row .words__row-role { color: var(--ink-30); }
+
+.words__index .words__row:hover .words__row-rule {
+  transform: scaleY(1);
+  background: var(--rule);
+}
+
+.words__index .words__row:hover .words__row-num  { color: var(--signal); }
+.words__index .words__row:hover .words__row-name { color: var(--ink); }
+.words__index .words__row:hover .words__row-role { color: var(--ink-50); }
+
+/* The selected row keeps its signal rule even while a sibling is
+   hovered — the dim above is about attention, not about forgetting
+   which quote is on the stage. */
+.words__index:hover .words__row.is-active .words__row-rule {
+  background: var(--signal);
+}
+
+
+/* ------------------------------------------------------------
+   EXPERIENCE — sticky rail against a drawn chronology.
+   Text-only. No screens, no metrics. NDA-safe.
+   ------------------------------------------------------------ */
+.xp {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(32px, 5vw, 88px);
+}
+
+/* align-self is not cosmetic. A flex child stretches to the row's
+   full height by default, and a box that is already as tall as the
+   thing it scrolls against has nothing left to stick with — sticky
+   silently does nothing. flex-start is what makes it work. */
+.xp__rail {
+  position: sticky;
+  top: 96px;             /* clears the fixed nav (~58px) with air */
+  align-self: flex-start;
+  flex: 0 0 clamp(240px, 24vw, 340px);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.xp__display {
+  font-family: var(--font-display);
+  font-size: var(--t-title);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+/* Same emphasis the about lead carries: italic + signal, never weight.
+   Instrument Serif is Regular-only. */
+.xp__display em {
+  font-style: italic;
+  color: var(--signal);
+}
+
+.xp__lead {
+  font-size: var(--t-body);
+  line-height: 1.6;
+  color: var(--ink-70);
+  text-wrap: pretty;
+}
+
+.xp__progress {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+}
+
+:root.js .xp__progress { display: flex; }
+
+.xp__progress-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.xp__track {
+  width: 100%;
+  height: 2px;
+  background: var(--rule-soft);
+  overflow: hidden;
+}
+
+/* No transition — this tracks the scroll position directly, and a
+   transition on a scroll-driven value reads as lag, not smoothing. */
+.xp__fill {
+  width: 100%;
+  height: 100%;
+  background: var(--signal);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.xp__body {
+  flex: 1 1 auto;
+  min-width: 0;          /* or long mono stamps blow the row open */
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.xp__list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+}
+
+.xp__row {
+  position: relative;
+  display: flex;
+  padding-left: 34px;
+  padding-bottom: clamp(38px, 5vh, 60px);
+}
+
+.xp__list .xp__row:last-child { padding-bottom: 0; }
+
+/* A real element, not border-left — a border can't be drawn from zero
+   height. Same device as .principle__rule, turned on its side.
+
+   The scaleY(0) start state is scoped to :root.js and undone under
+   reduced motion, because the class that reveals it is only ever added
+   by an IntersectionObserver that doesn't run in either case. An
+   unguarded start state here would delete the whole timeline for
+   anyone with JS off or motion reduced. */
+.xp__spine {
+  position: absolute;
+  top: 5px;
+  left: 4px;
+  width: 1px;
+  height: 100%;
+  background: var(--rule);
+  transform-origin: top;
+  transition: transform 800ms var(--ease);
+}
+
+:root.js .xp__spine { transform: scaleY(0); }
+.xp__row.is-in .xp__spine { transform: scaleY(1); }
+
+/* Hollow by default, filled once you reach it. Visible with or without
+   JS — the node is the row's anchor, never a reward for scrolling. */
+.xp__node {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  background: var(--paper);
+  transition: background var(--base) var(--ease),
+              border-color var(--base) var(--ease);
+}
+
+.xp__row.is-in .xp__node { border-color: var(--signal-line); }
+
+/* Fills the column so the ledger rule runs the full width and the dates
+   line up as a right-hand column — that's what earns the space the rail
+   leaves on the right, instead of stranding it. The prose inside still
+   caps itself at a readable measure; only the rule and the date reach
+   the margin. */
+.xp__entry {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* A ledger line, not a stack. The date is pushed to the far right edge
+   of the column so every row is ruled between two fixed points — which
+   is also what fills the width. A 62ch measure can't reach the right
+   margin at this size and shouldn't try; anchoring the dates there
+   means the empty space reads as a column rather than as a shortfall. */
+.xp__stamp {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 20px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.xp__stamp-lead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+  min-width: 0;
+}
+
+.xp__date { flex: none; }
+
+/* .meta is nowrap by default — correct for a label, wrong for a line
+   this long once the column narrows. */
+.xp__where { white-space: normal; }
+
+.xp__org {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 2.6vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  transition: color var(--base) var(--ease);
+}
+
+.xp__text {
+  max-width: 62ch;
+  font-size: var(--t-body);
+  line-height: 1.55;
+  color: var(--ink-70);
+  text-wrap: pretty;
+  transition: color var(--base) var(--ease);
+}
+
+/* FOCUS — dim the siblings. Colour, never opacity: .reveal already
+   animates opacity on these same elements, and two systems writing one
+   property is the bug we keep not shipping. */
+.xp__list:hover .xp__org  { color: var(--ink-30); }
+.xp__list:hover .xp__text { color: var(--ink-30); }
+
+.xp__list .xp__row:hover .xp__org  { color: var(--ink); }
+.xp__list .xp__row:hover .xp__text { color: var(--ink-70); }
+
+.xp__list .xp__row:hover .xp__node {
+  background: var(--signal);
+  border-color: var(--signal);
+}
+
+.xp__note {
+  max-width: 560px;
+  white-space: normal;
+  line-height: 1.6;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  padding-top: 22px;
+  border-top: 1px solid var(--rule-soft);
+}
+
+
+/* ------------------------------------------------------------
+   CONTACT
+   ------------------------------------------------------------ */
+.section--contact { border-bottom: none; }
+
+.contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: clamp(40px, 6vw, 90px);
+}
+
+.contact__display {
+  font-family: var(--font-display);
+  font-size: var(--t-display-sm);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  flex: 1 1 380px;
+}
+
+.contact__display em {
+  font-style: italic;
+  color: var(--signal);
+}
+
+.contact__links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 0 1 340px;
+}
+
+.contact__item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.contact__link {
+  font-size: 1rem;
+  line-height: 1.3;
+  border-bottom: 1px solid transparent;
+  transition: color var(--fast) var(--ease),
+              border-color var(--fast) var(--ease);
+  align-self: flex-start;
+}
+
+.contact__link:hover {
+  color: var(--signal);
+  border-bottom-color: var(--signal);
+}
+
+
+/* ------------------------------------------------------------
+   FOOTER
+   ------------------------------------------------------------ */
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 26px var(--margin);
+  max-width: var(--maxw);
+  margin-left: auto;
+  margin-right: auto;
+  border-top: 1px solid var(--rule);
+}
+
+
+/* ------------------------------------------------------------
+   REVEAL — scroll entrance. Subtle, fast, never bouncy.
+   ------------------------------------------------------------ */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity var(--slow) var(--ease),
+              transform var(--slow) var(--ease);
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ============================================================
+   ABOUT PAGE (about.html)
+   Everything below is scoped to the About page. The nav, section,
+   portrait, .xp timeline, meta and footer are all shared from
+   above — only the page-specific pieces live here.
+   ============================================================ */
+
+/* Nav active state — About is the current page. */
+.nav__link[aria-current="page"] {
+  color: var(--signal);
+  border-bottom-color: var(--signal);
+}
+
+/* --- Opening statement ----------------------------------------- */
+.about-hero {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 5vh, 56px);
+  /* Top clears the fixed nav and is the page's one deliberate stretch of
+     air. Bottom does not need to match it — it only separates the hero
+     from the block underneath, and the hairline is already doing that. */
+  padding: clamp(150px, 24vh, 240px) var(--margin) clamp(36px, 5vh, 60px);
+  max-width: var(--maxw);
+  margin-left: auto;
+  margin-right: auto;
+  border-bottom: 1px solid var(--rule);
+}
+
+.about-hero__eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+/* Case pages put the label at one edge and the domain stamp at the
+   other, the same split .section__head uses. Kept as a modifier so the
+   About page's eyebrow stays left-grouped. */
+.about-hero__eyebrow--split { justify-content: space-between; }
+
+/* The back control gets its own row ABOVE the eyebrow. In the eyebrow it
+   sat inline with the metadata and read as one more label; on its own
+   row, as a bordered button, it reads as a control. Flex wrapper so the
+   button shrinks to its content instead of stretching to the column. */
+.about-hero__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Reuses .hero__line / .hero__line-inner for the mask reveal, so the
+   hidden start state and reduced-motion reset already apply. Only the
+   scale and the .is-in trigger are page-specific. */
+.about-hero__statement {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 7vw, 7rem);
+  font-weight: 400;
+  line-height: 0.94;
+  letter-spacing: -0.03em;
+  /* Sized so a two-word title holds one line without breaking. The About
+     hero is a single line now; the cap still matters for the Contact and
+     case-study statements that share this class — case pages override it
+     via .about-hero--case. */
+  max-width: 20ch;
+}
+
+.about-hero__statement em {
+  font-style: italic;
+  color: var(--signal);
+}
+
+.about-hero__statement.is-in .hero__line-inner { transform: translateY(0); }
+
+.about-hero__statement .hero__line:nth-child(1) .hero__line-inner { transition-delay: 80ms; }
+.about-hero__statement .hero__line:nth-child(2) .hero__line-inner { transition-delay: 160ms; }
+.about-hero__statement .hero__line:nth-child(3) .hero__line-inner { transition-delay: 240ms; }
+.about-hero__statement .hero__line:nth-child(4) .hero__line-inner { transition-delay: 320ms; }
+.about-hero__statement .hero__line:nth-child(5) .hero__line-inner { transition-delay: 400ms; }
+
+/* --- Work index hero -------------------------------------------
+   Scoped to the work index rather than changed on .about-hero, which
+   the About, Contact and case-study pages also use — their two-line
+   lockups still want the taller opening.
+
+   24vh cleared the fixed nav several times over; 16vh still clears it
+   (nav is ~66px, the 110px floor covers it) and closes the gap the
+   removed foot row left behind.
+   ------------------------------------------------------------ */
+/* --- Case-study hero -------------------------------------------
+   A case title is a sentence ("Designing an e-commerce app for
+   grocery shopping"), not a two-word lockup, so the 20ch cap that
+   suits "Product Designer" breaks each of its lines in half and
+   turns a two-line title into four.
+
+   Same fix the work index uses: lift the cap, hold each line with
+   nowrap, and drive the size off vw so the longest line — 27
+   characters — still fits a 390px phone at the floor. Changing the
+   cap alone would not work; the browser would simply rewrap at a
+   different width.
+   ------------------------------------------------------------ */
+/* A case page opens on the back link rather than straight onto the
+   title, so it needs far less runway than the About and Contact heroes
+   — their 24vh is holding air above a statement that IS the page. The
+   fixed nav is ~66px; the 96px floor clears it with room to spare. */
+.about-hero--case {
+  padding-top: clamp(96px, 13vh, 140px);
+}
+
+.about-hero--case .about-hero__statement {
+  max-width: none;
+  font-size: clamp(1.375rem, 4.4vw, 4.25rem);
+}
+
+.about-hero--case .hero__line-inner {
+  white-space: nowrap;
+}
+
+.about-hero--work {
+  padding-top: clamp(110px, 16vh, 160px);
+}
+
+/* One line, always. The 20ch cap on .about-hero__statement is sized for
+   two-line lockups and would break this statement in half, so it's
+   lifted here and the size driven off vw instead — nowrap alone would
+   simply overflow the viewport on a phone. */
+.about-hero--work .about-hero__statement {
+  max-width: none;
+  font-size: clamp(1.5rem, 5.6vw, 6rem);
+}
+
+.about-hero--work .hero__line-inner {
+  white-space: nowrap;
+}
+
+.about-hero__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule-soft);
+}
+
+/* Push the last foot item to the right edge, so a trailing stamp sits
+   opposite the lead one. :not(:only-child) is load-bearing — the case
+   pages leave a single subtitle here, and without the guard that lone
+   item would be flung to the right margin on its own. */
+.about-hero__foot .meta:last-child:not(:only-child) { margin-left: auto; }
+
+/* Lead paragraph in the Who-I-am body runs larger than the rest. */
+.about__text--lead {
+  font-size: var(--t-lead);
+  color: var(--ink);
+}
+
+
+/* --- Capabilities ---------------------------------------------- */
+.caps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gutter);
+}
+
+.cap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1 1 320px;
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+}
+
+.cap__num {
+  font-family: var(--font-mono);
+}
+
+.cap__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.cap__text {
+  font-size: var(--t-body);
+  line-height: 1.55;
+  color: var(--ink-70);
+  text-wrap: pretty;
+}
+
+.caps__tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 8px;
+}
+
+.caps__tool {
+  padding: 6px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+}
+
+
+/* --- Education -------------------------------------------------- */
+.edu {
+  display: flex;
+  flex-direction: column;
+}
+
+.edu__row {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(16px, 3vw, 48px);
+  padding: 22px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.edu__row:first-child { border-top: 1px solid var(--rule-soft); }
+
+.edu__lead {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.edu__org {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 1.8vw, 1.75rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.edu__detail {
+  font-size: var(--t-body);
+  color: var(--ink-50);
+  line-height: 1.3;
+}
+
+.edu__honour { flex: none; }
+.edu__date { flex: none; }
+
+
+/* --- CTA — the closing reinforcement --------------------------- */
+.section--cta { border-bottom: none; }
+
+/* Two columns: the statement + subheading hold the left, every way to
+   reach me sits in a rail on the right. space-between pushes the rail to
+   the page's right margin (aligned with the section-head rule) and turns
+   the leftover width into one deliberate gutter — the same move as the
+   #contact reach layout. */
+.cta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: clamp(40px, 6vw, 96px);
+}
+
+.cta__lead {
+  flex: 0 1 600px;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 3.5vh, 40px);
+}
+
+/* The work index's rail. .cta__contact's sibling, not its replacement —
+   that one holds the email + link ledger, this one holds three buttons.
+   Stretch (not flex-start) so the three read as one stack of equal bars
+   instead of three ragged widths stepping in from the right. */
+.cta__actions {
+  flex: 0 0 clamp(260px, 26vw, 320px);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+
+/* space-between drives the primary's arrow to the far edge; the ghosts
+   have no second child, so their label simply stays left. */
+.cta__actions .btn {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.cta__contact {
+  flex: 0 0 clamp(300px, 30vw, 400px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(24px, 3vh, 32px);
+}
+
+.cta__display {
+  font-family: var(--font-display);
+  font-size: var(--t-display-sm);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+}
+
+/* Used where the CTA is the headline and nothing else — no subheading
+   under it to share the weight. Instrument Serif ships Regular only, so
+   "bigger" is the only emphasis available; scale is the whole vocabulary.
+
+   Set as a deliberate two-line lockup in the markup rather than left to
+   wrap: .cta__lead caps at 600px, and at --t-display a 14-character line
+   overruns that, so the break would happen anyway — just wherever the
+   browser decided. */
+.cta__display--lg {
+  font-size: var(--t-display);
+}
+
+/* .work-more carries a margin-top sized to separate it from a whole
+   section above it. Inside .about__body — a flex column that already
+   owns its rhythm through gap — that margin lands ON TOP of the gap and
+   opens a hole between the chips and the link. The component keeps its
+   spacing everywhere else; this only cancels the doubling here. */
+.about__body .work-more {
+  margin-top: 0;
+}
+
+.cta__display em {
+  font-style: italic;
+  color: var(--signal);
+}
+
+.cta__text {
+  font-size: var(--t-lead);
+  line-height: 1.5;
+  color: var(--ink-70);
+  max-width: 560px;
+  text-wrap: pretty;
+}
+
+/* THE PRIMARY ACTION — the email at display scale.
+   align-self: flex-start so the box shrinks to the address, which lets
+   the underline (width:100%) match the text exactly rather than the
+   column. A real element for the line, not a pseudo — Figma contract. */
+.cta__email {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  align-self: flex-start;
+  max-width: 100%;
+  padding-bottom: clamp(12px, 1.5vh, 18px);
+}
+
+.cta__email-top {
+  transition: color var(--fast) var(--ease);
+}
+
+.cta__email:hover .cta__email-top { color: var(--signal); }
+
+.cta__email-main {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(14px, 2vw, 30px);
+  max-width: 100%;
+}
+
+.cta__email-value {
+  font-family: var(--font-display);
+  /* Sized to sit on one line inside the ~400px rail — the largest thing
+     in the column, so it stays the primary, but no longer display scale
+     now that it shares the row with the statement. */
+  font-size: clamp(1.375rem, 1.9vw, 1.6875rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  /* The address is one long token; let it break rather than overflow on
+     the narrowest screens. */
+  overflow-wrap: anywhere;
+  transition: color var(--base) var(--ease);
+}
+
+.cta__email:hover .cta__email-value,
+.cta__email:focus-visible .cta__email-value { color: var(--signal); }
+
+.cta__email-arrow {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--signal);
+  transition: transform var(--base) var(--ease);
+}
+
+.cta__email:hover .cta__email-arrow,
+.cta__email:focus-visible .cta__email-arrow { transform: translateX(8px); }
+
+.cta__email-line {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--signal);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--base) var(--ease);
+}
+
+.cta__email:hover .cta__email-line,
+.cta__email:focus-visible .cta__email-line { transform: scaleX(1); }
+
+
+/* Buttons — the one place on the site with filled/outlined shapes.
+   Justified: a CTA needs an obvious primary target, and the page has
+   earned one loud moment by here. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  border: 1px solid var(--signal);
+  border-radius: 2px;
+  transition: background var(--fast) var(--ease),
+              color var(--fast) var(--ease),
+              border-color var(--fast) var(--ease);
+}
+
+.btn__label {
+  font-family: var(--font-mono);
+  font-size: var(--t-meta);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.btn__arrow {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1;
+  transition: transform var(--base) var(--ease);
+}
+
+.btn--primary {
+  background: var(--signal);
+  color: var(--paper);
+}
+
+.btn--primary:hover {
+  background: transparent;
+  color: var(--signal);
+}
+
+.btn--primary:hover .btn__arrow { transform: translateX(4px); }
+
+.btn--ghost {
+  border-color: var(--rule);
+  color: var(--ink-70);
+}
+
+.btn--ghost:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+/* Arrow direction belongs to what the arrow MEANS, not to which variant
+   it sits in, so these are modifiers on the arrow and work on primary and
+   ghost alike. Both must stay after the variant rules above: same
+   specificity, so source order is what lets them win over
+   .btn--primary's translateX.
+
+   --down  a download, so it nudges down
+   --left  a way back, so it nudges back against the reading direction */
+.btn:hover .btn__arrow--down,
+.btn:focus-visible .btn__arrow--down { transform: translateY(3px); }
+
+.btn:hover .btn__arrow--left,
+.btn:focus-visible .btn__arrow--left { transform: translateX(-4px); }
+
+/* Stacked and ruled inside the rail — a hairline ledger of ways in,
+   ruled off from the email above. */
+.cta__links {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-top: 1px solid var(--rule);
+}
+
+.cta__link-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.cta__link {
+  font-size: 0.9375rem;
+  line-height: 1.3;
+  border-bottom: 1px solid transparent;
+  transition: color var(--fast) var(--ease),
+              border-color var(--fast) var(--ease);
+  align-self: flex-start;
+}
+
+.cta__link:hover {
+  color: var(--signal);
+  border-bottom-color: var(--signal);
+}
+
+
+/* ============================================================
+   CONTACT — the reach layout and message form.
+   Merged onto the landing page's #contact section (the standalone
+   contact.html was retired). Shares nav, section, meta, buttons and
+   footer from above; only the reach layout, the direct-line index
+   and the form are defined here.
+
+   Same Figma contract as the rest of the sheet: flex + gap for
+   rhythm, real elements instead of pseudo-shapes (the focus line
+   under each field is a real <div>, so it survives the import),
+   borders as strokes.
+   ============================================================ */
+
+/* The global 2nd-line signal colour (from the homepage hero) would tint
+   "something" vermilion too. Here only the em — "legible." — should
+   carry the accent, so the line itself resets to ink and the emphasis
+   lands on one word, not two. */
+.contact-hero .hero__line:nth-child(2) .hero__line-inner { color: var(--ink); }
+
+/* --- Reach: direct-lines rail and the form at opposite margins -
+   space-between turns the leftover desktop width into one deliberate
+   gutter instead of a dead strip on the right. The rail is the shorter
+   column, so pinning it gives it real travel against the taller form. */
+.reach {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: clamp(32px, 5vw, 88px);
+}
+
+/* "Let's make something legible." is a display-scale statement; it wants
+   real air before the columns start, more than the section's own gap
+   gives. This adds on top of that gap. */
+.section--contact .reach { padding-top: clamp(32px, 6vh, 80px); }
+
+/* Sticky needs a box shorter than what it scrolls against and an
+   align-self that stops the flex row from stretching it to full
+   height — same setup, and the same reasoning, as the .xp rail. */
+.reach__rail {
+  position: sticky;
+  top: 96px;
+  align-self: flex-start;
+  flex: 0 0 clamp(240px, 24vw, 340px);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* The rail is a flex column with no align-items, so it stretches its
+   children — a .btn dropped in here would widen to the full 340px. On
+   about.html the identical "Download CV" button shrinks to its label,
+   because .cta__contact sets align-items: flex-start. This makes the
+   homepage's copy of that button the same object at the same size,
+   rather than a wide variant that only exists here. */
+.reach__rail .btn {
+  align-self: flex-start;
+}
+
+.reach__lead {
+  font-size: var(--t-body);
+  line-height: 1.6;
+  color: var(--ink-70);
+  text-wrap: pretty;
+}
+
+/* Caps at a fillable width rather than growing to the column: fields
+   wider than ~640 are worse to read and fill, not better. The unused
+   width becomes the gutter, courtesy of the parent's space-between. */
+.reach__form-wrap {
+  flex: 0 1 640px;
+  min-width: 0;
+}
+
+/* --- Direct lines --------------------------------------------- */
+.channels {
+  display: flex;
+  flex-direction: column;
+}
+
+.channel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.channel:first-child { border-top: 1px solid var(--rule-soft); }
+
+/* Label owns its own line; value + copy share the next one, the value
+   growing so the copy button lands on the right edge without a margin. */
+.channel__label { flex: 0 0 100%; }
+
+.channel__value {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.9375rem;
+  line-height: 1.35;
+  color: var(--ink);
+  word-break: break-word;
+  border-bottom: 1px solid transparent;
+  transition: color var(--fast) var(--ease),
+              border-color var(--fast) var(--ease);
+}
+
+.channel__value:hover {
+  color: var(--signal);
+  border-bottom-color: var(--signal);
+}
+
+.channel__copy {
+  flex: 0 0 auto;
+  padding: 3px 9px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  color: var(--ink-50);
+  transition: color var(--fast) var(--ease),
+              border-color var(--fast) var(--ease);
+}
+
+.channel__copy:hover {
+  color: var(--signal);
+  border-color: var(--signal-line);
+}
+
+/* JS flips this after a successful clipboard write. */
+.channel__copy.is-copied {
+  color: var(--signal);
+  border-color: var(--signal);
+}
+
+.reach__facts {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 4px;
+}
+
+.reach__fact {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* dt/dd aren't in the global reset's margin-zero list, and dd ships a
+   40px UA indent — kill it here rather than widen the reset. */
+.reach__fact dd { margin: 0; }
+
+.reach__fact-val {
+  font-size: var(--t-body);
+  line-height: 1.4;
+  color: var(--ink-70);
+}
+
+/* --- Form ------------------------------------------------------ */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(22px, 3.2vh, 34px);
+  max-width: 640px;
+}
+
+/* .form's display:flex outranks the UA [hidden] rule, so the attribute
+   alone won't hide it once JS swaps in the success panel. Restore it. */
+.form[hidden] { display: none; }
+
+.form__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(22px, 3.2vh, 34px) 28px;
+}
+
+.form__row .field { flex: 1 1 220px; }
+
+/* .field doubles as a <fieldset> for the chip group, hence the explicit
+   border/padding/min-inline-size reset — fieldsets carry all three. */
+.field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  border: none;
+  padding: 0;
+}
+
+.field__label {
+  display: block;
+  transition: color var(--fast) var(--ease);
+}
+
+/* Focus tints the label to signal — the same cue as the drawn line,
+   carried up to where the eye already is. */
+.field:focus-within .field__label { color: var(--signal); }
+
+.field__opt {
+  text-transform: none;
+  letter-spacing: 0.02em;
+  color: var(--ink-30);
+}
+
+/* Holds the input and its focus line so the line anchors to the input's
+   baseline, not the field's — which also carries the label and error. */
+.field__control {
+  position: relative;
+  display: block;
+}
+
+.field__input {
+  width: 100%;
+  display: block;
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.2vw, 1.1875rem);
+  line-height: 1.4;
+  color: var(--ink);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--rule);
+  border-radius: 0;
+  padding: 0 0 12px;
+  transition: border-color var(--base) var(--ease);
+}
+
+.field__input::placeholder { color: var(--ink-30); }
+
+/* The drawn line is the focus indicator, so the native ring can go —
+   but only for pointer/keyboard parity, the line covers both. */
+.field__input:focus { outline: none; }
+
+.field__input--area {
+  resize: vertical;
+  min-height: 132px;
+}
+
+/* Kill the blue autofill wash — swap it for an inset the size of the
+   field painted in --paper, and force the text back to --ink. */
+.field__input:-webkit-autofill,
+.field__input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--ink);
+  -webkit-box-shadow: 0 0 0 40px var(--paper) inset;
+  caret-color: var(--ink);
+}
+
+/* The signature. Real element over the resting hairline, drawn from the
+   left on focus. scaleX, never width — no relayout, and it maps to a
+   clean transform in Figma. */
+.field__line {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--signal);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--base) var(--ease);
+  pointer-events: none;
+}
+
+.field:focus-within .field__line { transform: scaleX(1); }
+
+/* Error state. The line is forced open and reddened via the same signal;
+   error copy is hidden until JS marks the field, so a no-JS submit falls
+   back to the browser's own bubbles rather than showing all four at once. */
+.field__error {
+  display: none;
+  color: var(--signal);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+
+.field.is-error .field__line {
+  transform: scaleX(1);
+}
+
+.field.is-error .field__input { border-bottom-color: var(--signal-line); }
+.field.is-error .field__label { color: var(--signal); }
+.field.is-error .field__error { display: block; }
+
+/* --- Chips: radios wearing pills ------------------------------- */
+.field--chips { gap: 12px; }
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+}
+
+/* The radio stays in the DOM for the label association and keyboard
+   semantics; it's just pulled out of sight behind its own pill. */
+.chip__input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.chip__label {
+  padding: 8px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  color: var(--ink-50);
+  transition: color var(--fast) var(--ease),
+              border-color var(--fast) var(--ease),
+              background var(--fast) var(--ease);
+}
+
+.chip:hover .chip__label { color: var(--ink); }
+
+.chip__input:checked ~ .chip__label {
+  color: var(--signal);
+  border-color: var(--signal);
+  background: var(--signal-wash);
+}
+
+/* Keyboard focus has to show on the pill, since the real control is
+   invisible. Only on keyboard — a mouse click shouldn't ring it. */
+.chip__input:focus-visible ~ .chip__label {
+  border-color: var(--signal);
+  box-shadow: 0 0 0 2px var(--signal-wash);
+}
+
+/* --- Submit row ------------------------------------------------ */
+.form__submit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 18px;
+  padding-top: 4px;
+}
+
+.form__hint { line-height: 1.3; }
+
+/* Status line: empty in the resting state, so it collapses. JS writes
+   an error summary here and adds .is-error. */
+.form__status {
+  display: none;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  color: var(--ink-50);
+}
+
+.form__status.is-error {
+  display: block;
+  color: var(--signal);
+}
+
+/* --- Success panel --------------------------------------------- */
+.form__success {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  max-width: 560px;
+  padding: clamp(28px, 4vh, 44px);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  background: var(--paper-warm);
+}
+
+.form__success[hidden] { display: none; }
+
+.form__success-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.form__success-text {
+  font-size: var(--t-body);
+  line-height: 1.6;
+  color: var(--ink-70);
+  text-wrap: pretty;
+}
+
+.form__success-text a {
+  color: var(--ink);
+  border-bottom: 1px solid var(--rule);
+  transition: color var(--fast) var(--ease),
+              border-color var(--fast) var(--ease);
+}
+
+.form__success-text a:hover {
+  color: var(--signal);
+  border-bottom-color: var(--signal);
+}
+
+.form__restart {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--signal);
+  transition: gap var(--base) var(--ease);
+}
+
+.form__restart .btn__arrow { transition: transform var(--base) var(--ease); }
+.form__restart:hover .btn__arrow { transform: translateX(4px); }
+
+/* --- What happens next ----------------------------------------- */
+.section--next { border-bottom: none; }
+
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gutter);
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1 1 240px;
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+}
+
+.step__num { font-family: var(--font-mono); }
+
+.step__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+
+.step__text {
+  font-size: var(--t-body);
+  line-height: 1.55;
+  color: var(--ink-70);
+  text-wrap: pretty;
+}
+
+
+/* ------------------------------------------------------------
+   RESPONSIVE
+   ------------------------------------------------------------ */
+/* The principles row breaks before the rest of the page does, so it
+   gets its own stops rather than riding the 900px one.
+
+   Explicit 45% basis, not the natural 240px wrap: at ~900px a 240px
+   basis fits THREE columns and orphans the fourth. 45% can only ever
+   be two.
+
+   The rules go between columns, so which column is "first" changes
+   the moment the row wraps — at 2×2 that's every odd child, not just
+   child one. */
+@media (max-width: 1120px) {
+  .principle { flex: 1 1 45%; }
+
+  .principle:nth-child(odd) { padding-left: 0; }
+  .principle:nth-child(odd) .principle__rule { display: none; }
+  .principles .principle:nth-child(odd):hover { padding-left: 0; }
+}
+
+@media (max-width: 620px) {
+  .principle { flex: 1 1 100%; padding-left: 0; }
+
+  /* One per row means every column is a first column. No rules left
+     to draw — the top borders carry the structure alone. */
+  .principle .principle__rule { display: none; }
+  .principles .principle:hover { padding-left: 0; }
+}
+
+@media (max-width: 900px) {
+  /* The lead card's side-by-side text/tags needs width it no longer
+     has. Stack it, and let its frame drop from 16:9 to 3:2 so it stops
+     being a letterbox slot on a narrow screen. */
+
+  /* The rail has nothing left to hold position against once the
+     chronology is under it rather than beside it, and a full-width
+     sticky box would sit on top of the list it introduces. It stops
+     sticking and becomes a header. */
+  .xp { flex-direction: column; gap: 34px; }
+
+  .xp__rail {
+    position: static;
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  /* Same story as the .xp rail: nothing to hold position against once
+     the form is under it. The direct lines become an intro that scrolls
+     away, and the form gets the full column. */
+  .reach { flex-direction: column; gap: 40px; }
+
+  .reach__rail {
+    position: static;
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  /* In a column the 640px basis would read as a height and crush the
+     form — reset it to content height and let it fill the width. */
+  .reach__form-wrap {
+    flex: 0 0 auto;
+    width: 100%;
+    order: -1;
+  }
+
+  /* The form's own max-width kept it narrow inside a wide column; at full
+     width that cap would strand it against the left margin. Lift it. */
+  .form { max-width: none; }
+
+  /* The reach-me rail drops under the statement rather than sitting beside
+     it, capped so the ledger reads as a panel, not a full-bleed stretch. */
+  /* Sticky stacking is a wide-screen device. On a phone each panel is
+     taller than the viewport, so nothing would ever be "covered" — the
+     deck just reads as four cards that stutter. Unpin and stack. */
+  .stack { gap: var(--gutter); }
+  .stack__card { position: static; min-height: 0; }
+  .stack__inner,
+  .stack__card--flip .stack__inner { flex-direction: column; }
+
+  /* Reset the row-axis flex. Once this is a column, `flex: 1.25 1 0`
+     resolves against HEIGHT, which collapses the media and lets the
+     image escape the card. Both tracks size to content here. */
+  .stack__media,
+  .stack__panel { flex: none; width: 100%; }
+  .stack__media .card__frame { aspect-ratio: 3 / 2; height: auto; }
+  .stack__panel { padding: 0 clamp(16px, 4vw, 24px) clamp(20px, 3vh, 28px); }
+
+  .cta { flex-direction: column; gap: clamp(32px, 5vh, 48px); }
+  .cta__lead { flex: 1 1 auto; }
+  .cta__contact { flex: 0 0 auto; width: 100%; max-width: 480px; }
+
+  /* Same drop as the rail above it — full width, capped so the three
+     buttons stay a panel rather than stretching the whole viewport. */
+  .cta__actions { flex: 0 0 auto; width: 100%; max-width: 480px; }
+
+  /* Cap raised 320 → 460 with the switch to a landscape crop: 320 wide
+     was a portrait's width, and at 3:2 it reads as a thumbnail. */
+  .about__portrait { flex: 1 1 100%; max-width: 460px; }
+
+  /* Portrait stays absolute and keeps dissolving — the composition
+     survives here, it just gets narrower and the fade gets longer so
+     the type still has clean ground to sit on. */
+  .hero {
+    --hero-portrait-w:    78vw;
+    --hero-portrait-fade: 76%;
+    --hero-name-size:     clamp(2.75rem, min(14vw, 24svh), 7rem);
+  }
+
+  .hero__eyebrow,
+  .hero__rail { max-width: 100%; }
+
+  /* Once the index wraps under the stage it stops being a sidebar and
+     becomes a list. A 360px basis at full width would leave it hugging
+     the left margin with a column of dead paper beside it. */
+  :root.js .words__index { flex: 1 1 100%; }
+
+  /* Four across at tablet width gives each tool ~160px — the name
+     starts hyphenating and the role label rags to three lines. Two
+     across keeps eight tools as a clean 2×4. */
+  .tool { flex: 0 1 calc((100% - var(--gutter)) / 2); }
+}
+
+@media (max-width: 560px) {
+  .now__row { flex-direction: column; gap: 6px; }
+  .now__row .meta { flex: none; }
+
+  /* Education rows: honour + date drop under the org instead of
+     being squeezed onto the baseline with it. */
+  .edu__row { flex-wrap: wrap; gap: 8px 20px; }
+  .edu__lead { flex: 1 1 100%; }
+
+  /* The CTA display wrap-break (<br>) is set for wide screens; let it
+     reflow naturally when there's no room. */
+  .cta__display br { display: none; }
+}
+
+@media (max-width: 640px) {
+  :root { --t-meta: 0.625rem; }
+
+  /* The nav__links gap override that used to live here is gone: below
+     768px the links are display:none and the burger owns navigation,
+     so this stop was tuning a row nobody sees. See MOBILE NAV. */
+
+  /* Two cards side by side at 375px gives each ~160px — too small to
+     read a screenshot in. The pair unstacks into a single column. */
+  .grid__row { flex-direction: column; }
+
+  /* Both name lines now cross the portrait — the viewport is too
+     narrow for them not to. Survivable because the mask keeps the
+     left band under ~15% opacity, so ink type still reads over it
+     in light mode. Widen the fade before touching anything else if
+     that stops being true. */
+  .hero {
+    --hero-portrait-w:    82vw;
+    --hero-portrait-fade: 80%;
+  }
+
+  .hero__rail { gap: 16px; }
+
+  .hero__rail-item {
+    flex: 1 1 100%;
+    padding-left: 0;
+    border-left: none;
+    padding-top: 10px;
+    border-top: 1px solid var(--rule-soft);
+  }
+
+  .hero__rail-item:first-child {
+    padding-top: 0;
+    border-top: none;
+  }
+}
+
+
+/* ============================================================
+   WORK INDEX PAGE (work/index.html)
+
+   The all-projects page. Reuses the About page's opening statement
+   (.about-hero + .about-hero__statement) verbatim for the header, so
+   the line-reveal and scroll-reveal already apply — only the project
+   list below is new.
+
+   Alternating feature spreads: each project is one wide row, media on
+   one side and panel on the other, the sides swapping down the page
+   (.project--flip). Nested flex, never CSS Grid — same Figma import
+   contract as the homepage grid.
+   ============================================================ */
+.work-index {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 4vh, 48px);
+  padding: clamp(64px, 9vh, 110px) var(--margin);
+  max-width: var(--maxw);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.projects {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(56px, 9vh, 128px);
+}
+
+.project { display: flex; }
+
+/* One anchor per row wraps both halves — same pattern as .card__link,
+   so there's a single tab stop and one hover target per project rather
+   than two links racing to the same page. */
+.project__link {
+  display: flex;
+  align-items: center;
+  gap: clamp(28px, 5vw, 80px);
+  width: 100%;
+}
+
+/* Even rows mirror: media swings to the right, panel to the left. */
+.project--flip .project__link { flex-direction: row-reverse; }
+
+.project__media { flex: 1 1 56%; min-width: 0; }
+
+/* A touch wider than the homepage card's 4:3 — a feature crop, not a
+   thumbnail. Inherits the frame's clip, placeholder and fallback. */
+.project__media .card__frame { aspect-ratio: 3 / 2; }
+
+/* Same slow push-in as the card, keyed off the row's anchor since
+   there's no .card ancestor here to hang the hover on. */
+.project__link:hover .card__img { transform: scale(1.04); }
+
+.project__panel {
+  flex: 1 1 44%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.project__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.project__index {
+  color: var(--ink-30);
+  transition: color var(--base) var(--ease);
+}
+
+.project__link:hover .project__index { color: var(--signal); }
+
+.project__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 4.5vw, 4rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  transition: color var(--base) var(--ease);
+}
+
+.project__link:hover .project__title { color: var(--signal); }
+
+.project__desc {
+  font-size: var(--t-lead);
+  color: var(--ink-50);
+  line-height: 1.3;
+}
+
+.project__summary {
+  font-size: var(--t-body);
+  line-height: 1.6;
+  color: var(--ink-70);
+  max-width: 46ch;
+  text-wrap: pretty;
+  padding-top: 4px;
+}
+
+.project__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 4px;
+}
+
+.project__tag {
+  padding: 5px 10px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  color: var(--ink-50);
+  transition: color var(--base) var(--ease);
+}
+
+.project__link:hover .project__tag { color: var(--ink-70); }
+
+.project__view {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink-50);
+  padding-top: 10px;
+  transition: color var(--fast) var(--ease);
+}
+
+.project__link:hover .project__view { color: var(--signal); }
+
+.project__view-arrow {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1;
+  transition: transform var(--base) var(--ease);
+}
+
+.project__link:hover .project__view-arrow { transform: translateX(5px); }
+
+/* Reserved slot — not a project. Same honest-placeholder logic as the
+   homepage grid's Slot 04: inert (a <div>, not an <a>), no VIEW badge,
+   deliberately loud so it can't reach launch looking finished. */
+.project--slot .project__link { cursor: default; }
+.project__title--slot { color: var(--signal); font-style: italic; }
+
+
+/* ============================================================
+   CASE STUDY STUBS (work/<name>.html)
+
+   Placeholder pages so every project link resolves instead of 404-ing.
+   The full write-up isn't built yet, and the page says so plainly — the
+   same loud-placeholder discipline as the reserved slot and the TODO
+   bullets, rather than a page that pretends to be finished.
+   ============================================================ */
+/* The overview lead is a direct child of .section here (not wrapped in
+   .about__body like the homepage), so it has no column to cap its width.
+   Scoped to the direct-child case so the About page's own lead — nested a
+   level deeper — is untouched. */
+.section > .about__text--lead { max-width: 62ch; }
+
+.case-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(20px, 3vw, 48px);
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  margin: 0;
+}
+
+/* dl/dt/dd aren't in the global reset's margin-zero list, and dd ships a
+   40px UA indent — kill both here rather than widen the reset. */
+.case-fact dt,
+.case-fact dd { margin: 0; }
+
+.case-fact {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 14px;
+  border-left: 1px solid var(--rule-soft);
+}
+
+.case-fact:first-child { padding-left: 0; border-left: none; }
+
+.case-fact__value {
+  font-family: var(--font-mono);
+  font-size: var(--t-meta);
+  letter-spacing: 0.06em;
+  line-height: 1.3;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+
+.case-notice {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: clamp(24px, 4vw, 44px);
+  border: 1px dashed var(--signal);
+  border-radius: 2px;
+  background: var(--signal-wash-soft);
+  max-width: 760px;
+}
+
+.case-notice__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+.case-notice__text {
+  font-size: var(--t-body);
+  line-height: 1.6;
+  color: var(--ink-70);
+  text-wrap: pretty;
+}
+
+.case-notice__text code {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--signal);
+}
+
+
+/* --- Work index / case stub responsive ------------------------- */
+@media (max-width: 860px) {
+  /* The spread has no room to sit side-by-side. It stacks, and every
+     row reads media-over-panel — the flip is a wide-screen luxury, so
+     row-reverse becomes column-reverse and the media always leads. */
+  .project__link { flex-direction: column; align-items: stretch; gap: 20px; }
+  .project--flip .project__link { flex-direction: column; }
+  .project__media,
+  .project__panel { flex: 1 1 100%; }
+  .project__media .card__frame { aspect-ratio: 3 / 2; }
+}
+
+
+/* ------------------------------------------------------------
+   REDUCED MOTION
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal { opacity: 1; transform: none; }
+
+  /* Belt and braces: the headline is never allowed to stay hidden,
+     whatever happens to the JS. */
+  :root.js .hero__line-inner { transform: none !important; }
+  .hero__portrait-img { transform: scale(1.06) !important; }
+
+  /* The reveal observer is skipped entirely under reduced motion, so
+     .is-in never lands and anything holding a scaleY(0) start state
+     stays collapsed forever. These two are the timeline spines and the
+     rules between the principles — structure, not decoration. Without
+     this they are simply missing. */
+  :root.js .xp__spine        { transform: none !important; }
+  :root.js .principle__rule  { transform: none !important; }
+}
+
+
+/* ============================================================
+   PROTOTYPE — click-to-load Figma embed
+
+   The case for a live prototype over more screenshots: a reader
+   can click it. The case against loading it eagerly: a Figma
+   embed drags in Figma's own runtime and is slow to boot, and
+   most visitors never press play. So the poster IS the page and
+   the iframe only exists once someone asks for it.
+
+   The launch control is a real <a> pointing at the Figma URL.
+   With JS it swaps in the embed; without JS — or on a phone,
+   where a prototype is genuinely unusable — it stays an ordinary
+   link that opens Figma. Nothing here is JS-only.
+   ============================================================ */
+
+.proto {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.proto__stage {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  background: var(--paper-warm);
+  border: 1px solid var(--rule-soft);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.proto__poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* A real element rather than ::after — pseudo-elements aren't in
+   the DOM, so they orphan on a Figma import. Same reason .dot and
+   .grid-overlay__col exist. */
+.proto__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(13, 13, 11, 0.30) 0%,
+    rgba(13, 13, 11, 0.66) 100%
+  );
+  transition: background var(--base) var(--ease);
+}
+
+.proto__launch {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  text-align: center;
+}
+
+.proto__launch-disc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 76px;
+  border: 1px solid var(--signal);
+  border-radius: 50%;
+  background: var(--signal-wash);
+  transition: background var(--fast) var(--ease),
+              transform var(--fast) var(--ease);
+}
+
+/* SVG, not a CSS triangle — border-hack shapes flatten to nothing
+   on import, and this needs to survive as a real vector layer. */
+.proto__launch-glyph {
+  width: 20px;
+  height: 20px;
+  fill: var(--signal);
+  transition: fill var(--fast) var(--ease);
+}
+
+.proto__launch-label {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.proto__launch-note {
+  max-width: 42ch;
+}
+
+.proto__launch:hover .proto__launch-disc,
+.proto__launch:focus-visible .proto__launch-disc {
+  background: var(--signal);
+  transform: scale(1.06);
+}
+
+.proto__launch:hover .proto__launch-glyph,
+.proto__launch:focus-visible .proto__launch-glyph {
+  fill: var(--paper);
+}
+
+.proto__stage:hover .proto__scrim {
+  background: linear-gradient(
+    to bottom,
+    rgba(13, 13, 11, 0.22) 0%,
+    rgba(13, 13, 11, 0.58) 100%
+  );
+}
+
+/* Present only once someone has asked for it — the iframe is
+   built by JS, so there is nothing to hide before that. */
+.proto__embed {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.proto.is-live .proto__poster,
+.proto.is-live .proto__scrim,
+.proto.is-live .proto__launch {
+  display: none;
+}
+
+.proto__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.proto__out {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-70);
+  border-bottom: 1px solid var(--rule);
+  transition: color var(--fast) var(--ease),
+              border-color var(--fast) var(--ease);
+}
+
+.proto__out:hover {
+  color: var(--signal);
+  border-color: var(--signal);
+}
+
+/* Phones get the link, never the embed. A 1170px-wide prototype
+   inside a 390px viewport is a pinch-zoom puzzle, and pretending
+   otherwise wastes the visitor's data to prove it. */
+@media (max-width: 900px) {
+  .proto__stage { aspect-ratio: 4 / 3; }
+  .proto__launch-note { max-width: 32ch; }
+}
+
+
+/* ============================================================
+   SHOTS — a short row of stills
+
+   Reuses .card__frame / .card__placeholder wholesale, so the
+   "image needed" spec card and the is-empty fallback in main.js
+   already apply. Three at most: past that a reader stops looking
+   and the prototype below goes unclicked.
+   ============================================================ */
+
+.shots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gutter);
+}
+
+.shots__item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1 1 280px;
+}
+
+.shots__caption {
+  color: var(--ink-50);
+}
+
+/* A caption that argues rather than labels. "01 — Mood picker" tells a
+   reader what they can already see; this is the line that says why the
+   screen is the way it is. On a case study with no wireframes on show,
+   these captions ARE the process argument, so they get body scale and
+   a real measure rather than mono at 11px. */
+.shots__claim {
+  font-size: var(--t-body);
+  line-height: 1.55;
+  color: var(--ink-70);
+  text-wrap: pretty;
+}
+
+/* --- 2×2 variant ------------------------------------------------
+   Four finished screens read better as a square block than as a
+   four-across strip, where each frame gets a quarter of the width
+   and the UI inside stops being legible.
+
+   The basis is calc(50% - half the gutter) rather than a flat 50%:
+   at exactly 50% two items plus the gap between them overflow the
+   row, and the second one wraps — leaving a column of four. The
+   subtraction is what makes two-up hold.
+   ---------------------------------------------------------------- */
+.shots--pair .shots__item {
+  flex: 1 1 calc(50% - (var(--gutter) / 2));
+}
+
+@media (max-width: 640px) {
+  .shots__item { flex-basis: 100%; }
+
+  /* Specificity, not repetition: .shots--pair .shots__item (0,2,0)
+     outranks the rule above it (0,1,0), so without this the pair
+     variant would stay two-up on a phone. */
+  .shots--pair .shots__item { flex-basis: 100%; }
+}
+
+
+/* ============================================================
+   READ PROGRESS — a hairline at the top of the page
+
+   Same contract as the experience rail (#xpFill): scaleX on a real
+   element, never width, because this writes on every scroll frame
+   and width relayouts. transform-origin is the left edge, so the
+   fill grows rather than centres.
+
+   No transition. The bar reports position; easing it would make it
+   lag the scroll it is describing, which reads as a stutter rather
+   than as smoothing. Runs under reduced motion for the same reason
+   the xp rail does — this is a scrollbar, not a flourish.
+
+   Two flat elements, one nested. Imports to Figma as a frame with a
+   frame inside it.
+   ============================================================ */
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  display: flex;
+  background: var(--rule-soft);
+  z-index: 200;         /* above the fixed nav — it's a page-level report */
+}
+
+.progress__fill {
+  width: 100%;
+  background: var(--signal);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+
+/* ============================================================
+   PLATE — the full-bleed set-piece
+
+   One image, edge to edge, carrying a section on its own. This is
+   the only device on a case page allowed to break the text column,
+   which is exactly why there is at most one per section.
+
+   Full bleed is achieved by sitting OUTSIDE .section — a direct
+   child of <main> with no inline padding — never by negative
+   margin. Margin is banned by the import contract and a negative
+   one would land in Figma as an overlapping frame.
+
+   The caption keeps the page margin, so it lines up with the body
+   copy above and below while the image runs past it.
+   ============================================================ */
+.plate {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-bottom: clamp(36px, 5vw, 64px);
+}
+
+/* Wider than the 3:2 the grid cards use. A set-piece earns a
+   cinematic ratio; a thumbnail does not. */
+.plate__frame {
+  aspect-ratio: 16 / 9;
+}
+
+/* Centred on the same 1560px column as .section, using the same
+   auto side margins it does — otherwise the caption tracks the
+   viewport edge while the body copy above it tracks the column,
+   and the two stop lining up past ~1600px. */
+.plate__caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 20px;
+  width: 100%;
+  max-width: var(--maxw);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--margin);
+  padding-right: var(--margin);
+}
+
+.plate__claim {
+  flex: 1 1 380px;
+  max-width: 62ch;
+  font-size: var(--t-body);
+  line-height: 1.55;
+  color: var(--ink-70);
+  text-wrap: pretty;
+}
+
+@media (max-width: 720px) {
+  /* 16:9 at phone width is a letterbox slot ~200px tall — the screens
+     inside stop being readable. Give it back some height. */
+  .plate__frame { aspect-ratio: 4 / 3; }
+}
+
+
+/* ============================================================
+   CASE FIGURE — one exported board inside a section
+
+   For content that is itself a designed artifact: a persona board,
+   a flow map, a style tile. Rebuilding those in markup means
+   maintaining the same content twice and letting the two drift, so
+   they arrive as one export.
+
+   Deliberately only an aspect ratio on .card__frame — everything
+   else (the "image needed" spec card, the is-empty fallback, the
+   border and fill) is already there. A component that only needs
+   one property should only declare one.
+
+   Not .plate: that one breaks the column and runs edge to edge.
+   This sits inside the section, on the same measure as the copy
+   around it.
+   ============================================================ */
+.case-figure { aspect-ratio: 16 / 9; }
+
+/* Match the frame to the export, don't crop the export to the frame.
+   .card__img is object-fit: cover, so a 3:2 board in the 16:9 default
+   loses ~18% of its height — fine on a photograph, fatal on a board
+   whose content IS text. Check the asset's real ratio and pick the
+   modifier; adding one here is cheaper than re-exporting a board. */
+.case-figure--3-2 { aspect-ratio: 3 / 2; }
+
+@media (max-width: 720px) {
+  /* 16:9 at phone width is a ~200px letterbox — a persona board's
+     type stops being readable well before that. 3:2 is already
+     close enough to 4:3 to leave alone. */
+  .case-figure { aspect-ratio: 4 / 3; }
+  .case-figure--3-2 { aspect-ratio: 3 / 2; }
+}
+
+
+/* ============================================================
+   PROCESS ROW — four steps, one line
+
+   Read as a single ruled diagram rather than as four cards: one
+   hairline across the top, vertical hairlines between the steps,
+   and an oversized display numeral opening each one. Nothing is
+   boxed. The rules do the work, which is the same move the facts
+   rail and the point lists make.
+
+   flex: 1 1 0 with min-width: 0 is what holds four equal columns
+   on one row. A percentage basis would leave the gutters
+   unaccounted for and wrap the fourth step; `flex-basis: 0` makes
+   the four share the leftover space exactly, and min-width: 0
+   stops a long word setting a floor wider than the quarter and
+   forcing a wrap anyway.
+
+   Separation is by border, not gap — a gap between bordered
+   columns reads as four detached slabs, and the point here is one
+   continuous rule the steps hang off.
+   ============================================================ */
+.process {
+  display: flex;
+  border-top: 1px solid var(--rule);
+}
+
+.process__step {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: clamp(20px, 2.6vw, 34px) clamp(14px, 1.8vw, 28px);
+  border-left: 1px solid var(--rule-soft);
+}
+
+/* The outer edges align to the section margin — an inset first and
+   last column would float the row inside its own rule. */
+.process__step:first-child { padding-left: 0; border-left: none; }
+.process__step:last-child { padding-right: 0; }
+
+/* Display serif at scale, held back to --ink-30 so the numerals
+   read as structure rather than as content competing with the
+   titles. Signal on hover is the row's one moment of colour. */
+.process__num {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 4.2vw, 4rem);
+  font-weight: 400;
+  line-height: 0.82;
+  letter-spacing: -0.03em;
+  color: var(--ink-30);
+  transition: color var(--base) var(--ease);
+}
+
+.process__step:hover .process__num { color: var(--signal); }
+
+.process__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.125rem, 1.6vw, 1.5rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+.process__text {
+  font-size: var(--t-body);
+  line-height: 1.6;
+  color: var(--ink-70);
+  text-wrap: pretty;
+}
+
+/* Four columns stop being readable long before they stop fitting.
+   2×2 first, then a single column — and each break has to rebuild
+   the rules, because a left border on a wrapped row draws in the
+   middle of nowhere. */
+@media (max-width: 900px) {
+  .process { flex-wrap: wrap; }
+
+  .process__step {
+    flex: 1 1 calc(50% - 0.5px);
+    padding-left: clamp(14px, 1.8vw, 28px);
+    padding-right: clamp(14px, 1.8vw, 28px);
+  }
+
+  .process__step:nth-child(odd) {
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .process__step:nth-child(even) { padding-right: 0; }
+
+  /* The lower pair needs its own rule now that it sits under the
+     upper pair rather than beside it. */
+  .process__step:nth-child(n + 3) { border-top: 1px solid var(--rule-soft); }
+}
+
+@media (max-width: 560px) {
+  .process__step {
+    flex-basis: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    border-left: none;
+    border-top: 1px solid var(--rule-soft);
+  }
+
+  .process__step:first-child { border-top: none; }
+}
+
+
+/* ============================================================
+   THESIS — the split column
+
+   Two labelled columns side by side, optionally under a statement
+   set at display scale. Case studies use it for problem / solution;
+   it works equally for bet / cost or before / after.
+
+   The second column is the load-bearing half — the answer, the
+   trade, the thing a reader skimming for the point goes looking
+   for — so it carries the section's one signal hairline.
+   ============================================================ */
+.thesis {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 4.5vw, 56px);
+}
+
+/* Short measure on purpose. Display type set to a body measure
+   stops being a statement and becomes a paragraph in a big font. */
+.thesis__statement {
+  font-family: var(--font-display);
+  font-size: var(--t-display-sm);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  max-width: 20ch;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+/* Instrument Serif ships Regular only — emphasis is italic and
+   scale, never weight. Same rule as every other display line. */
+.thesis__statement em { font-style: italic; }
+
+.thesis__cols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(28px, 4vw, 72px);
+}
+
+.thesis__col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1 1 clamp(280px, 34vw, 460px);
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+}
+
+/* One accent per section, on the answering half. */
+.thesis__col--accent { border-top-color: var(--signal-line); }
+
+.thesis__text {
+  font-size: var(--t-body);
+  line-height: 1.65;
+  color: var(--ink-70);
+  text-wrap: pretty;
+}
+
+
+/* ============================================================
+   LANDED — section 04, "where it landed"
+
+   Countable design facts, NOT impact metrics. Every figure here
+   describes the artifact — taps, states, screens, buttons removed —
+   and never an effect on a user, because an unshipped concept has
+   no baseline to claim one from.
+
+   .landed__source is load-bearing, not decoration. Each figure
+   carries the method that produced it, which is self-policing: a
+   number you invented has no source line to write. If the source
+   cannot be filled in, the number does not ship.
+
+   Figures are mono, not the display serif. They read as
+   measurements; the serif would give them the register of a
+   headline, which is exactly the authority this work has not
+   earned yet.
+   ============================================================ */
+.landed {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(24px, 3.5vw, 56px);
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+}
+
+.landed__fact {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1 1 clamp(240px, 21vw, 300px);
+  padding-left: 20px;
+  border-left: 1px solid var(--rule-soft);
+}
+
+.landed__fact:first-child {
+  padding-left: 0;
+  border-left: none;
+}
+
+.landed__figure {
+  font-family: var(--font-mono);
+  font-size: clamp(2.75rem, 5vw, 4.5rem);
+  font-weight: 500;
+  line-height: 0.88;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+}
+
+/* Unfilled slot. Same loudness contract as .card__placeholder: an
+   empty figure must look wrong, because a placeholder that reads as
+   finished is how invented numbers reach a live page. */
+.landed__fact--todo .landed__figure { color: var(--signal); }
+
+.landed__unit { color: var(--ink-50); }
+
+.landed__claim {
+  font-size: var(--t-body);
+  line-height: 1.6;
+  color: var(--ink-70);
+  text-wrap: pretty;
+}
+
+.landed__source {
+  padding-top: 10px;
+  border-top: 1px solid var(--rule-soft);
+  color: var(--ink-30);
+}
+
+.landed__fact--todo .landed__source {
+  border-top-color: var(--signal-line);
+}
+
+/* The limits block. Counterintuitively this raises the credibility
+   of every figure above it, so it sits inside the same section
+   rather than being exiled to a footnote. */
+.landed__limits {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 68ch;
+  padding-left: clamp(20px, 2.5vw, 32px);
+  border-left: 2px solid var(--signal-line);
+}
+
+.landed__limits-text {
+  font-size: var(--t-body);
+  line-height: 1.65;
+  color: var(--ink-70);
+  text-wrap: pretty;
+}
+
+@media (max-width: 720px) {
+  /* Vertical rules become horizontal ones once the row is a column —
+     a left border on a full-width item reads as an indent, not a
+     divider. */
+  .landed__fact {
+    flex-basis: 100%;
+    padding-left: 0;
+    border-left: none;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule-soft);
+  }
+
+  .landed__fact:first-child {
+    padding-top: 0;
+    border-top: none;
+  }
+}
+
+
+/* ------------------------------------------------------------
+   MOBILE — TOUCH
+
+   Everything here is one idea: a target sized for a cursor is not a
+   target. A mouse pointer is one pixel and lands where it is aimed; a
+   fingertip is roughly 9mm, it arrives at an angle, and the finger
+   covers the thing it is reaching for. 44px is the floor both Apple
+   and Google publish, and every control below was under it.
+
+   Measured, not guessed — these were found by driving the real pages
+   at 390px and reading back the rendered box of every interactive
+   element, which is the only way to catch it: all of these LOOK fine.
+
+   The rule throughout is to grow the target, never the type. Padding
+   and min-height do the work, so the composition and the type scale
+   are untouched — a reader sees exactly the same page, it just stops
+   fighting their thumb.
+
+   ⚠ THIS BLOCK MUST STAY LAST IN THE FILE. A media query adds no
+   specificity, so these rules only win by coming after the component
+   definitions they override. Sitting higher up, `.field__input`'s own
+   `padding: 0 0 12px` shorthand silently reset the padding-top set
+   here and the field stayed 35px — it looked fixed and wasn't.
+   ------------------------------------------------------------ */
+@media (max-width: 768px) {
+  /* The bar is 60px here rather than the desktop 74px, so the desktop
+     offset would leave a visible hole above every heading. */
+  html { scroll-padding-top: 76px; }
+
+  /* Tapping anything on iOS and Android flashes a translucent grey-blue
+     box over it — a system colour, from outside this palette, landing
+     on a page that is otherwise entirely warm near-black and vermilion.
+     Tinted to the signal rather than set to transparent: the flash IS
+     the confirmation a thumb gets that it hit something, and a phone
+     has no hover state to fall back on. Take the colour, keep the
+     feedback. */
+  .page { -webkit-tap-highlight-color: rgba(255, 90, 43, 0.18); }
+
+  /* Rendered 35px: the text's line box plus the 12px that separates it
+     from its underline. The line stays where it is — the extra height
+     is added above the text, inside the tappable box, so the field
+     looks identical and is 10px easier to hit.
+
+     Font size is already 16px, which is what stops iOS zooming the
+     whole page in on focus. Do not let it fall below that. */
+  .field__input { padding-top: 10px; }
+
+  /* 21px, and these are the four ways to actually reach him — the
+     highest-consequence miss on the page. Centred in a 44px box so
+     the ledger's rhythm doesn't change, only its hit area. */
+  .channel__value {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  /* The row aligns its parts on the baseline, which a 44px flex child
+     no longer shares with a 10px label. Centre them instead. */
+  .channel { align-items: center; }
+
+  .channel__copy {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 3px 14px;
+  }
+
+  /* 40px — near enough to look right and far enough to miss. */
+  .btn { min-height: 44px; }
+
+  /* Same story on the About page's contact ledger, which uses its own
+     class for the identical job. */
+  .cta__link {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  /* The wordmark is the home link on all eight pages, and at 12px it
+     was the smallest target on the site — sat right beside a 44px
+     burger, which is how it stayed invisible for so long. The bar
+     centres its contents, so height added here is height added around
+     the text, and the mark does not move. */
+  .nav__mark { min-height: 44px; }
+
+  /* "See all projects" — 13px of mono, and the only route from the
+     homepage grid into the full work index. */
+  .section__action {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}
+
+
+/* ------------------------------------------------------------
+   MOBILE — SMALL SCREENS (≤ 360px)
+
+   The 320–360 band is the iPhone SE and most budget Androids, which
+   is a real share of the audience this site is built for — not an
+   edge case to wave at.
+
+   One fix, one cause. .section__head is a space-between row holding a
+   title and a mono label, and .meta is white-space: nowrap by design
+   (a spec label that wraps mid-phrase reads as broken). Two unshrinkable
+   things in one row have a combined minimum, and on a case-study page
+   "03 — Problem & solution" beside its title comes to more than 320px
+   of it.
+
+   The browser does not clip that: it widens the LAYOUT VIEWPORT to fit,
+   which silently zooms the whole page out and drags every fixed element
+   — the bar, the read-progress rule — out past the screen edge with it.
+   That is why this looked like a bug in .progress and was not; the page
+   was 373px wide inside a 320px phone.
+
+   Wrapping the row is the whole repair. The label drops under the title
+   and keeps its nowrap, so nothing about the mono voice changes.
+   ------------------------------------------------------------ */
+@media (max-width: 360px) {
+  .section__head {
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 20px;
+  }
+}

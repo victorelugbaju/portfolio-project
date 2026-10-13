@@ -1,0 +1,3094 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design System — Victor Elugbaju</title>
+    <meta
+      name="description"
+      content="The System — the full design language behind the Victor Elugbaju portfolio. Foundations, elements, components and principles, with every state drawn statically. Built to export to Figma."
+    />
+    <!-- ============================================================
+       IDENTITY, SHARING AND ICONS   (added 2026-10-05)
+
+       canonical and the og:/twitter: URLs are the only absolute URLs in
+       this file. They point at https://victor-elugbaju.netlify.app
+       — if that host ever changes, it changes here, in robots.txt and in
+       sitemap.xml, and nowhere else.
+
+       Icon paths are deliberately RELATIVE ("./favicon.svg"), not
+       root-relative. Root-relative would break every local preview opened
+       as a file:// URL, which is how this site is checked in a browser.
+
+       og:image must be absolute — a scraper fetches it from its own
+       server, with no page context to resolve a relative path against.
+       ============================================================ -->
+    <link rel="canonical" href="https://victor-elugbaju.netlify.app/design-system.html" />
+
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="favicon.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <meta name="theme-color" content="#0D0D0B" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Victor Elugbaju" />
+    <meta property="og:title" content="Design System — Victor Elugbaju" />
+    <meta
+      property="og:description"
+      content="The System — the full design language behind the Victor Elugbaju portfolio. Foundations, elements, components and principles, with every state drawn statically. Built to export to Figma."
+    />
+    <meta property="og:url" content="https://victor-elugbaju.netlify.app/design-system.html" />
+    <meta property="og:image" content="https://victor-elugbaju.netlify.app/img/og-cover.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Victor Elugbaju — Product Designer. Finance, consumer health and enterprise systems."
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Design System — Victor Elugbaju" />
+    <meta
+      name="twitter:description"
+      content="The System — the full design language behind the Victor Elugbaju portfolio. Foundations, elements, components and principles, with every state drawn statically. Built to export to Figma."
+    />
+    <meta name="twitter:image" content="https://victor-elugbaju.netlify.app/img/og-cover.png" />
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- The real production sheet, so every component below is the exact
+         object the site ships — not a lookalike. -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- ============================================================
+       DOC SCAFFOLDING + STATIC STATES
+
+       Two jobs, both held to the same Figma import contract as the site
+       sheet: flex + gap for rhythm, borders as strokes, NO visible
+       ::before / ::after, no CSS-drawn shapes.
+
+       1. Layout for the reference itself (.ds-*).
+       2. STATIC state duplicates (.is-hover / .is-focus). The site shows
+          hover and focus through :hover / :focus-within, which a Figma
+          import can't capture — it only ever sees one frozen frame. So
+          each interactive state is ALSO written as an always-on class,
+          letting Default and Hover sit side by side as two real objects.
+
+       This page deliberately loads NO JS: the scroll-reveal would start
+       components at opacity 0, and an export could catch them mid-hide.
+       Omitting the <html class="js"> flag also keeps the type-reveal,
+       principle rules and testimonial in their visible fallback state.
+       ============================================================ -->
+    <style>
+      /* --- Reference layout ------------------------------------- */
+      .ds {
+        display: flex;
+        flex-direction: column;
+        gap: clamp(64px, 9vh, 104px);
+        padding: clamp(128px, 20vh, 208px) var(--margin) clamp(72px, 11vh, 130px);
+        max-width: var(--maxw);
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .ds-lede {
+        display: flex;
+        flex-direction: column;
+        gap: clamp(24px, 4vh, 40px);
+        padding-bottom: clamp(28px, 4vh, 44px);
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .ds-lede__eyebrow {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 20px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--rule-soft);
+      }
+
+      .ds-lede__title {
+        font-family: var(--font-display);
+        font-size: clamp(2.75rem, 8vw, 7rem);
+        font-weight: 400;
+        line-height: 0.92;
+        letter-spacing: -0.03em;
+        max-width: 16ch;
+      }
+
+      .ds-lede__title em { font-style: italic; color: var(--signal); }
+
+      .ds-lede__text {
+        font-size: var(--t-lead);
+        line-height: 1.6;
+        color: var(--ink-70);
+        max-width: 64ch;
+        text-wrap: pretty;
+      }
+
+      /* Contents index. */
+      .ds-toc {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 28px;
+        padding-top: 4px;
+      }
+
+      .ds-toc a {
+        font-family: var(--font-mono);
+        font-size: var(--t-meta);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--ink-50);
+        border-bottom: 1px solid transparent;
+        transition: color var(--fast) var(--ease),
+                    border-color var(--fast) var(--ease);
+      }
+
+      .ds-toc a:hover { color: var(--signal); border-bottom-color: var(--signal); }
+
+      /* Part divider — Foundations / Elements / Components / Principles. */
+      .ds-part {
+        display: flex;
+        align-items: baseline;
+        gap: 16px;
+        padding-top: clamp(16px, 3vh, 32px);
+      }
+
+      .ds-part__num {
+        font-family: var(--font-mono);
+        font-size: var(--t-meta);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--signal);
+      }
+
+      .ds-part__name {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 4vw, 3.25rem);
+        font-weight: 400;
+        line-height: 1;
+        letter-spacing: -0.02em;
+      }
+
+      .ds-sec {
+        display: flex;
+        flex-direction: column;
+        gap: clamp(22px, 3.5vh, 36px);
+        scroll-margin-top: 96px;
+      }
+
+      /* Same anatomy as the site's .section__head. */
+      .ds-sec__head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 20px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .ds-sec__title {
+        font-family: var(--font-display);
+        font-size: clamp(1.625rem, 2.6vw, 2.5rem);
+        font-weight: 400;
+        line-height: 1;
+        letter-spacing: -0.02em;
+      }
+
+      .ds-note {
+        font-size: var(--t-body);
+        line-height: 1.6;
+        color: var(--ink-70);
+        max-width: 70ch;
+        text-wrap: pretty;
+      }
+
+      .ds-note code,
+      .ds-note--code {
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        color: var(--signal);
+      }
+
+      /* A group of specimens under one sub-label. */
+      .ds-group { display: flex; flex-direction: column; gap: 16px; }
+
+      .ds-group__label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--rule-soft);
+      }
+
+      /* Specimen captions name their own classes, so they run long. The global
+         .meta sets white-space: nowrap for short tags (style.css:170) — that is
+         correct on the live site but overflows the viewport here at phone
+         widths, so captions inside a group label are allowed to wrap. */
+      .ds-group__label .meta { white-space: normal; }
+
+      /* Stage: where a live component sits. Transparent by default so the
+         component's own colours read exactly as they do on --paper; the
+         --warm modifier shows the elevated surface. */
+      .ds-stage {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: clamp(20px, 4vw, 56px);
+        padding: clamp(22px, 3.5vw, 40px);
+        border: 1px solid var(--rule-soft);
+        border-radius: 2px;
+      }
+
+      .ds-stage--warm { background: var(--paper-warm); }
+      .ds-stage--center { align-items: center; }
+
+      /* One labelled cell inside a stage — component plus state caption. */
+      .ds-cell {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        min-width: 0;
+      }
+
+      .ds-cell__cap { display: flex; align-items: center; gap: 8px; }
+
+      /* --- Colour ----------------------------------------------- */
+      .ds-swatches { display: flex; flex-wrap: wrap; gap: var(--gutter); }
+
+      .ds-swatch {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        flex: 1 1 200px;
+        min-width: 176px;
+      }
+
+      .ds-swatch__chip {
+        height: 116px;
+        border-radius: 2px;
+        border: 1px solid var(--rule-soft);
+      }
+
+      .ds-swatch__meta { display: flex; flex-direction: column; gap: 5px; }
+
+      .ds-swatch__name {
+        font-family: var(--font-mono);
+        font-size: var(--t-meta);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--ink);
+      }
+
+      .ds-swatch__val {
+        font-family: var(--font-mono);
+        font-size: var(--t-meta);
+        letter-spacing: 0.03em;
+        color: var(--ink-50);
+        text-transform: none;
+      }
+
+      .ds-swatch__use {
+        font-size: 0.8125rem;
+        line-height: 1.4;
+        color: var(--ink-50);
+      }
+
+      /* --- Typography ------------------------------------------- */
+      .ds-type { display: flex; flex-direction: column; }
+
+      .ds-type__row {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding: clamp(22px, 3vh, 36px) 0;
+        border-bottom: 1px solid var(--rule-soft);
+      }
+
+      .ds-type__row:first-child { border-top: 1px solid var(--rule-soft); }
+
+      .ds-type__spec { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+
+      /* --- Token tables (spacing / motion / breakpoints) -------- */
+      .ds-tokens { display: flex; flex-direction: column; }
+
+      .ds-token {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 6px 24px;
+        padding: 15px 0;
+        border-bottom: 1px solid var(--rule-soft);
+      }
+
+      .ds-token:first-child { border-top: 1px solid var(--rule-soft); }
+
+      .ds-token__name {
+        font-family: var(--font-mono);
+        font-size: var(--t-meta);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--ink);
+        flex: 0 0 clamp(120px, 16vw, 190px);
+      }
+
+      .ds-token__val {
+        font-family: var(--font-mono);
+        font-size: var(--t-meta);
+        letter-spacing: 0.03em;
+        color: var(--signal);
+        flex: 0 0 clamp(150px, 22vw, 260px);
+      }
+
+      .ds-token__use {
+        font-size: 0.8125rem;
+        line-height: 1.4;
+        color: var(--ink-50);
+        flex: 1 1 220px;
+        min-width: 0;
+      }
+
+      .ds-space-bar {
+        height: 12px;
+        background: var(--signal-wash);
+        border: 1px solid var(--signal-line);
+        border-radius: 2px;
+      }
+
+      /* 12-column grid demo. */
+      .ds-grid-demo { display: flex; gap: var(--gutter); }
+
+      .ds-grid-demo__col {
+        flex: 1 1 0;
+        height: 72px;
+        background: var(--signal-wash);
+        border: 1px solid var(--signal-line);
+        border-radius: 2px;
+      }
+
+      /* Elevation demo. */
+      .ds-elev {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1 1 240px;
+        min-height: 150px;
+        border-radius: 2px;
+        border: 1px solid var(--rule-soft);
+      }
+
+      .ds-elev--base { background: var(--paper); }
+      .ds-elev--warm { background: var(--paper-warm); }
+
+      /* Radius sampler. */
+      .ds-radius {
+        width: 96px;
+        height: 96px;
+        background: var(--paper-warm);
+        border: 1px solid var(--rule);
+        border-radius: 2px;
+      }
+
+      /* Iconography. */
+      .ds-icons { display: flex; flex-wrap: wrap; gap: var(--gutter); }
+
+      .ds-icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        flex: 0 0 clamp(96px, 12vw, 132px);
+        padding: 24px 0;
+        border: 1px solid var(--rule-soft);
+        border-radius: 2px;
+      }
+
+      .ds-icon__glyph {
+        font-family: var(--font-mono);
+        font-size: 1.75rem;
+        line-height: 1;
+        color: var(--signal);
+      }
+
+      /* Hairline demos. */
+      .ds-rule { height: 0; border-bottom: 1px solid var(--rule); }
+      .ds-rule--soft { border-bottom: 1px solid var(--rule-soft); }
+      .ds-rule--signal { border-bottom: 1px solid var(--signal-line); }
+
+      .ds-vrule { display: flex; height: 64px; }
+
+      .ds-vrule__seg {
+        padding-left: 16px;
+        border-left: 1px solid var(--rule);
+        display: flex;
+        align-items: center;
+      }
+
+      /* View-badge demo — the inner disc lifted out of its fixed host and
+         forced to its active look, on an elevated stage. */
+      .ds-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 148px;
+        height: 148px;
+        background: var(--paper-warm);
+        border: 1px solid var(--rule-soft);
+        border-radius: 2px;
+      }
+
+      .ds-badge .view-badge__inner {
+        position: relative;
+        opacity: 1;
+        transform: none;
+      }
+
+      /* ==========================================================
+         STATIC STATE DUPLICATES
+         Each mirrors a :hover / :focus-within / checked rule from the
+         site sheet so the state renders without interaction.
+         ========================================================== */
+      .btn--primary.is-hover { background: transparent; color: var(--signal); }
+      .btn--primary.is-hover .btn__arrow { transform: translateX(4px); }
+      .btn--ghost.is-hover { border-color: var(--ink); color: var(--ink); }
+      /* Mirrors .btn:hover .btn__arrow--down / --left. Must stay after the
+         primary rule above — same specificity, so source order is what wins. */
+      .btn.is-hover .btn__arrow--down { transform: translateY(3px); }
+      .btn.is-hover .btn__arrow--left { transform: translateX(-4px); }
+
+      .nav__link.is-hover { color: var(--signal); border-bottom-color: var(--signal); }
+
+      .section__action.is-hover { color: var(--signal); }
+      .section__action.is-hover .section__action-arrow { transform: translateX(4px); }
+
+      .cta__link.is-hover,
+      .contact__link.is-hover { color: var(--signal); border-bottom-color: var(--signal); }
+
+      .card__tag.is-hover,
+      .project__tag.is-hover { color: var(--ink-70); }
+      .skills__chip.is-hover { color: var(--ink-70); }
+
+      .chip.is-hover .chip__label { color: var(--ink); }
+      .chip.is-focus .chip__label {
+        border-color: var(--signal);
+        box-shadow: 0 0 0 2px var(--signal-wash);
+      }
+
+      .channel__copy.is-hover { color: var(--signal); border-color: var(--signal-line); }
+      .channel__value.is-hover { color: var(--signal); border-bottom-color: var(--signal); }
+
+      .field.is-focus .field__label { color: var(--signal); }
+      .field.is-focus .field__line { transform: scaleX(1); }
+
+      /* --- Mobile nav specimen ----------------------------------
+         The burger and the index sheet only ACTIVATE under 768px, so
+         at this page's own width they would not render at all and
+         could not be documented.
+
+         These force them on. Note what is set: display, position and
+         box size — nothing else. Every rule about how they look comes
+         from the production sheet, which is why the mobile nav's
+         appearance was deliberately kept OUT of its media query. A
+         specimen that can drift from the shipped component is worse
+         than no specimen.
+         ---------------------------------------------------------- */
+      .ds-navdemo .nav__burger { display: flex; }
+
+      /* The links specimen is a specimen, not a nav. Below 768px the
+         production sheet hides .nav__links because the burger has taken
+         over — correct on the site, wrong inside a reference stage,
+         where it would blank the very thing being documented. */
+      .ds-stage .nav__links { display: flex; }
+
+      .ds-navdemo__sheet {
+        display: flex;
+        width: 340px;
+        max-width: 100%;
+      }
+
+      .ds-navdemo__sheet .nav-menu {
+        display: flex;
+        position: static;
+        visibility: visible;
+        opacity: 1;
+        width: 100%;
+        /* Tall enough that the foot's second row clears the frame. The
+           inner scrolls, so anything shorter silently swallows the
+           social links and the specimen documents a component that has
+           fewer parts than the real one. */
+        height: 640px;
+        border: 1px solid var(--rule-soft);
+      }
+
+      .ds-navdemo__sheet .nav-menu__inner {
+        height: 100%;
+        padding: 22px;
+      }
+
+      /* The sheet's display size is 11vw — sized against the phone it
+         is meant for. In a 340px specimen box that vw still resolves
+         against THIS page's full width and the type bursts the frame.
+         Pinned to what a 390px phone actually renders. */
+      .ds-navdemo__sheet .nav-menu__word { font-size: 2.7rem; }
+    </style>
+  </head>
+  <body class="page">
+    <!-- ============================================================
+       NAV
+       ============================================================ -->
+    <header class="nav">
+      <a class="nav__mark" href="index.html">
+        <span class="nav__mark-name">Victor Elugbaju</span>
+      </a>
+
+      <nav class="nav__links">
+        <a class="nav__link" href="index.html#work">Work</a>
+        <a class="nav__link" href="about.html">About</a>
+        <a class="nav__link" href="index.html#experience">Experience</a>
+        <a class="nav__link" href="mailto:victorajibolaelugbaju@gmail.com"
+          >Contact</a
+        >
+      </nav>
+
+    </header>
+
+
+    <main class="ds">
+      <!-- ============================================================
+         LEDE
+         ============================================================ -->
+      <section class="ds-lede">
+        <div class="ds-lede__eyebrow">
+          <span class="meta">Design System</span>
+          <span class="meta meta--mute">The System — v1</span>
+          <span class="meta meta--mute">Swiss editorial · type-led · dark</span>
+        </div>
+
+        <h1 class="ds-lede__title">
+          The parts, and <em>how they behave</em>.
+        </h1>
+
+        <p class="ds-lede__text">
+          The full language the portfolio is built from — every token,
+          element and component, plus the principles that govern them. Each
+          interactive state is drawn as its own static object (Default beside
+          Hover, Focus, Selected), because a design-tool import reads one
+          frozen frame and never a <code>:hover</code>. Everything holds to the
+          same contract as the site — flex and gap for rhythm, borders as
+          strokes, no CSS-drawn shapes — so it lands clean in Figma, where you
+          take it from here.
+        </p>
+
+        <nav class="ds-toc" aria-label="Contents">
+          <a href="#colour">Colour</a>
+          <a href="#type">Type</a>
+          <a href="#spacing">Spacing</a>
+          <a href="#elevation">Elevation</a>
+          <a href="#motion">Motion</a>
+          <a href="#icons">Icons</a>
+          <a href="#responsive">Responsive</a>
+          <a href="#touch">Touch</a>
+          <a href="#meta">Meta</a>
+          <a href="#status">Status</a>
+          <a href="#buttons">Buttons</a>
+          <a href="#links">Links</a>
+          <a href="#tags">Tags</a>
+          <a href="#fields">Fields</a>
+          <a href="#lists">Lists</a>
+          <a href="#facts">Facts</a>
+          <a href="#rules">Rules</a>
+          <a href="#frames">Frames</a>
+          <a href="#sectionhead">Section head</a>
+          <a href="#navmark">Nav</a>
+          <a href="#card">Card</a>
+          <a href="#spread">Feature spread</a>
+          <a href="#blocks">Numbered blocks</a>
+          <a href="#quote">Testimonial</a>
+          <a href="#badge">Cursor badge</a>
+          <a href="#prototype">Prototype</a>
+          <a href="#shots">Shots</a>
+          <a href="#readprogress">Read progress</a>
+          <a href="#plate">Plate</a>
+          <a href="#thesis">Thesis</a>
+          <a href="#landed">Counted facts</a>
+          <a href="#casefigure">Case figure</a>
+          <a href="#process">Process row</a>
+          <a href="#contract">Contract</a>
+          <a href="#voice">Voice</a>
+        </nav>
+      </section>
+
+      <!-- ██████████████ FOUNDATIONS ██████████████ -->
+      <div class="ds-part">
+        <span class="ds-part__num">Part A</span>
+        <h2 class="ds-part__name">Foundations</h2>
+      </div>
+
+      <!-- 01 — COLOUR -->
+      <section class="ds-sec" id="colour">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">01 — Colour</h3>
+          <span class="meta meta--mute">Warm near-black · one signal</span>
+        </div>
+
+        <p class="ds-note">
+          Neither end is pure. A warm near-black ground, a warm off-white ink,
+          and a single vermilion that does every bit of accenting on the site.
+          The ink and signal tints are alpha values shown over
+          <code>--paper</code> — that is their true rendered tone. The whole
+          palette is engineered for the dark ground; the light-mode signal is
+          noted where it differs.
+        </p>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Surfaces</span></div>
+          <div class="ds-swatches">
+            <div class="ds-swatch">
+              <div class="ds-swatch__chip" style="background:#0D0D0B"></div>
+              <div class="ds-swatch__meta">
+                <span class="ds-swatch__name">Paper</span>
+                <span class="ds-swatch__val">--paper · #0D0D0B</span>
+                <span class="ds-swatch__use">Page ground.</span>
+              </div>
+            </div>
+            <div class="ds-swatch">
+              <div class="ds-swatch__chip" style="background:#191816"></div>
+              <div class="ds-swatch__meta">
+                <span class="ds-swatch__name">Paper warm</span>
+                <span class="ds-swatch__val">--paper-warm · #191816</span>
+                <span class="ds-swatch__use">Elevated panels, frames, stages.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Ink</span></div>
+          <div class="ds-swatches">
+            <div class="ds-swatch">
+              <div class="ds-swatch__chip" style="background:#F2F1EC"></div>
+              <div class="ds-swatch__meta">
+                <span class="ds-swatch__name">Ink</span>
+                <span class="ds-swatch__val">--ink · #F2F1EC</span>
+                <span class="ds-swatch__use">Primary text, headings.</span>
+              </div>
+            </div>
+            <div class="ds-swatch">
+              <div class="ds-swatch__chip" style="background:rgba(242,241,236,0.72)"></div>
+              <div class="ds-swatch__meta">
+                <span class="ds-swatch__name">Ink 70</span>
+                <span class="ds-swatch__val">--ink-70 · #F2F1EC @ 72%</span>
+                <span class="ds-swatch__use">Body copy.</span>
+              </div>
+            </div>
+            <div class="ds-swatch">
+              <div class="ds-swatch__chip" style="background:rgba(242,241,236,0.52)"></div>
+              <div class="ds-swatch__meta">
+                <span class="ds-swatch__name">Ink 50</span>
+                <span class="ds-swatch__val">--ink-50 · #F2F1EC @ 52%</span>
+                <span class="ds-swatch__use">Muted labels, captions.</span>
+              </div>
+            </div>
+            <div class="ds-swatch">
+              <div class="ds-swatch__chip" style="background:rgba(242,241,236,0.32)"></div>
+              <div class="ds-swatch__meta">
+                <span class="ds-swatch__name">Ink 30</span>
+                <span class="ds-swatch__val">--ink-30 · #F2F1EC @ 32%</span>
+                <span class="ds-swatch__use">Faint — card numbers, hints.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--signal">Signal</span></div>
+          <div class="ds-swatches">
+            <div class="ds-swatch">
+              <div class="ds-swatch__chip" style="background:#FF5A2B"></div>
+              <div class="ds-swatch__meta">
+                <span class="ds-swatch__name">Signal</span>
+                <span class="ds-swatch__val">--signal · #FF5A2B</span>
+                <span class="ds-swatch__use">The one accent. Dark-theme value.</span>
+              </div>
+            </div>
+            <div class="ds-swatch">
+              <div class="ds-swatch__chip" style="background:#FF3D00"></div>
+              <div class="ds-swatch__meta">
+                <span class="ds-swatch__name">Signal · light</span>
+                <span class="ds-swatch__val">#FF3D00</span>
+                <span class="ds-swatch__use">Intended value on a light ground.</span>
+              </div>
+            </div>
+            <div class="ds-swatch">
+              <div class="ds-swatch__chip" style="background:rgba(255,90,43,0.28)"></div>
+              <div class="ds-swatch__meta">
+                <span class="ds-swatch__name">Signal line</span>
+                <span class="ds-swatch__val">--signal-line · @ 28%</span>
+                <span class="ds-swatch__use">Signal hairlines and borders.</span>
+              </div>
+            </div>
+            <div class="ds-swatch">
+              <div class="ds-swatch__chip" style="background:rgba(255,90,43,0.09)"></div>
+              <div class="ds-swatch__meta">
+                <span class="ds-swatch__name">Signal wash</span>
+                <span class="ds-swatch__val">--signal-wash · @ 9%</span>
+                <span class="ds-swatch__use">Selected chip fill.</span>
+              </div>
+            </div>
+            <div class="ds-swatch">
+              <div class="ds-swatch__chip" style="background:rgba(255,90,43,0.05)"></div>
+              <div class="ds-swatch__meta">
+                <span class="ds-swatch__name">Signal wash soft</span>
+                <span class="ds-swatch__val">--signal-wash-soft · @ 5%</span>
+                <span class="ds-swatch__use">Placeholder / reserved-slot fill.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Rules</span></div>
+          <div class="ds-swatches">
+            <div class="ds-swatch">
+              <div class="ds-swatch__chip" style="background:rgba(242,241,236,0.18)"></div>
+              <div class="ds-swatch__meta">
+                <span class="ds-swatch__name">Rule</span>
+                <span class="ds-swatch__val">--rule · #F2F1EC @ 18%</span>
+                <span class="ds-swatch__use">Dividers, borders, section heads.</span>
+              </div>
+            </div>
+            <div class="ds-swatch">
+              <div class="ds-swatch__chip" style="background:rgba(242,241,236,0.10)"></div>
+              <div class="ds-swatch__meta">
+                <span class="ds-swatch__name">Rule soft</span>
+                <span class="ds-swatch__val">--rule-soft · #F2F1EC @ 10%</span>
+                <span class="ds-swatch__use">Faint dividers, frame borders.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 02 — TYPOGRAPHY -->
+      <section class="ds-sec" id="type">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">02 — Typography</h3>
+          <span class="meta meta--mute">Serif · sans · mono</span>
+        </div>
+
+        <p class="ds-note">
+          Three voices. Instrument Serif carries every display size — it ships
+          Regular only, so emphasis is italic and scale, never weight (a bold
+          would synthesise a faux weight). Inter Tight is the reading and UI
+          voice. Geist Mono is the label voice: every eyebrow, spec and stamp.
+          Display sizes are fluid <code>clamp()</code>; body and meta are fixed.
+          Measure is capped around <code>60–70ch</code> for reading.
+        </p>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Families</span></div>
+          <div class="ds-swatches">
+            <div class="ds-swatch">
+              <div class="ds-swatch__meta">
+                <span style="font-family:var(--font-display); font-size:2.75rem; line-height:1;">Ag <em style="font-style:italic; color:var(--signal);">Ag</em></span>
+                <span class="ds-swatch__name">Instrument Serif</span>
+                <span class="ds-swatch__use">Display · Regular + Italic</span>
+              </div>
+            </div>
+            <div class="ds-swatch">
+              <div class="ds-swatch__meta">
+                <span style="font-family:var(--font-body); font-size:2.75rem; line-height:1;">Ag</span>
+                <span class="ds-swatch__name">Inter Tight</span>
+                <span class="ds-swatch__use">Body · UI — 400 / 500</span>
+              </div>
+            </div>
+            <div class="ds-swatch">
+              <div class="ds-swatch__meta">
+                <span style="font-family:var(--font-mono); font-size:2.75rem; line-height:1;">Ag</span>
+                <span class="ds-swatch__name">Geist Mono</span>
+                <span class="ds-swatch__use">Labels · meta — 400 / 500</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Scale</span></div>
+          <div class="ds-type">
+            <div class="ds-type__row">
+              <div class="ds-type__spec">
+                <span class="meta">Display</span>
+                <span class="meta meta--mute">--t-display</span>
+                <span class="meta meta--mute">clamp(3.25rem, 8.5vw, 8.5rem)</span>
+                <span class="meta meta--mute">Instrument Serif · LH 0.82</span>
+              </div>
+              <span style="font-family:var(--font-display); font-size:var(--t-display); line-height:0.82; letter-spacing:-0.04em;">Elugbaju.</span>
+            </div>
+
+            <div class="ds-type__row">
+              <div class="ds-type__spec">
+                <span class="meta">Display small</span>
+                <span class="meta meta--mute">--t-display-sm</span>
+                <span class="meta meta--mute">clamp(2.5rem, 6vw, 5.5rem)</span>
+                <span class="meta meta--mute">Instrument Serif</span>
+              </div>
+              <span style="font-family:var(--font-display); font-size:var(--t-display-sm); line-height:0.95; letter-spacing:-0.025em;">Let's <em style="font-style:italic; color:var(--signal);">Connect.</em></span>
+            </div>
+
+            <div class="ds-type__row">
+              <div class="ds-type__spec">
+                <span class="meta">Title</span>
+                <span class="meta meta--mute">--t-title</span>
+                <span class="meta meta--mute">clamp(1.75rem, 3.2vw, 3rem)</span>
+                <span class="meta meta--mute">Instrument Serif</span>
+              </div>
+              <span style="font-family:var(--font-display); font-size:var(--t-title); line-height:1.05; letter-spacing:-0.015em;">Clarity over cleverness</span>
+            </div>
+
+            <div class="ds-type__row">
+              <div class="ds-type__spec">
+                <span class="meta">Lead</span>
+                <span class="meta meta--mute">--t-lead</span>
+                <span class="meta meta--mute">clamp(1rem, 1.15vw, 1.1875rem)</span>
+                <span class="meta meta--mute">Inter Tight</span>
+              </div>
+              <span style="font-size:var(--t-lead); line-height:1.5; color:var(--ink);">I make the software people are assigned, not the software they choose.</span>
+            </div>
+
+            <div class="ds-type__row">
+              <div class="ds-type__spec">
+                <span class="meta">Body</span>
+                <span class="meta meta--mute">--t-body</span>
+                <span class="meta meta--mute">0.9375rem · 15px</span>
+                <span class="meta meta--mute">Inter Tight · LH 1.6</span>
+              </div>
+              <span style="font-size:var(--t-body); line-height:1.6; color:var(--ink-70); max-width:60ch;">The real work sits underneath the screen: who can act, what they're permitted to touch, and how a record moves between hands without losing its history.</span>
+            </div>
+
+            <div class="ds-type__row">
+              <div class="ds-type__spec">
+                <span class="meta">Meta</span>
+                <span class="meta meta--mute">--t-meta</span>
+                <span class="meta meta--mute">0.6875rem · 11px · uppercase</span>
+                <span class="meta meta--mute">Geist Mono · LS 0.08em</span>
+              </div>
+              <span class="meta">Product Designer — Selected work</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 — SPACING & LAYOUT -->
+      <section class="ds-sec" id="spacing">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">03 — Spacing &amp; layout</h3>
+          <span class="meta meta--mute">12 columns · one radius</span>
+        </div>
+
+        <p class="ds-note">
+          Rhythm is carried by flex <code>gap</code> and padding, never
+          margin — so it maps one-to-one onto Figma auto-layout. One radius
+          across the whole system: <code>2px</code>. The page is a 12-column
+          field capped at <code>--maxw</code>, gutters at <code>--gutter</code>,
+          side margins fluid at <code>--margin</code>.
+        </p>
+
+        <div class="ds-tokens">
+          <div class="ds-token">
+            <span class="ds-token__name">--margin</span>
+            <span class="ds-token__val">clamp(20px, 4vw, 64px)</span>
+            <span class="ds-token__use">Page side margin.</span>
+          </div>
+          <div class="ds-token">
+            <span class="ds-token__name">--gutter</span>
+            <span class="ds-token__val">24px</span>
+            <span class="ds-token__use">Column / card gutter.</span>
+          </div>
+          <div class="ds-token">
+            <span class="ds-token__name">--maxw</span>
+            <span class="ds-token__val">1560px</span>
+            <span class="ds-token__use">Max content width.</span>
+          </div>
+          <div class="ds-token">
+            <span class="ds-token__name">--cols</span>
+            <span class="ds-token__val">12</span>
+            <span class="ds-token__use">Grid columns.</span>
+          </div>
+          <div class="ds-token">
+            <span class="ds-token__name">Radius</span>
+            <span class="ds-token__val">2px</span>
+            <span class="ds-token__use">Every corner — frames, chips, buttons.</span>
+          </div>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Short pages — .page--short</span></div>
+          <p class="ds-note">
+            Added 2026-10-05 for <code>404.html</code>. A page whose content
+            does not fill the viewport otherwise drops its footer wherever the
+            content stops, leaving a band of dead paper underneath that reads
+            as a broken page rather than a short one. Put
+            <code>.page--short</code> on <code>&lt;body&gt;</code> alongside
+            <code>.page</code> and the footer sits on the fold.
+          </p>
+          <p class="ds-note">
+            It is flex column plus <code>flex: 1 0 auto</code> on
+            <code>main</code> — not a fixed footer, which would overlay content
+            on a page that later grows and would not survive the Figma import
+            as a layout. Harmless on long pages: <code>main</code> simply grows
+            past the minimum. Currently used by <code>404.html</code> only.
+          </p>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Lightbox — .lightbox</span></div>
+          <p class="ds-note">
+            Added 2026-10-05. Tap or click any <code>.card__img</code> inside a
+            <code>.card__frame</code> to open it full-screen; Esc or the Close
+            button dismisses it. Not drawn live here — this page ships no JS,
+            and the overlay is built by <code>main.js</code> on first use rather
+            than written into every page, so there is nothing static to show.
+          </p>
+          <p class="ds-note">
+            <strong>Why it exists.</strong> The case-study boards are persona
+            sheets and UI screenshots — they carry type. At a 390px viewport
+            they are downscaled 7× to 14× (<code>sprout-persona.png</code> is
+            4800px wide shown at 348px), so 40px type in the board lands near
+            3px. The evidence in a case study was decoration on the device most
+            people read it on. Note <code>srcset</code> would not have fixed
+            this: it cuts bytes, not downscale.
+          </p>
+          <p class="ds-note">
+            <strong>Sizing rule.</strong> The image opens at roughly
+            <strong>3× the fitted size, capped at its own pixel width</strong>,
+            with the scroll centred. Both obvious alternatives were built and
+            measured first, and both were wrong: fitting to the viewport gave
+            359px on a phone against 348px inline — an "enlarged" view smaller
+            than the page — while natural size gave a 10× crop you could not
+            navigate.
+          </p>
+          <p class="ds-note">
+            <strong>Rules it must keep.</strong> Images inside a link are left
+            alone, so work cards still navigate. An image that has not loaded
+            does not open, so the red placeholder state never produces an empty
+            overlay. Every enlargeable image gets
+            <code>role="button"</code>, <code>tabindex="0"</code> and a
+            descriptive label, so the keyboard reaches what the cursor does.
+            The scroll lock it shares with the mobile menu is reference-counted
+            — see the note in <code>main.js</code> for why that matters.
+          </p>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">12-column field · gutter 24px</span></div>
+          <div class="ds-grid-demo">
+            <span class="ds-grid-demo__col"></span>
+            <span class="ds-grid-demo__col"></span>
+            <span class="ds-grid-demo__col"></span>
+            <span class="ds-grid-demo__col"></span>
+            <span class="ds-grid-demo__col"></span>
+            <span class="ds-grid-demo__col"></span>
+            <span class="ds-grid-demo__col"></span>
+            <span class="ds-grid-demo__col"></span>
+            <span class="ds-grid-demo__col"></span>
+            <span class="ds-grid-demo__col"></span>
+            <span class="ds-grid-demo__col"></span>
+            <span class="ds-grid-demo__col"></span>
+          </div>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Radius · 2px on an elevated frame</span></div>
+          <div class="ds-radius"></div>
+        </div>
+      </section>
+
+      <!-- 04 — ELEVATION & SURFACES -->
+      <section class="ds-sec" id="elevation">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">04 — Elevation &amp; surfaces</h3>
+          <span class="meta meta--mute">Two planes, no shadows</span>
+        </div>
+
+        <p class="ds-note">
+          Depth is a surface change, not a shadow. The page is
+          <code>--paper</code>; anything that lifts — a frame, a stage, an
+          elevated panel — goes to <code>--paper-warm</code>, which is
+          <em>lighter</em> than the ground in dark mode. A 1px
+          <code>--rule-soft</code> stroke does the containing. No drop shadows
+          anywhere; they don't belong to this material.
+        </p>
+
+        <div class="ds-stage" style="gap:var(--gutter)">
+          <div class="ds-elev ds-elev--base">
+            <span class="meta meta--mute">--paper · ground</span>
+          </div>
+          <div class="ds-elev ds-elev--warm">
+            <span class="meta meta--mute">--paper-warm · elevated</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 — MOTION -->
+      <section class="ds-sec" id="motion">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">05 — Motion</h3>
+          <span class="meta meta--mute">Surgical, not decorative</span>
+        </div>
+
+        <p class="ds-note">
+          One easing curve, three durations. Micro-feedback (hover tints,
+          arrow nudges) runs at <code>--fast</code>; component transitions at
+          <code>--base</code>; entrances and the type reveal at
+          <code>--slow</code>. Nothing bounces, and everything collapses under
+          <code>prefers-reduced-motion</code>.
+        </p>
+
+        <div class="ds-tokens">
+          <div class="ds-token">
+            <span class="ds-token__name">--ease</span>
+            <span class="ds-token__val">cubic-bezier(.2, 0, 0, 1)</span>
+            <span class="ds-token__use">The only curve. Fast out, soft in.</span>
+          </div>
+          <div class="ds-token">
+            <span class="ds-token__name">--fast</span>
+            <span class="ds-token__val">120ms</span>
+            <span class="ds-token__use">Hover colour, border, arrow nudge.</span>
+          </div>
+          <div class="ds-token">
+            <span class="ds-token__name">--base</span>
+            <span class="ds-token__val">280ms</span>
+            <span class="ds-token__use">Focus line, image scale, transforms.</span>
+          </div>
+          <div class="ds-token">
+            <span class="ds-token__name">--slow</span>
+            <span class="ds-token__val">640ms</span>
+            <span class="ds-token__use">Scroll reveals, line reveal.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06 — ICONOGRAPHY -->
+      <section class="ds-sec" id="icons">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">06 — Iconography</h3>
+          <span class="meta meta--mute">Mono glyphs, not an icon set</span>
+        </div>
+
+        <p class="ds-note">
+          There is no icon library — the system leans on a handful of mono
+          glyphs so nothing needs to substitute or import as a shape. The
+          arrow moves <code>4–5px</code> on hover; the plus marks an empty
+          slot; the dot is a real element used as a live status.
+        </p>
+
+        <div class="ds-icons">
+          <div class="ds-icon">
+            <span class="ds-icon__glyph">→</span>
+            <span class="meta meta--mute">Forward</span>
+          </div>
+          <div class="ds-icon">
+            <span class="ds-icon__glyph">←</span>
+            <span class="meta meta--mute">Back</span>
+          </div>
+          <div class="ds-icon">
+            <span class="ds-icon__glyph">+</span>
+            <span class="meta meta--mute">Add / slot</span>
+          </div>
+          <div class="ds-icon">
+            <span class="dot" aria-hidden="true" style="width:12px;height:12px"></span>
+            <span class="meta meta--mute">Status dot</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 07 — RESPONSIVE -->
+      <section class="ds-sec" id="responsive">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">07 — Responsive</h3>
+          <span class="meta meta--mute">Where the layout turns</span>
+        </div>
+
+        <p class="ds-note">
+          Breakpoints are placed where a specific composition stops working,
+          not on a device grid. The <code>901px</code> line is also the
+          pointer-only threshold: cursor effects (portrait parallax, the View
+          badge) run above it and are simply absent below.
+        </p>
+
+        <div class="ds-tokens">
+          <div class="ds-token">
+            <span class="ds-token__name">≥ 901px</span>
+            <span class="ds-token__val">pointer effects on</span>
+            <span class="ds-token__use">Parallax + cursor badge live here only.</span>
+          </div>
+          <div class="ds-token">
+            <span class="ds-token__name">≤ 1120px</span>
+            <span class="ds-token__val">principles → 2-up</span>
+            <span class="ds-token__use">Four-column blocks fold to pairs.</span>
+          </div>
+          <div class="ds-token">
+            <span class="ds-token__name">≤ 900px</span>
+            <span class="ds-token__val">rails unstick</span>
+            <span class="ds-token__use">Sticky side-rails become headers.</span>
+          </div>
+          <div class="ds-token">
+            <span class="ds-token__name">≤ 860px</span>
+            <span class="ds-token__val">spreads stack</span>
+            <span class="ds-token__use">Feature rows go media-over-panel.</span>
+          </div>
+          <div class="ds-token">
+            <span class="ds-token__name">≤ 768px</span>
+            <span class="ds-token__val">nav → burger</span>
+            <span class="ds-token__use"
+              >Links become the index sheet. The bar centres, drops to 60px
+              and takes a ground once scrolled.</span
+            >
+          </div>
+          <div class="ds-token">
+            <span class="ds-token__name">≤ 640px</span>
+            <span class="ds-token__val">--t-meta → 10px</span>
+            <span class="ds-token__use">Grid unstacks to one column.</span>
+          </div>
+          <div class="ds-token">
+            <span class="ds-token__name">≤ 360px</span>
+            <span class="ds-token__val">section heads wrap</span>
+            <span class="ds-token__use"
+              >Title and its mono label stop sharing a row.</span
+            >
+          </div>
+        </div>
+
+        <p class="ds-note">
+          <code>--t-meta</code> drops to <code>10px</code> below 640px and has
+          to stay there. It is load-bearing, not taste: at
+          <code>11px</code> the case-study section heads no longer fit a 320px
+          screen and the page silently zooms out. Measured, not assumed.
+        </p>
+
+        <p class="ds-note">
+          Below <code>360px</code>, <code>.section__head</code> wraps. Two
+          <code>white-space: nowrap</code> items in one
+          <code>space-between</code> row have a combined minimum width, and on
+          a case-study page the title plus
+          <code>"03 — Problem &amp; solution"</code> exceeds 320px of it. A
+          browser does not clip that — it widens the layout viewport to fit,
+          zooming the whole page out and dragging every fixed element (the
+          bar, the read-progress rule) past the screen edge. The symptom looks
+          like a bug in <code>.progress</code>; the cause is a row that
+          wouldn't wrap.
+        </p>
+      </section>
+
+      <!-- 07b — TOUCH -->
+      <section class="ds-sec" id="touch">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">07b — Touch</h3>
+          <span class="meta meta--mute">The 44px floor</span>
+        </div>
+
+        <p class="ds-note">
+          A target sized for a cursor is not a target. A pointer is one pixel
+          and lands where it is aimed; a fingertip is about 9mm, arrives at an
+          angle, and covers the thing it is reaching for.
+          <code>44px</code> is the floor, and below 768px every control clears
+          it.
+        </p>
+
+        <p class="ds-note">
+          The rule is <em>grow the target, never the type</em>. Padding and
+          <code>min-height</code> do the work, so composition and type scale
+          are untouched — the page looks identical, it just stops fighting a
+          thumb. These are easy to miss by eye, because every one of them
+          <em>looks</em> right at any size; the list below was found by
+          measuring rendered boxes on real pages at 390px.
+        </p>
+
+        <div class="ds-tokens">
+          <div class="ds-token">
+            <span class="ds-token__name">.field__input</span>
+            <span class="ds-token__val">35 → 45px</span>
+            <span class="ds-token__use"
+              >Padding added above the text, so the drawn underline does not
+              move. Font stays 16px — below that iOS zooms the page on
+              focus.</span
+            >
+          </div>
+          <div class="ds-token">
+            <span class="ds-token__name">.channel__value</span>
+            <span class="ds-token__val">21 → 44px</span>
+            <span class="ds-token__use"
+              >The four ways to actually reach him — the highest-consequence
+              miss on the page.</span
+            >
+          </div>
+          <div class="ds-token">
+            <span class="ds-token__name">.nav__mark</span>
+            <span class="ds-token__val">12 → 44px</span>
+            <span class="ds-token__use"
+              >The home link on all eight pages, and the smallest target on
+              the site.</span
+            >
+          </div>
+          <div class="ds-token">
+            <span class="ds-token__name">.section__action</span>
+            <span class="ds-token__val">13 → 44px</span>
+            <span class="ds-token__use"
+              >The only route from the homepage grid into the work index.</span
+            >
+          </div>
+          <div class="ds-token">
+            <span class="ds-token__name">.btn / .cta__link</span>
+            <span class="ds-token__val">40, 21 → 44px</span>
+            <span class="ds-token__use"
+              >Near enough to look right, far enough to miss.</span
+            >
+          </div>
+          <div class="ds-token">
+            <span class="ds-token__name">tap highlight</span>
+            <span class="ds-token__val">signal @ 18%</span>
+            <span class="ds-token__use"
+              >The system grey-blue flash retinted to the palette. Not set to
+              transparent — the flash is the only confirmation a thumb gets,
+              since a phone has no hover.</span
+            >
+          </div>
+          <div class="ds-token">
+            <span class="ds-token__name">scroll-padding-top</span>
+            <span class="ds-token__val">92 / 76px</span>
+            <span class="ds-token__use"
+              >Anchor jumps clear the fixed bar. Without it a jump to #work
+              parks the heading under the bar and reads as a dead link.</span
+            >
+          </div>
+        </div>
+
+        <p class="ds-note">
+          ⚠ These live at the very end of <code>css/style.css</code> and must
+          stay there. A media query adds no specificity, so they only win by
+          coming after the components they override — placed higher,
+          <code>.field__input</code>'s own <code>padding</code> shorthand
+          silently reset them and the field stayed 35px while looking fixed.
+        </p>
+      </section>
+
+      <!-- ██████████████ ELEMENTS ██████████████ -->
+      <div class="ds-part">
+        <span class="ds-part__num">Part B</span>
+        <h2 class="ds-part__name">Elements</h2>
+      </div>
+
+      <!-- 08 — META LABELS -->
+      <section class="ds-sec" id="meta">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">08 — Meta labels</h3>
+          <span class="meta meta--mute">The mono voice</span>
+        </div>
+
+        <p class="ds-note">
+          Every label, spec and stamp is Geist Mono, uppercase, letter-spaced.
+          Three tones, plus a real status dot (a genuine element, never a
+          pseudo, so it survives the import).
+        </p>
+
+        <div class="ds-stage ds-stage--warm">
+          <div class="ds-cell">
+            <span class="ds-cell__cap"><span class="meta meta--mute">.meta</span></span>
+            <span class="meta">Product Designer</span>
+          </div>
+          <div class="ds-cell">
+            <span class="ds-cell__cap"><span class="meta meta--mute">.meta--mute</span></span>
+            <span class="meta meta--mute">How I shape products</span>
+          </div>
+          <div class="ds-cell">
+            <span class="ds-cell__cap"><span class="meta meta--mute">.meta--signal</span></span>
+            <span class="meta meta--signal">Available</span>
+          </div>
+          <div class="ds-cell">
+            <span class="ds-cell__cap"><span class="meta meta--mute">.meta--signal + .dot</span></span>
+            <span class="meta meta--signal">
+              <span class="dot" aria-hidden="true"></span>
+              Available for work
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 09 — STATUS INDICATORS -->
+      <section class="ds-sec" id="status">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">09 — Status indicators</h3>
+          <span class="meta meta--mute">Signal, used sparingly</span>
+        </div>
+
+        <p class="ds-note">
+          The dot-plus-signal label is the site's one live-status device —
+          availability, an in-progress case study, a held-open slot. It's
+          deliberately rationed: when everything glows, nothing does.
+        </p>
+
+        <div class="ds-stage ds-stage--warm">
+          <div class="ds-cell">
+            <span class="ds-cell__cap"><span class="meta meta--mute">Available</span></span>
+            <span class="meta meta--signal">
+              <span class="dot" aria-hidden="true"></span>
+              Available for work
+            </span>
+          </div>
+          <div class="ds-cell">
+            <span class="ds-cell__cap"><span class="meta meta--mute">In progress</span></span>
+            <span class="meta meta--signal">
+              <span class="dot" aria-hidden="true"></span>
+              Case study in progress
+            </span>
+          </div>
+          <div class="ds-cell">
+            <span class="ds-cell__cap"><span class="meta meta--mute">Reserved</span></span>
+            <span class="meta meta--signal">Reserved</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10 — BUTTONS -->
+      <section class="ds-sec" id="buttons">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">10 — Buttons</h3>
+          <span class="meta meta--mute">Default · Hover</span>
+        </div>
+
+        <p class="ds-note">
+          The one place with filled and outlined shapes — reserved for a CTA,
+          where the page has earned a loud target. Primary inverts on hover;
+          ghost lifts its border and text to full ink. The arrow slides
+          <code>4px</code> on hover.
+        </p>
+
+        <p class="ds-note">
+          Arrow direction belongs to what the arrow <em>means</em>, not to the
+          variant it sits in, so direction is a modifier on the arrow and works
+          on primary and ghost alike. <code>.btn__arrow--down</code> nudges
+          <code>3px</code> down for a download (Home and About → Download CV,
+          the same button in both places);
+          <code>.btn__arrow--left</code> nudges <code>4px</code> back against
+          the reading direction for a way out, and leads the label rather than
+          trailing it (case pages → Back to all projects).
+        </p>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Primary — .btn.btn--primary</span></div>
+          <div class="ds-stage ds-stage--center">
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--mute">Default</span></span>
+              <a class="btn btn--primary" href="#0">
+                <span class="btn__label">Start a conversation</span>
+                <span class="btn__arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--signal">Hover</span></span>
+              <a class="btn btn--primary is-hover" href="#0">
+                <span class="btn__label">Start a conversation</span>
+                <span class="btn__arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Ghost — .btn.btn--ghost</span></div>
+          <div class="ds-stage ds-stage--center">
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--mute">Default</span></span>
+              <a class="btn btn--ghost" href="#0">
+                <span class="btn__label">See selected work</span>
+              </a>
+            </div>
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--signal">Hover</span></span>
+              <a class="btn btn--ghost is-hover" href="#0">
+                <span class="btn__label">See selected work</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Download — .btn.btn--primary + .btn__arrow--down</span></div>
+          <div class="ds-stage ds-stage--center">
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--mute">Default</span></span>
+              <a class="btn btn--primary" href="#0">
+                <span class="btn__label">Download CV</span>
+                <span class="btn__arrow btn__arrow--down" aria-hidden="true">↓</span>
+              </a>
+            </div>
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--signal">Hover</span></span>
+              <a class="btn btn--primary is-hover" href="#0">
+                <span class="btn__label">Download CV</span>
+                <span class="btn__arrow btn__arrow--down" aria-hidden="true">↓</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Back — .btn.btn--ghost + .btn__arrow--left</span></div>
+          <div class="ds-stage ds-stage--center">
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--mute">Default</span></span>
+              <a class="btn btn--ghost" href="#0">
+                <span class="btn__arrow btn__arrow--left" aria-hidden="true">←</span>
+                <span class="btn__label">Back to all projects</span>
+              </a>
+            </div>
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--signal">Hover</span></span>
+              <a class="btn btn--ghost is-hover" href="#0">
+                <span class="btn__arrow btn__arrow--left" aria-hidden="true">←</span>
+                <span class="btn__label">Back to all projects</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11 — LINKS -->
+      <section class="ds-sec" id="links">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">11 — Links</h3>
+          <span class="meta meta--mute">Nav · action · inline</span>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Nav link — .nav__link</span></div>
+          <div class="ds-stage ds-stage--center">
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--mute">Default</span></span>
+              <span class="nav__link">Work</span>
+            </div>
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--signal">Hover</span></span>
+              <span class="nav__link is-hover">Work</span>
+            </div>
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--mute">Current · [aria-current]</span></span>
+              <span class="nav__link" aria-current="page">Work</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Section action — .section__action</span></div>
+          <div class="ds-stage ds-stage--center">
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--mute">Default</span></span>
+              <span class="section__action">
+                <span class="meta">See all projects</span>
+                <span class="section__action-arrow" aria-hidden="true">→</span>
+              </span>
+            </div>
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--signal">Hover</span></span>
+              <span class="section__action is-hover">
+                <span class="meta">See all projects</span>
+                <span class="section__action-arrow" aria-hidden="true">→</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Inline text link — .cta__link / .channel__value</span></div>
+          <div class="ds-stage ds-stage--center">
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--mute">Default</span></span>
+              <span class="cta__link">victorajibolaelugbaju@gmail.com</span>
+            </div>
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--signal">Hover</span></span>
+              <span class="cta__link is-hover">victorajibolaelugbaju@gmail.com</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 12 — TAGS & CHIPS -->
+      <section class="ds-sec" id="tags">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">12 — Tags &amp; chips</h3>
+          <span class="meta meta--mute">Metadata · selection</span>
+        </div>
+
+        <p class="ds-note">
+          One pill, three jobs. The static tag (project categories), the skill
+          chip and the tool chip are the same object at rest — a mono label in
+          a 2px-radius outline. The selectable chip (a radio wearing a pill)
+          adds selected and keyboard-focus states.
+        </p>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Static tags — .project__tag / .card__tag / .skills__chip / .caps__tool</span></div>
+          <div class="ds-stage ds-stage--center">
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--mute">Project / card tag</span></span>
+              <ul class="project__tags">
+                <li class="project__tag meta">Enterprise</li>
+                <li class="project__tag meta">Role-based access</li>
+                <li class="project__tag meta is-hover">Hover (in card)</li>
+              </ul>
+            </div>
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--mute">Skill chip</span></span>
+              <ul class="skills">
+                <li class="skills__chip meta">UX Design</li>
+                <li class="skills__chip meta">Design Systems</li>
+              </ul>
+            </div>
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--mute">Tool chip</span></span>
+              <ul class="caps__tools">
+                <li class="caps__tool meta meta--mute">Figma</li>
+                <li class="caps__tool meta meta--mute">FigJam</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Selectable chip — .chip</span></div>
+          <div class="ds-stage ds-stage--center">
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--mute">Default</span></span>
+              <span class="chip">
+                <span class="chip__label meta">Full-time</span>
+              </span>
+            </div>
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--mute">Hover</span></span>
+              <span class="chip is-hover">
+                <span class="chip__label meta">Full-time</span>
+              </span>
+            </div>
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--signal">Selected · :checked</span></span>
+              <label class="chip">
+                <input class="chip__input" type="radio" name="ds-chip" checked />
+                <span class="chip__label meta">Freelance</span>
+              </label>
+            </div>
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--signal">Keyboard focus</span></span>
+              <span class="chip is-focus">
+                <span class="chip__label meta">Contract</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 13 — FORM FIELDS -->
+      <section class="ds-sec" id="fields">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">13 — Form fields</h3>
+          <span class="meta meta--mute">Default · Focus · Error</span>
+        </div>
+
+        <p class="ds-note">
+          Underline fields, no boxes. The focus indicator is a real 2px
+          element drawn from the left over the resting hairline (a
+          <code>scaleX</code> transform, so it imports clean), and the label
+          tints to signal. Error forces the line open in signal and reveals
+          the message.
+        </p>
+
+        <div class="ds-stage">
+          <div class="ds-cell" style="flex:1 1 240px">
+            <span class="ds-cell__cap"><span class="meta meta--mute">Default</span></span>
+            <div class="field">
+              <span class="field__label meta meta--mute">Your name</span>
+              <div class="field__control">
+                <input class="field__input" type="text" placeholder="Jane Cooper" />
+                <div class="field__line" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ds-cell" style="flex:1 1 240px">
+            <span class="ds-cell__cap"><span class="meta meta--signal">Focus</span></span>
+            <div class="field is-focus">
+              <span class="field__label meta meta--mute">Your name</span>
+              <div class="field__control">
+                <input class="field__input" type="text" value="Jane Cooper" />
+                <div class="field__line" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ds-cell" style="flex:1 1 240px">
+            <span class="ds-cell__cap"><span class="meta meta--signal">Error · .is-error</span></span>
+            <div class="field is-error">
+              <span class="field__label meta meta--mute">Email</span>
+              <div class="field__control">
+                <input class="field__input" type="text" value="jane@" />
+                <div class="field__line" aria-hidden="true"></div>
+              </div>
+              <span class="field__error meta">Enter a valid email address.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ds-stage">
+          <div class="ds-cell" style="flex:1 1 320px; width:100%">
+            <span class="ds-cell__cap"><span class="meta meta--mute">Textarea — .field__input--area</span></span>
+            <div class="field">
+              <span class="field__label meta meta--mute">Message</span>
+              <div class="field__control">
+                <textarea class="field__input field__input--area" placeholder="What are you building?"></textarea>
+                <div class="field__line" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Copy button — .channel__copy</span></div>
+          <div class="ds-stage ds-stage--center">
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--mute">Default</span></span>
+              <span class="channel__copy meta">Copy</span>
+            </div>
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--mute">Hover</span></span>
+              <span class="channel__copy meta is-hover">Copy</span>
+            </div>
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--signal">Copied · .is-copied</span></span>
+              <span class="channel__copy meta is-copied">Copied</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 14 — LISTS & POINTS -->
+      <section class="ds-sec" id="lists">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">14 — Lists &amp; points</h3>
+          <span class="meta meta--mute">Hairlines, not bullets</span>
+        </div>
+
+        <p class="ds-note">
+          Lists are marked with a vertical hairline, never a glyph — it's the
+          same rule system as everything else and imports as a stroke. The
+          <code>--todo</code> and <code>is-todo</code> variants turn signal and
+          italic: an unanswered outcome that must never ship looking finished.
+        </p>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Point list — .card__point</span></div>
+          <div class="ds-stage ds-stage--warm">
+            <ul class="card__points" style="width:100%; max-width:560px">
+              <li class="card__point">
+                Four roles, each given a permission-specific view of one system.
+              </li>
+              <li class="card__point">
+                110+ screens across 21 flows.
+              </li>
+              <li class="card__point card__point--todo">
+                The loud TODO variant — an unanswered outcome, still open.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Label / value row — .now__row</span></div>
+          <div class="ds-stage ds-stage--warm">
+            <ul class="now" style="width:100%; max-width:560px">
+              <li class="now__row">
+                <span class="meta meta--mute">Now</span>
+                <span class="now__value">Finance software — approval &amp; reconciliation.</span>
+              </li>
+              <li class="now__row is-todo">
+                <span class="meta meta--mute">Next</span>
+                <span class="now__value now__value--todo">Todo variant — decide and fill this in.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 15 — FACTS RAIL -->
+      <section class="ds-sec" id="facts">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">15 — Facts rail</h3>
+          <span class="meta meta--mute">Label over value</span>
+        </div>
+
+        <p class="ds-note">
+          A telemetry-style strip: a muted mono label stacked over a mono
+          value, split by vertical hairlines. Used for the case-study facts
+          (role, year, scope, type).
+        </p>
+
+        <!-- RETIRED 2026-10-05 — the .hero__rail specimen was removed with
+             the component. The rail carried Location, then Status and a live
+             Local time clock; Victor asked for all three to come off the site
+             entirely, so index.html's hero now ends at the display type and
+             no page uses .hero__rail any more.
+
+             The CSS for .hero__rail / .hero__rail-item is still in
+             style.css:825 and is now unused. It is left in place rather than
+             deleted because the rail is a plausible thing to want back, and
+             a dead rule costs nothing a visitor can feel. If it is still
+             unused at launch, delete the rule and this note together. -->
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Case facts — .case-facts</span></div>
+          <div class="ds-stage ds-stage--warm">
+            <dl class="case-facts" style="width:100%; border-top:none; padding-top:0">
+              <div class="case-fact">
+                <dt class="meta meta--mute">Role</dt>
+                <dd class="case-fact__value">Product Designer</dd>
+              </div>
+              <div class="case-fact">
+                <dt class="meta meta--mute">Year</dt>
+                <dd class="case-fact__value">2026</dd>
+              </div>
+              <div class="case-fact">
+                <dt class="meta meta--mute">Scope</dt>
+                <dd class="case-fact__value">110+ screens · 21 flows</dd>
+              </div>
+              <div class="case-fact">
+                <dt class="meta meta--mute">Type</dt>
+                <dd class="case-fact__value">Team lab project — Seamfix</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <!-- ██████████████ COMPONENTS ██████████████ -->
+      <div class="ds-part">
+        <span class="ds-part__num">Part C</span>
+        <h2 class="ds-part__name">Components</h2>
+      </div>
+
+      <!-- 16 — RULES & HAIRLINES -->
+      <section class="ds-sec" id="rules">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">16 — Rules &amp; hairlines</h3>
+          <span class="meta meta--mute">The load-bearing element</span>
+        </div>
+
+        <p class="ds-note">
+          The page is held together by 1px rules, not boxes. Full-strength
+          <code>--rule</code> for structural dividers, <code>--rule-soft</code>
+          for quieter ones, and a signal hairline for accented edges. A box
+          drawn around a box is what makes a Swiss page look like Bootstrap —
+          so it's rules almost everywhere and borders only on frames and pills.
+        </p>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">--rule · 18%</span></div>
+          <div class="ds-rule"></div>
+          <div class="ds-group__label"><span class="meta meta--mute">--rule-soft · 10%</span></div>
+          <div class="ds-rule ds-rule--soft"></div>
+          <div class="ds-group__label"><span class="meta meta--signal">--signal-line · 28%</span></div>
+          <div class="ds-rule ds-rule--signal"></div>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Vertical hairline — list rhythm</span></div>
+          <div class="ds-vrule">
+            <!-- Generic labels. These were Location / Local time / Status
+                 until 2026-10-05, borrowed from the hero rail; that rail is
+                 gone from the site, and a specimen should not be the last
+                 place a retired component survives. -->
+            <span class="ds-vrule__seg"><span class="meta meta--mute">Role</span></span>
+            <span class="ds-vrule__seg"><span class="meta meta--mute">Year</span></span>
+            <span class="ds-vrule__seg"><span class="meta meta--mute">Scope</span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 17 — FRAMES & PLACEHOLDERS -->
+      <section class="ds-sec" id="frames">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">17 — Frames &amp; placeholders</h3>
+          <span class="meta meta--mute">Loud by design</span>
+        </div>
+
+        <p class="ds-note">
+          Image frames are 2px-radius wells on the elevated surface. When an
+          image is missing, the frame shows a dashed signal placeholder naming
+          the exact file it wants — a deliberately loud state that can't reach
+          launch looking finished. The reserved slot is the same idea for a
+          whole card.
+        </p>
+
+        <div class="ds-stage">
+          <div class="ds-cell" style="flex:1 1 300px">
+            <span class="ds-cell__cap"><span class="meta meta--signal">Image needed — .card__frame.is-empty</span></span>
+            <div class="card__frame is-empty">
+              <div class="card__placeholder">
+                <span class="meta meta--signal">Image needed</span>
+                <span class="card__spec"
+                  >3:2 at <code>img/work/name.jpg</code> — 1200×800 minimum.</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="ds-cell" style="flex:1 1 300px">
+            <span class="ds-cell__cap"><span class="meta meta--signal">Reserved slot — .card__frame--slot</span></span>
+            <div class="card__frame card__frame--slot">
+              <div class="card__slot-mark">
+                <span class="card__slot-plus" aria-hidden="true">+</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 18 — SECTION HEAD -->
+      <section class="ds-sec" id="sectionhead">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">18 — Section head</h3>
+          <span class="meta meta--mute">The repeating spine</span>
+        </div>
+
+        <p class="ds-note">
+          Every section opens the same way: a numbered mono label on the left,
+          a mono note or action on the right, a full <code>--rule</code>
+          beneath. It's the metronome the whole page keeps time to.
+        </p>
+
+        <div class="ds-stage ds-stage--warm">
+          <div class="section__head" style="flex:1 1 100%">
+            <span class="meta meta--mute">01 — My Case Studies</span>
+            <span class="section__action">
+              <span class="meta">See all projects</span>
+              <span class="section__action-arrow" aria-hidden="true">→</span>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 19 — NAV & WORDMARK -->
+      <section class="ds-sec" id="navmark">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">19 — Nav, wordmark &amp; mobile menu</h3>
+          <span class="meta meta--mute">Fixed, mono, quiet</span>
+        </div>
+
+        <p class="ds-note">
+          The wordmark is set, not drawn — the name in mono at label size, no
+          logo. The bar is fixed and transparent, floating over the page; the
+          links carry the standard hover and the current-page state.
+        </p>
+
+        <div class="ds-stage ds-stage--warm">
+          <div class="ds-cell">
+            <span class="ds-cell__cap"><span class="meta meta--mute">Wordmark — .nav__mark</span></span>
+            <span class="nav__mark-name">Victor Elugbaju</span>
+          </div>
+          <div class="ds-cell" style="flex:1 1 320px">
+            <span class="ds-cell__cap"><span class="meta meta--mute">Links — .nav__links</span></span>
+            <div class="nav__links">
+              <span class="nav__link" aria-current="page">Work</span>
+              <span class="nav__link">About</span>
+              <span class="nav__link">Experience</span>
+              <span class="nav__link">Contact</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="ds-note">
+          Below <code>768px</code> those links are replaced by a burger and a
+          full-height index sheet — the site's contents set as a numbered list
+          in display serif, which is the same numbering language the work index
+          uses. It is a table of contents, not a dropdown. The sheet sits
+          <em>under</em> the bar (<code>z-90</code> against the nav's
+          <code>z-100</code>), so the wordmark and the burger stay in place
+          while it opens.
+        </p>
+
+        <p class="ds-note">
+          Both components are <code>display:none</code> above the breakpoint,
+          so the two specimens below are forced on with nothing but
+          <code>display</code> and a box size — they are the shipped
+          components, not redrawings of them. The whole visible state is one
+          attribute: <code>aria-expanded</code> on the burger drives the bars,
+          the MENU→CLOSE swap and the sheet alike, so what is drawn and what a
+          screen reader announces cannot disagree.
+        </p>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Burger — .nav__burger</span></div>
+          <div class="ds-stage ds-stage--warm ds-navdemo">
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--mute">Closed — aria-expanded="false"</span></span>
+              <span class="nav__burger" aria-expanded="false">
+                <span class="nav__burger-label meta">
+                  <span class="nav__burger-word">Menu</span>
+                  <span class="nav__burger-word">Close</span>
+                </span>
+                <span class="nav__burger-bars">
+                  <span class="nav__burger-bar"></span>
+                  <span class="nav__burger-bar"></span>
+                </span>
+              </span>
+            </div>
+            <div class="ds-cell">
+              <span class="ds-cell__cap"><span class="meta meta--signal">Open — aria-expanded="true"</span></span>
+              <span class="nav__burger" aria-expanded="true">
+                <span class="nav__burger-label meta">
+                  <span class="nav__burger-word">Menu</span>
+                  <span class="nav__burger-word">Close</span>
+                </span>
+                <span class="nav__burger-bars">
+                  <span class="nav__burger-bar"></span>
+                  <span class="nav__burger-bar"></span>
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Index sheet — .nav-menu.is-open</span></div>
+          <div class="ds-stage ds-stage--warm">
+            <div class="ds-cell ds-navdemo__sheet">
+              <div class="nav-menu is-open">
+                <div class="nav-menu__inner">
+                  <div class="nav-menu__rule"></div>
+
+                  <div class="nav-menu__eyebrow">
+                    <span class="meta meta--mute">Index</span>
+                    <span class="meta meta--mute">Sections 01–04</span>
+                  </div>
+
+                  <div class="nav-menu__list">
+                    <span class="nav-menu__item" aria-current="page">
+                      <span class="nav-menu__index meta">01</span>
+                      <span class="nav-menu__line"
+                        ><span class="nav-menu__word">Work</span></span
+                      >
+                    </span>
+                    <span class="nav-menu__item">
+                      <span class="nav-menu__index meta">02</span>
+                      <span class="nav-menu__line"
+                        ><span class="nav-menu__word">About</span></span
+                      >
+                    </span>
+                    <span class="nav-menu__item">
+                      <span class="nav-menu__index meta">03</span>
+                      <span class="nav-menu__line"
+                        ><span class="nav-menu__word">Experience</span></span
+                      >
+                    </span>
+                    <span class="nav-menu__item">
+                      <span class="nav-menu__index meta">04</span>
+                      <span class="nav-menu__line"
+                        ><span class="nav-menu__word">Contact</span></span
+                      >
+                    </span>
+                  </div>
+
+                  <div class="nav-menu__foot">
+                    <span class="nav-menu__mail">victorajibolaelugbaju@gmail.com</span>
+                    <!-- The clock row that sat here came off every page
+                         2026-10-05; the social links are all this row
+                         carries now. -->
+                    <div class="nav-menu__foot-row">
+                      <div class="nav-menu__social">
+                        <span class="meta">LinkedIn</span>
+                        <span class="meta">Behance</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="ds-note">
+          Row 01 carries <code>aria-current="page"</code>, which is why its
+          number and word sit in signal. On the page itself the words rise out
+          of <code>overflow:hidden</code> frames — the same clipping-frame
+          reveal as the hero headline — staggered <code>60ms</code> apart, and
+          the hairline under the bar draws across before the list arrives.
+          Closing is not that in reverse: the whole sheet leaves at once, since
+          a stagger on the way out makes a reader wait for the page they
+          already asked for.
+        </p>
+      </section>
+
+      <!-- 20 — CARD -->
+      <section class="ds-sec" id="card">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">20 — Work card</h3>
+          <span class="meta meta--mute">Foundations, composed</span>
+        </div>
+
+        <p class="ds-note">
+          The card is where the primitives assemble: a ruled head, an image
+          frame, a serif title, a hairline-bulleted point list, and a tag row.
+          Hover lifts the number, title and image — see Buttons, Links and Tags
+          for those states.
+        </p>
+
+        <div class="ds-stage ds-stage--warm">
+          <article class="card" style="flex:0 1 380px">
+            <div class="card__link">
+              <div class="card__head">
+                <span class="card__num meta">01</span>
+                <span class="meta meta--mute">2026</span>
+              </div>
+
+              <div class="card__frame is-empty">
+                <div class="card__placeholder">
+                  <span class="meta meta--signal">Image needed</span>
+                  <span class="card__spec"
+                    >4:3 at <code>img/work/seamfix.jpg</code> — 1200×900
+                    minimum.</span
+                  >
+                </div>
+              </div>
+
+              <div class="card__body">
+                <div class="card__text">
+                  <h4 class="card__title">Seamfix</h4>
+                  <p class="card__desc">Asset Tracking Management System</p>
+
+                  <ul class="card__points">
+                    <li class="card__point">
+                      Four roles, each given a permission-specific view of one
+                      system — Admin, Asset Manager, Employee, Auditor.
+                    </li>
+                    <li class="card__point card__point--todo">
+                      The loud TODO variant — an unanswered outcome that must
+                      not ship looking finished.
+                    </li>
+                  </ul>
+                </div>
+
+                <ul class="card__tags">
+                  <li class="card__tag meta">Enterprise</li>
+                  <li class="card__tag meta">Role-based access</li>
+                  <li class="card__tag meta">Design systems</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 21 — FEATURE SPREAD -->
+      <section class="ds-sec" id="spread">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">21 — Feature spread</h3>
+          <span class="meta meta--mute">The all-projects row</span>
+        </div>
+
+        <p class="ds-note">
+          The project index is built from wide, alternating rows — media on one
+          side, a panel on the other, the sides swapping down the page
+          (<code>.project--flip</code>). Below <code>860px</code> it stacks to
+          media-over-panel. One anchor wraps the whole row, so there's a single
+          hover target and tab stop.
+        </p>
+
+        <div class="ds-stage ds-stage--warm">
+          <article class="project" style="width:100%">
+            <div class="project__link">
+              <div class="project__media">
+                <div class="card__frame is-empty">
+                  <div class="card__placeholder">
+                    <span class="meta meta--signal">Image needed</span>
+                    <span class="card__spec"
+                      >3:2 at <code>img/work/name.jpg</code> — 1200×800.</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="project__panel">
+                <div class="project__head">
+                  <span class="project__index meta">01</span>
+                  <span class="meta meta--mute">Enterprise · 2026</span>
+                </div>
+                <h4 class="project__title">Seamfix</h4>
+                <p class="project__desc">Asset Tracking Management System</p>
+                <p class="project__summary">
+                  One system, four permission-scoped views. 110+ screens across
+                  21 flows — asset and user management, audit, reporting.
+                </p>
+                <ul class="project__tags">
+                  <li class="project__tag meta">Enterprise</li>
+                  <li class="project__tag meta">Role-based access</li>
+                </ul>
+                <span class="project__view">
+                  <span class="meta">View case study</span>
+                  <span class="project__view-arrow" aria-hidden="true">→</span>
+                </span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 22 — NUMBERED BLOCKS -->
+      <section class="ds-sec" id="blocks">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">22 — Numbered blocks</h3>
+          <span class="meta meta--mute">Principles · capabilities</span>
+        </div>
+
+        <p class="ds-note">
+          Editorial content columns: an oversized serif numeral, a title and a
+          paragraph. The principle variant carries a real vertical rule drawn
+          top-to-bottom on scroll (shown here in its settled state); the
+          capability variant is a simpler top-ruled column.
+        </p>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Principle — .principle</span></div>
+          <div class="ds-stage ds-stage--warm">
+            <div class="principles" style="flex:1 1 100%">
+              <article class="principle is-in">
+                <div class="principle__rule" aria-hidden="true"></div>
+                <span class="principle__num">01</span>
+                <h4 class="principle__title">Clarity over cleverness</h4>
+                <p class="principle__text">
+                  I design for understanding first. If a user has to think too
+                  hard about what to do next, the design has already failed.
+                </p>
+              </article>
+              <article class="principle is-in">
+                <div class="principle__rule" aria-hidden="true"></div>
+                <span class="principle__num">02</span>
+                <h4 class="principle__title">Systems, not screens</h4>
+                <p class="principle__text">
+                  I don't just design individual screens — I design systems that
+                  scale. This keeps products cohesive as they grow.
+                </p>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label"><span class="meta meta--mute">Capability — .cap</span></div>
+          <div class="ds-stage ds-stage--warm">
+            <div class="caps" style="flex:1 1 100%">
+              <article class="cap">
+                <span class="cap__num meta meta--signal">01</span>
+                <h4 class="cap__title">End-to-end product design</h4>
+                <p class="cap__text">
+                  From discovery and user flows through high-fidelity UI and
+                  developer handoff — the whole arc, not a slice of it.
+                </p>
+              </article>
+              <article class="cap">
+                <span class="cap__num meta meta--signal">02</span>
+                <h4 class="cap__title">Complex &amp; enterprise workflows</h4>
+                <p class="cap__text">
+                  Role-based access, approval routing, reconciliation, audit —
+                  where the hard part is structure, not surface.
+                </p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 23 — TESTIMONIAL -->
+      <section class="ds-sec" id="quote">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">23 — Testimonial</h3>
+          <span class="meta meta--mute">Serif quote + mono attribution</span>
+        </div>
+
+        <p class="ds-note">
+          A single large serif quote over a ruled attribution — the name in
+          mono, the role in body. On the live site an index swaps between
+          several; here it rests in its plain, no-JS fallback.
+        </p>
+
+        <div class="ds-stage ds-stage--warm">
+          <figure class="quote is-active" style="flex:1 1 100%; max-width:760px">
+            <div class="quote__frame quote__body">
+              <p class="quote__inner">
+                He designs the part of the product no one sees until it's
+                missing — the logic that decides whether the thing can be
+                trusted at all.
+              </p>
+            </div>
+            <figcaption class="quote__foot">
+              <div class="quote__frame">
+                <div class="quote__inner quote__attr">
+                  <span class="quote__name">A. Colleague</span>
+                  <span class="quote__role meta meta--mute">Engineering Lead</span>
+                </div>
+              </div>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- 24 — TOOLKIT -->
+      <section class="ds-sec" id="toolkit">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">24 — Toolkit card</h3>
+          <span class="meta meta--mute">Four across · brand-lit frame</span>
+        </div>
+
+        <p class="ds-note">
+          The one place the page carries colour that is not the signal
+          vermilion. Each mark is a full-colour brand SVG at rest; the
+          interaction lives entirely in the frame, which takes that tool’s
+          own colour and glows on hover, carried by the per-card
+          <code>--tool-brand</code> value. Eight cards fill four columns
+          twice and drop to two across below 900px. FigJam ships no public
+          SVG mark, so it keeps a typographic one in FigJam purple.
+        </p>
+
+        <div class="ds-stage ds-stage--warm">
+          <div class="toolkit" style="flex:1 1 100%">
+            <article class="tool tool--figma">
+              <div class="tool__mark">
+                <img class="tool__logo" src="img/logos/figma.svg" alt="" width="30" height="30" />
+              </div>
+              <h3 class="tool__name">Figma</h3>
+              <span class="meta meta--mute tool__role">Design</span>
+            </article>
+            <article class="tool tool--figjam">
+              <div class="tool__mark">
+                <img
+                class="tool__logo"
+                src="img/logos/figjam.svg"
+                alt=""
+                width="30"
+                height="30"
+                loading="lazy"
+                decoding="async"
+              />
+              </div>
+              <h3 class="tool__name">FigJam</h3>
+              <span class="meta meta--mute tool__role">Collaboration</span>
+            </article>
+            <article class="tool tool--vscode">
+              <div class="tool__mark">
+                <img class="tool__logo" src="img/logos/vscode.svg" alt="" width="30" height="30" />
+              </div>
+              <h3 class="tool__name">VS Code</h3>
+              <span class="meta meta--mute tool__role">Coding</span>
+            </article>
+            <article class="tool tool--claude">
+              <div class="tool__mark">
+                <img class="tool__logo" src="img/logos/claude.svg" alt="" width="30" height="30" />
+              </div>
+              <h3 class="tool__name">Claude</h3>
+              <span class="meta meta--mute tool__role">Development</span>
+            </article>
+            <article class="tool tool--illustrator">
+              <div class="tool__mark">
+                <img class="tool__logo" src="img/logos/illustrator.svg" alt="" width="30" height="30" />
+              </div>
+              <h3 class="tool__name">Illustrator</h3>
+              <span class="meta meta--mute tool__role">Vector</span>
+            </article>
+            <article class="tool tool--canva">
+              <div class="tool__mark">
+                <img class="tool__logo" src="img/logos/canva.svg" alt="" width="30" height="30" />
+              </div>
+              <h3 class="tool__name">Canva</h3>
+              <span class="meta meta--mute tool__role">Quick assets</span>
+            </article>
+            <article class="tool tool--notion">
+              <div class="tool__mark">
+                <img class="tool__logo" src="img/logos/notion.svg" alt="" width="30" height="30" />
+              </div>
+              <h3 class="tool__name">Notion</h3>
+              <span class="meta meta--mute tool__role">Docs &amp; specs</span>
+            </article>
+            <article class="tool tool--github">
+              <div class="tool__mark">
+                <img class="tool__logo" src="img/logos/github.svg" alt="" width="30" height="30" />
+              </div>
+              <h3 class="tool__name">GitHub</h3>
+              <span class="meta meta--mute tool__role">Version control</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 24 — CURSOR BADGE -->
+      <section class="ds-sec" id="badge">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">25 — Cursor badge</h3>
+          <span class="meta meta--mute">The one unrationed moment</span>
+        </div>
+
+        <p class="ds-note">
+          A signal disc that trails the cursor across the work grid and the
+          project index, reading <span class="meta meta--signal">View</span>.
+          Pointer-only (≥ 901px), and it skips reserved slots. Shown here in
+          its active state; on the site it lerps in and scales up on hover.
+        </p>
+
+        <div class="ds-stage ds-stage--center">
+          <div class="ds-badge">
+            <div class="view-badge__inner">
+              <span class="view-badge__label">View</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 25 — PROTOTYPE EMBED -->
+      <section class="ds-sec" id="prototype">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">26 — Prototype embed</h3>
+          <span class="meta meta--mute">Poster first, iframe on request</span>
+        </div>
+
+        <p class="ds-note">
+          A live Figma prototype behind a click-to-load poster. The launch
+          control is a real <code>&lt;a&gt;</code> to the prototype URL — JS
+          upgrades it into an inline
+          <code>&lt;iframe&gt;</code> on desktop and otherwise leaves it
+          alone, so the prototype is reachable with JS off, on a phone, and
+          if the embed fails. The embed URL lives in
+          <code>data-proto-embed</code>; the <code>href</code> is the plain
+          share link. Keep the two in sync.
+        </p>
+
+        <p class="ds-note">
+          Never loaded eagerly: the embed drags in Figma's own runtime and
+          most visitors never press play. Below 901px the upgrade is skipped
+          entirely — a desktop prototype in a phone viewport is a pinch-zoom
+          puzzle, and the Figma app handles it better than an iframe can.
+          The play glyph is SVG, not a border-hack triangle, so it survives
+          an import as a real vector layer.
+        </p>
+
+        <div class="ds-group">
+          <div class="ds-group__label">
+            <span class="meta meta--mute">Rest state — .proto__stage</span>
+          </div>
+          <div class="ds-stage">
+            <div class="proto" style="width:100%">
+              <div class="proto__stage">
+                <div class="proto__scrim" aria-hidden="true"></div>
+                <span class="proto__launch">
+                  <span class="proto__launch-disc" aria-hidden="true">
+                    <svg class="proto__launch-glyph" viewBox="0 0 16 16">
+                      <path d="M3 1.5 L14 8 L3 14.5 Z" />
+                    </svg>
+                  </span>
+                  <span class="proto__launch-label">Open the prototype</span>
+                  <span class="meta meta--mute proto__launch-note"
+                    >Loads from Figma on click — best on a desktop
+                    screen.</span
+                  >
+                </span>
+              </div>
+
+              <div class="proto__foot">
+                <span class="meta meta--mute">Figma · live prototype</span>
+                <span class="meta proto__out">
+                  <span>Open in Figma</span>
+                  <span aria-hidden="true">↗</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="ds-note">
+          The poster image is omitted in this specimen so the scrim and
+          control read against the bare stage. In use,
+          <code>.proto__poster</code> fills the frame and
+          <code>.proto.is-live</code> hides the poster, scrim and control
+          once the iframe is in.
+        </p>
+      </section>
+
+      <!-- 26 — SHOTS -->
+      <section class="ds-sec" id="shots">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">27 — Shots row</h3>
+          <span class="meta meta--mute">Three across, or four as 2×2</span>
+        </div>
+
+        <p class="ds-note">
+          A short set of captioned stills showing finished screens. Reuses
+          <code>.card__frame</code> and <code>.card__placeholder</code>
+          wholesale, so the "image needed" spec card and the
+          <code>is-empty</code> fallback already apply. Wraps to one per row
+          below 640px.
+        </p>
+
+        <p class="ds-note">
+          Three across is the default and the cap for a single row — past that a
+          reader stops looking. For four screens use
+          <code>.shots--pair</code>, which holds two per row: four across gives
+          each frame a quarter of the width and the UI inside stops being
+          legible. The pair basis is
+          <code>calc(50% - (var(--gutter) / 2))</code>, not a flat 50% — at
+          exactly half, two items plus the gap between them overflow the row and
+          the second wraps, leaving a single column of four. The subtraction is
+          what makes two-up hold.
+        </p>
+
+        <div class="ds-stage">
+          <div class="shots" style="width:100%">
+            <div class="shots__item">
+              <div class="card__frame is-empty">
+                <div class="card__placeholder">
+                  <span class="meta meta--signal">Image needed</span>
+                  <span class="card__spec">3:2 — 1200×800 minimum.</span>
+                </div>
+              </div>
+              <span class="meta shots__caption">01 — Caption</span>
+            </div>
+            <div class="shots__item">
+              <div class="card__frame is-empty">
+                <div class="card__placeholder">
+                  <span class="meta meta--signal">Image needed</span>
+                  <span class="card__spec">3:2 — 1200×800 minimum.</span>
+                </div>
+              </div>
+              <span class="meta shots__caption">02 — Caption</span>
+            </div>
+            <div class="shots__item">
+              <div class="card__frame is-empty">
+                <div class="card__placeholder">
+                  <span class="meta meta--signal">Image needed</span>
+                  <span class="card__spec">3:2 — 1200×800 minimum.</span>
+                </div>
+              </div>
+              <span class="meta shots__caption">03 — Caption</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 27 — STACKED SCROLL -->
+      <section class="ds-sec" id="stackedscroll">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">28 — Stacked scroll</h3>
+          <span class="meta meta--mute">Homepage project deck</span>
+        </div>
+
+        <p class="ds-note">
+          The homepage index is a deck, not a grid. Each project is a
+          full-width panel pinned with <code>position: sticky</code> at a
+          slightly lower offset than the one before it, so scrolling slides
+          each new project up over the last and leaves a stack of edges under
+          the nav. Sides alternate — <code>.stack__card--flip</code> reverses
+          the row, exactly like <code>.project--flip</code> on the work index,
+          and it alternates with the <em>slot</em>, never travels with the
+          project.
+        </p>
+
+        <p class="ds-note">
+          Three things break this silently, all of them measured rather than
+          assumed. Any ancestor taking <code>overflow</code> or a
+          <code>transform</code> becomes the containing block and the pinning
+          dies. Each panel needs an opaque fill, or the covered panel shows
+          through and the effect reads as a rendering fault. And the last panel
+          needs runway to hold before the deck releases — that runway must be
+          a sibling box (<code>.stack__runway</code>), because
+          <code>margin-bottom</code> on the last card moves the release point
+          by exactly what it adds to that card's own margin box, collapsing its
+          pin window to nothing, and <code>padding</code> on
+          <code>.stack</code> sits outside the content box the constraint
+          tracks. Both alternatives were tried and both fail.
+        </p>
+
+        <div class="ds-group">
+          <div class="ds-group__label">
+            <span class="meta meta--mute"
+              >Landing offsets — .stack__card:nth-child()</span
+            >
+          </div>
+          <div class="ds-stage ds-stage--warm">
+            <dl class="case-facts" style="flex:1 1 100%">
+              <div class="case-fact">
+                <dt class="meta meta--mute">Panel 01</dt>
+                <dd class="case-fact__value">top: 84px</dd>
+              </div>
+              <div class="case-fact">
+                <dt class="meta meta--mute">Panel 02</dt>
+                <dd class="case-fact__value">top: 100px</dd>
+              </div>
+              <div class="case-fact">
+                <dt class="meta meta--mute">Panel 03</dt>
+                <dd class="case-fact__value">top: 116px</dd>
+              </div>
+              <div class="case-fact">
+                <dt class="meta meta--mute">Panel 04</dt>
+                <dd class="case-fact__value">top: 132px</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+
+        <p class="ds-note">
+          84px clears the fixed nav; each panel after it lands 16px lower so
+          the covered edges read as a deck rather than one flat plane. Below
+          900px the whole device is switched off — every panel is taller than a
+          phone viewport, so nothing would ever be covered and the deck would
+          only stutter. The media and panel tracks also reset to
+          <code>flex: none</code> there: once the row becomes a column, a
+          row-axis <code>flex</code> basis resolves against height.
+        </p>
+      </section>
+
+      <!-- 28 — SECTION EXIT -->
+      <section class="ds-sec" id="sectionexit">
+        <div class="ds-sec__title-wrap ds-sec__head">
+          <h3 class="ds-sec__title">29 — Section exit</h3>
+          <span class="meta meta--mute">The way onward</span>
+        </div>
+
+        <p class="ds-note">
+          A section that ends without an exit strands the reader. The homepage
+          index used to offer only the mono action in its section head — 13px
+          tall, the same <code>--ink-50</code> as the caption opposite it, and
+          sitting <em>above</em> the work rather than after it, which is the
+          wrong moment for it. This is the answer: display scale, full width,
+          hairline top and bottom, arrow travelling on hover. Deliberately not
+          a <code>.btn</code> — filled and outlined shapes stay reserved for
+          the closing CTA, which is the page's one earned loud moment.
+        </p>
+
+        <div class="ds-group">
+          <div class="ds-group__label">
+            <span class="meta meta--mute">Exit — .work-more</span>
+          </div>
+          <div class="ds-stage ds-stage--warm">
+            <span class="work-more" style="flex:1 1 100%">
+              <span class="work-more__label">See all projects</span>
+              <span class="work-more__arrow" aria-hidden="true">→</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label">
+            <span class="meta meta--mute">Back — .work-more--back</span>
+          </div>
+          <div class="ds-stage ds-stage--warm">
+            <span class="work-more work-more--back" style="flex:1 1 100%">
+              <span class="work-more__arrow" aria-hidden="true">←</span>
+              <span class="work-more__label">Back to all projects</span>
+            </span>
+          </div>
+        </div>
+
+        <p class="ds-note">
+          The back variant is the same component at the <em>top</em> of a case
+          study, and two things change because of that position. Scale: the exit
+          is sized to close a page, and at display size directly above an
+          <code>h1</code> it outshouts the title it introduces — a back link is
+          wayfinding, so it should be findable rather than loud. Direction: the
+          arrow leads on the left and travels left on hover, because an arrow
+          that reads "back" while moving right is saying two things at once. It
+          also drops <code>margin-top</code> and its top rule, since it opens a
+          page rather than following content.
+        </p>
+      </section>
+
+      <!-- 30 — READ PROGRESS -->
+      <section class="ds-sec" id="readprogress">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">30 — Read progress</h3>
+          <span class="meta meta--mute">Case studies only</span>
+        </div>
+
+        <p class="ds-note">
+          A 2px hairline pinned to the top of the viewport, above the nav,
+          reporting how far into a case study you are. It exists because a case
+          page is the one place on this site with an unknown length — every
+          other page is scannable in a screenful or two, and a progress bar on
+          them would be reporting a fact nobody asked about.
+        </p>
+
+        <p class="ds-note">
+          Same contract as the experience rail: <code>scaleX</code> on a real
+          element, never <code>width</code>, because this writes on every scroll
+          frame and width relayouts. No transition — easing a bar that reports
+          position makes it lag the scroll it describes, which reads as a
+          stutter rather than as smoothing. It runs under reduced motion for the
+          same reason the xp rail does: this is a scrollbar, not a flourish.
+          Two flat nested elements, so it imports as a frame inside a frame.
+        </p>
+
+        <div class="ds-group">
+          <div class="ds-group__label">
+            <span class="meta meta--mute">At 38% — .progress__fill</span>
+          </div>
+          <div class="ds-stage ds-stage--warm">
+            <div
+              class="progress"
+              style="position:relative;flex:1 1 100%"
+              aria-hidden="true"
+            >
+              <div class="progress__fill" style="transform:scaleX(0.38)"></div>
+            </div>
+          </div>
+        </div>
+
+        <p class="ds-note">
+          Scrollable distance can be zero — a short page, a phone in landscape —
+          and dividing by it puts <code>NaN</code> into a transform, which
+          blanks the bar rather than erroring. The JS guards for it. It also
+          redraws on <code>load</code>, because lazy images land after the first
+          measurement and change <code>scrollHeight</code> underneath it.
+        </p>
+      </section>
+
+      <!-- 31 — FULL-BLEED PLATE -->
+      <section class="ds-sec" id="plate">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">31 — Full-bleed plate</h3>
+          <span class="meta meta--mute">One per section, at most</span>
+        </div>
+
+        <p class="ds-note">
+          One image running edge to edge, carrying a case-study section on its
+          own. This is the only device allowed to break the text column, which
+          is exactly why there is at most one per section — a page where
+          everything breaks the column has no column left to break.
+        </p>
+
+        <p class="ds-note">
+          The bleed is achieved by sitting <em>outside</em>
+          <code>.section</code> — a direct child of <code>&lt;main&gt;</code>
+          with no inline padding. Never with a negative margin: the import
+          contract bans margin for rhythm, and a negative one lands in Figma as
+          an overlapping frame. The caption is optional and usually omitted — a
+          hero plate carries no caption at all. When present it keeps the page
+          margin and the same 1560px centring <code>.section</code> uses, so it
+          lines up with the body copy above and below while the image runs past
+          it. Ratio is 16:9,
+          wider than the 3:2 the grid cards take, because a set-piece earns a
+          cinematic ratio and a thumbnail does not — dropping to 4:3 below 720px,
+          where 16:9 becomes a ~200px letterbox slot with unreadable screens
+          inside it.
+        </p>
+
+        <div class="ds-stage">
+          <div class="plate" style="flex:1 1 100%;padding-bottom:0">
+            <div class="card__frame plate__frame is-empty">
+              <div class="card__placeholder">
+                <span class="meta meta--signal">Image needed</span>
+                <span class="card__spec">16:9 — 2400×1350 minimum.</span>
+              </div>
+            </div>
+            <div class="plate__caption" style="padding-left:0;padding-right:0">
+              <span class="meta meta--mute">Plate 01</span>
+              <p class="plate__claim">
+                One descriptive line on what the board shows.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <p class="ds-note">
+          Deliberately excluded from the scroll-reveal set. It's a full-bleed
+          image and the only thing on screen when it arrives, so fading it in
+          means a visitor scrolls onto an empty viewport and waits.
+        </p>
+      </section>
+
+      <!-- 32 — THESIS COLUMNS -->
+      <section class="ds-sec" id="thesis">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">32 — Split columns</h3>
+          <span class="meta meta--mute">Problem · solution</span>
+        </div>
+
+        <p class="ds-note">
+          Two labelled columns side by side, optionally under a statement set at
+          display scale. Case studies use it for problem and solution; the same
+          component carries bet and cost, or before and after. The second column
+          is the load-bearing half — the answer, the trade, the thing a reader
+          skimming for the point goes looking for — so it takes the section's
+          one signal hairline via <code>.thesis__col--accent</code>.
+        </p>
+
+        <div class="ds-group">
+          <div class="ds-group__label">
+            <span class="meta meta--mute">Columns only — .thesis__cols</span>
+          </div>
+          <div class="ds-stage">
+            <div class="thesis" style="flex:1 1 100%">
+              <div class="thesis__cols">
+                <div class="thesis__col">
+                  <span class="meta meta--mute">The problem</span>
+                  <p class="thesis__text">
+                    Stated as something a person experiences, not as a market
+                    gap.
+                  </p>
+                </div>
+                <div class="thesis__col thesis__col--accent">
+                  <span class="meta meta--mute">The solution</span>
+                  <p class="thesis__text">
+                    The answer, and what it cost. Naming the trade is what makes
+                    it read as a decision rather than a description.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ds-group">
+          <div class="ds-group__label">
+            <span class="meta meta--mute"
+              >With a statement — .thesis__statement</span
+            >
+          </div>
+          <div class="ds-stage ds-stage--warm">
+            <h2 class="thesis__statement" style="flex:1 1 100%">
+              A statement set at display scale, with one <em>italic</em>
+              emphasis.
+            </h2>
+          </div>
+        </div>
+
+        <p class="ds-note">
+          The statement is capped at <code>20ch</code>. Display type set to a
+          body measure stops being a statement and becomes a paragraph in a big
+          font. Emphasis is italic only — Instrument Serif ships Regular alone,
+          so weight is not available and scale plus italic is the whole
+          vocabulary.
+        </p>
+      </section>
+
+      <!-- 33 — COUNTED FACTS -->
+      <section class="ds-sec" id="landed">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">33 — Counted facts</h3>
+          <span class="meta meta--mute">Counted, not claimed</span>
+        </div>
+
+        <p class="ds-note">
+          How a case study closes when the work never shipped. Every figure
+          describes the <em>artifact</em> — taps, states, screens, buttons
+          removed — and never an effect on a user, because a concept with no
+          instrumentation has no baseline to claim one from. "40% faster
+          checkout" on an unshipped app is the fastest way to make a reviewer
+          distrust the honest parts of the same page.
+        </p>
+
+        <p class="ds-note">
+          <code>.landed__source</code> is load-bearing, not decoration. Each
+          figure carries the method that produced it, which makes the component
+          self-policing: a number you invented has no source line to write. If
+          the source can't be filled in, the figure is deleted rather than
+          guessed. Figures are mono, not the display serif — they read as
+          measurements, and the serif would give them the register of a
+          headline, which is authority this work hasn't earned yet.
+        </p>
+
+        <div class="ds-group">
+          <div class="ds-group__label">
+            <span class="meta meta--mute"
+              >Filled, and unfilled — .landed__fact--todo</span
+            >
+          </div>
+          <div class="ds-stage ds-stage--warm">
+            <ul class="landed" style="flex:1 1 100%;border-top:none">
+              <li class="landed__fact">
+                <span class="landed__figure">3</span>
+                <span class="landed__unit meta">taps</span>
+                <p class="landed__claim">Cart to confirmed order.</p>
+                <p class="landed__source meta meta--mute">
+                  Counted in the prototype.
+                </p>
+              </li>
+              <li class="landed__fact landed__fact--todo">
+                <span class="landed__figure">00</span>
+                <span class="landed__unit meta">states</span>
+                <p class="landed__claim">
+                  Non-happy-path states designed.
+                </p>
+                <p class="landed__source meta meta--signal">
+                  Count the frames in the Figma file.
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="ds-note">
+          The unfilled state paints its figure in signal, the same loudness
+          contract <code>.card__placeholder</code> uses: an empty slot must look
+          wrong, because a placeholder that reads as finished is exactly how an
+          invented number reaches a live page. Strip the modifier per fact as
+          each one is genuinely counted.
+        </p>
+
+        <div class="ds-group">
+          <div class="ds-group__label">
+            <span class="meta meta--mute">Limits — .landed__limits</span>
+          </div>
+          <div class="ds-stage">
+            <div class="landed__limits" style="flex:1 1 100%">
+              <span class="meta meta--mute">What it doesn't do</span>
+              <p class="landed__limits-text">
+                The largest genuine gap first, then two smaller ones. Not
+                softened into "future opportunities" — the flat admission is
+                what makes a reader trust the figures above it.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <p class="ds-note">
+          The section closes on <code>.work-more</code> pointing at the
+          prototype, in a new tab. That placement is the point: the figures
+          claim a tap count, and the link immediately underneath invites the
+          reader to go count it. Prototypes are never embedded — an inline
+          iframe hands the visitor to Figma's UI mid-study and getting back
+          means finding the edge of a frame.
+        </p>
+      </section>
+
+      <!-- 34 — CASE FIGURE -->
+      <section class="ds-sec" id="casefigure">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">34 — Case figure</h3>
+          <span class="meta meta--mute">One exported board</span>
+        </div>
+
+        <p class="ds-note">
+          For content that is itself a designed artifact — a persona board, a
+          flow map, a style tile. Rebuilding those in markup means maintaining
+          the same content in two places and letting them drift, so they arrive
+          as a single export instead.
+        </p>
+
+        <div class="ds-stage">
+          <div class="card__frame case-figure is-empty" style="flex:1 1 100%">
+            <div class="card__placeholder">
+              <span class="meta meta--signal">Image needed</span>
+              <span class="card__spec">16:9 — 2400×1350 minimum.</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="ds-note">
+          Deliberately nothing but an aspect ratio on
+          <code>.card__frame</code> — the spec card, the
+          <code>is-empty</code> fallback, the border and the fill are already
+          there, and a component that needs one property should declare one. Not
+          to be confused with <code>.plate</code>, which breaks the column and
+          runs edge to edge; this sits inside the section on the same measure as
+          the copy around it. Drops to 4:3 below 720px, where 16:9 becomes a
+          ~200px letterbox and a board's type stops being readable.
+        </p>
+
+        <p class="ds-note">
+          <strong>Match the frame to the export, not the export to the
+          frame.</strong> <code>.card__img</code> is
+          <code>object-fit: cover</code>, so a 3:2 board dropped into the 16:9
+          default silently loses ~18% of its height — survivable on a
+          photograph, fatal on a persona board whose content <em>is</em> text.
+          Check the asset's real ratio and add <code>.case-figure--3-2</code>
+          where it fits; a new modifier here is cheaper than re-exporting a
+          board, and both ratios are in use across the case studies today.
+        </p>
+      </section>
+
+      <!-- 35 — PROCESS ROW -->
+      <section class="ds-sec" id="process">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">35 — Process row</h3>
+          <span class="meta meta--mute">Four steps, one line</span>
+        </div>
+
+        <p class="ds-note">
+          A design process read as a single ruled diagram rather than as four
+          cards: one hairline across the top, vertical hairlines between the
+          steps, an oversized display numeral opening each. Nothing is boxed —
+          the rules do the work, the same move the facts rail and the point
+          lists make.
+        </p>
+
+        <div class="ds-stage">
+          <div class="process" style="flex:1 1 100%;border-top:none">
+            <article class="process__step">
+              <span class="process__num">01</span>
+              <h4 class="process__title">Research</h4>
+              <p class="process__text">
+                What you actually did, not what the step is called.
+              </p>
+            </article>
+            <article class="process__step">
+              <span class="process__num">02</span>
+              <h4 class="process__title">Structure</h4>
+              <p class="process__text">
+                Information architecture, flows, what the product had to know.
+              </p>
+            </article>
+            <article class="process__step">
+              <span class="process__num">03</span>
+              <h4 class="process__title">Interface</h4>
+              <p class="process__text">
+                Component system, visual language, the screens themselves.
+              </p>
+            </article>
+            <article class="process__step">
+              <span class="process__num">04</span>
+              <h4 class="process__title">Validate</h4>
+              <p class="process__text">
+                What you tested, what broke, what changed because of it.
+              </p>
+            </article>
+          </div>
+        </div>
+
+        <p class="ds-note">
+          <code>flex: 1 1 0</code> with <code>min-width: 0</code> is what holds
+          four equal columns on one line. A percentage basis leaves the gutters
+          unaccounted for and wraps the fourth step; a zero basis makes the four
+          share the leftover space exactly, and <code>min-width: 0</code> stops
+          a long word setting a floor wider than its quarter and forcing a wrap
+          anyway. Separation is by border rather than <code>gap</code> — a gap
+          between bordered columns reads as four detached slabs, and the point
+          is one continuous rule the steps hang off.
+        </p>
+
+        <p class="ds-note">
+          Numerals sit at <code>--ink-30</code> so they read as structure rather
+          than as content competing with the titles; signal on hover is the
+          row's one moment of colour. Four columns stop being readable long
+          before they stop fitting, so it goes 2×2 at 900px and single-column at
+          560px — and each break rebuilds the rules, because a left border on a
+          wrapped row draws in the middle of nowhere.
+        </p>
+      </section>
+
+      <!-- ██████████████ PRINCIPLES ██████████████ -->
+      <div class="ds-part">
+        <span class="ds-part__num">Part D</span>
+        <h2 class="ds-part__name">Principles</h2>
+      </div>
+
+      <!-- 35 — THE FIGMA IMPORT CONTRACT -->
+      <section class="ds-sec" id="contract">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">36 — The Figma contract</h3>
+          <span class="meta meta--mute">Five rules, non-negotiable</span>
+        </div>
+
+        <p class="ds-note">
+          Every rule in this system exists so the markup survives an import
+          into Figma as clean auto-layout. Break one and components arrive as
+          absolutely-positioned junk, or vanish entirely. When you extend the
+          system in code, keep to these.
+        </p>
+
+        <div class="principles" style="flex:1 1 100%">
+          <article class="principle is-in">
+            <div class="principle__rule" aria-hidden="true"></div>
+            <span class="principle__num">01</span>
+            <h4 class="principle__title">Flex + gap for all rhythm</h4>
+            <p class="principle__text">
+              Never margin. Flex with gap and padding maps one-to-one onto
+              auto-layout; margins don't survive the trip.
+            </p>
+          </article>
+          <article class="principle is-in">
+            <div class="principle__rule" aria-hidden="true"></div>
+            <span class="principle__num">02</span>
+            <h4 class="principle__title">No visible ::before / ::after</h4>
+            <p class="principle__text">
+              Pseudo-elements aren't in the DOM, so they vanish on import.
+              Anything visible — dots, rules, marks — is a real element.
+            </p>
+          </article>
+          <article class="principle is-in">
+            <div class="principle__rule" aria-hidden="true"></div>
+            <span class="principle__num">03</span>
+            <h4 class="principle__title">No clip-path, no CSS shapes</h4>
+            <p class="principle__text">
+              Drawn shapes flatten. A shape is SVG or it's nothing. The one
+              exception, the duotone, is a real SVG filter.
+            </p>
+          </article>
+          <article class="principle is-in">
+            <div class="principle__rule" aria-hidden="true"></div>
+            <span class="principle__num">04</span>
+            <h4 class="principle__title">Google Fonts only</h4>
+            <p class="principle__text">
+              They're native in Figma, so type doesn't substitute to Roboto on
+              the way in. Instrument Serif, Inter Tight, Geist Mono.
+            </p>
+          </article>
+        </div>
+
+        <p class="ds-note">
+          <span class="meta meta--signal">05 — Borders are fine.</span> They
+          import as strokes, so frames and pills can carry them freely.
+        </p>
+      </section>
+
+      <!-- 26 — VOICE -->
+      <section class="ds-sec" id="voice">
+        <div class="ds-sec__head">
+          <h3 class="ds-sec__title">37 — Voice</h3>
+          <span class="meta meta--mute">Loud where it's unfinished</span>
+        </div>
+
+        <p class="ds-note">
+          The system has a content posture, not just a visual one. Placeholders
+          announce themselves — a missing image names its exact file, an
+          unanswered outcome turns signal-italic, a held slot says
+          <span class="meta meta--signal">Reserved</span>. Nothing unfinished
+          is allowed to look finished. Copy stays plain and honest: a concept
+          is called a concept, and no metric is claimed that wasn't measured.
+        </p>
+
+        <div class="ds-stage ds-stage--warm">
+          <div class="ds-cell" style="flex:1 1 100%">
+            <span class="ds-cell__cap"><span class="meta meta--mute">The unfinished states, together</span></span>
+            <ul class="card__points" style="width:100%; max-width:620px">
+              <li class="card__point card__point--todo">
+                An open outcome — signal, italic, impossible to miss.
+              </li>
+              <li class="card__point">
+                A finished line sits quiet in ink-70 beside it.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+    <footer class="footer">
+      <span class="meta meta--mute">© 2026 Victor Elugbaju</span>
+      <span class="meta meta--mute">Built to export to Figma</span>
+    </footer>
+  </body>
+</html>

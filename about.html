@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About — Victor Elugbaju, Product Designer</title>
+    <meta
+      name="description"
+      content="Victor Elugbaju — a product designer working across consumer apps, fintech and enterprise software. The longer version."
+    />
+    <!-- ============================================================
+       IDENTITY, SHARING AND ICONS   (added 2026-10-05)
+
+       canonical and the og:/twitter: URLs are the only absolute URLs in
+       this file. They point at https://victor-elugbaju.netlify.app
+       — if that host ever changes, it changes here, in robots.txt and in
+       sitemap.xml, and nowhere else.
+
+       Icon paths are deliberately RELATIVE ("./favicon.svg"), not
+       root-relative. Root-relative would break every local preview opened
+       as a file:// URL, which is how this site is checked in a browser.
+
+       og:image must be absolute — a scraper fetches it from its own
+       server, with no page context to resolve a relative path against.
+       ============================================================ -->
+    <link rel="canonical" href="https://victor-elugbaju.netlify.app/about.html" />
+
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="favicon.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <meta name="theme-color" content="#0D0D0B" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Victor Elugbaju" />
+    <meta property="og:title" content="About — Victor Elugbaju, Product Designer" />
+    <meta
+      property="og:description"
+      content="Victor Elugbaju — a product designer working across consumer apps, fintech and enterprise software. The longer version."
+    />
+    <meta property="og:url" content="https://victor-elugbaju.netlify.app/about.html" />
+    <meta property="og:image" content="https://victor-elugbaju.netlify.app/img/og-cover.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Victor Elugbaju — Product Designer. Finance, consumer health and enterprise systems."
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="About — Victor Elugbaju, Product Designer" />
+    <meta
+      name="twitter:description"
+      content="Victor Elugbaju — a product designer working across consumer apps, fintech and enterprise software. The longer version."
+    />
+    <meta name="twitter:image" content="https://victor-elugbaju.netlify.app/img/og-cover.png" />
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Same pre-paint JS flag as index.html. The opening statement hides
+         its lines in their start state, so that state must only exist when
+         something can undo it — without .js a script failure eats the
+         headline. Inline and in <head> or the type flashes. -->
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body class="page">
+    <!-- ============================================================
+       NAV — links point back to the homepage's sections. About is
+       the current page.
+       ============================================================ -->
+    <header class="nav">
+      <a class="nav__mark" href="index.html">
+        <span class="nav__mark-name">Victor Elugbaju</span>
+      </a>
+
+      <nav class="nav__links">
+        <a class="nav__link" href="index.html#work">Work</a>
+        <a class="nav__link" href="about.html" aria-current="page">About</a>
+        <a class="nav__link" href="index.html#experience">Experience</a>
+        <a class="nav__link" href="index.html#contact">Contact</a>
+      </nav>
+
+      <!-- Phones only — display:none above 768px. A disclosure button,
+           so aria-expanded carries the state and the label stays put;
+           the two visible words are decoration and hidden from the
+           accessibility tree, or the button would be named "Menu Close". -->
+      <button
+        class="nav__burger"
+        id="navBurger"
+        type="button"
+        aria-label="Menu"
+        aria-expanded="false"
+        aria-controls="navMenu"
+      >
+        <span class="nav__burger-label meta" aria-hidden="true">
+          <span class="nav__burger-word">Menu</span>
+          <span class="nav__burger-word">Close</span>
+        </span>
+        <span class="nav__burger-bars" aria-hidden="true">
+          <span class="nav__burger-bar"></span>
+          <span class="nav__burger-bar"></span>
+        </span>
+      </button>
+    </header>
+
+    <!-- ============================================================
+       MOBILE MENU — the site's contents as a numbered index.
+
+       Not a dropdown. Below 768px the four mono links become a full
+       sheet, set in display serif and numbered — the same language
+       the work index uses — so the menu reads as part of the system
+       rather than as a phone affordance bolted on.
+
+       Sits under the bar (z-90 against the nav's z-100), so the mark
+       and the burger stay live and in place while it opens.
+       ============================================================ -->
+    <div class="nav-menu" id="navMenu">
+      <div class="nav-menu__inner">
+        <div class="nav-menu__rule" aria-hidden="true"></div>
+
+        <div class="nav-menu__eyebrow">
+          <span class="meta meta--mute">Index</span>
+          <span class="meta meta--mute">Sections 01–04</span>
+        </div>
+
+        <nav class="nav-menu__list" aria-label="Main">
+          <a class="nav-menu__item" href="index.html#work">
+            <span class="nav-menu__index meta">01</span>
+            <span class="nav-menu__line"
+              ><span class="nav-menu__word">Work</span></span
+            >
+          </a>
+          <a class="nav-menu__item" href="about.html" aria-current="page">
+            <span class="nav-menu__index meta">02</span>
+            <span class="nav-menu__line"
+              ><span class="nav-menu__word">About</span></span
+            >
+          </a>
+          <a class="nav-menu__item" href="index.html#experience">
+            <span class="nav-menu__index meta">03</span>
+            <span class="nav-menu__line"
+              ><span class="nav-menu__word">Experience</span></span
+            >
+          </a>
+          <a class="nav-menu__item" href="index.html#contact">
+            <span class="nav-menu__index meta">04</span>
+            <span class="nav-menu__line"
+              ><span class="nav-menu__word">Contact</span></span
+            >
+          </a>
+        </nav>
+
+        <div class="nav-menu__foot">
+          <a
+            class="nav-menu__mail"
+            href="mailto:victorajibolaelugbaju@gmail.com"
+            >victorajibolaelugbaju@gmail.com</a
+          >
+
+          <div class="nav-menu__foot-row">
+            <div class="nav-menu__social">
+              <a
+                class="meta"
+                href="https://linkedin.com/in/victor-elugbaju"
+                target="_blank"
+                rel="noopener"
+                >LinkedIn</a
+              >
+              <a
+                class="meta"
+                href="https://behance.net/victorelugbaju"
+                target="_blank"
+                rel="noopener"
+                >Behance</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main>
+      <!-- ============================================================
+         ABOUT HERO — the oversized opening statement.
+
+         Signature moment of the page. Each line is a clipping frame;
+         the inner rises out of it on load. Reuses .hero__line /
+         .hero__line-inner so the type language carries across pages.
+
+         ⚠ COPY IS A DRAFT written from Victor's CV, not dictated by
+           him. This is his voice in the first person — the highest-
+           stakes copy on the site to get wrong. Rewrite before launch.
+         ============================================================ -->
+      <section class="about-hero">
+        <div class="about-hero__eyebrow">
+          <span class="meta">About</span>
+          <span class="meta meta--mute">Victor Elugbaju</span>
+        </div>
+
+        <!-- Two lines only. Line 2 takes the signal colour from the shared
+             .hero__line:nth-child(2) rule — same accent the homepage hero
+             puts on "Elugbaju." — so the role's second half carries the
+             vermilion without needing an <em>. -->
+        <!-- One .hero__line, deliberately. The title is a single line now,
+             and a second span would reveal an empty mask. -->
+        <h1 class="about-hero__statement" id="aboutStatement">
+          <span class="hero__line"
+            ><span class="hero__line-inner">Product Designer</span></span
+          >
+        </h1>
+      </section>
+
+      <!-- ============================================================
+         WHO I AM — portrait + narrative.
+         Reuses the press-photo portrait treatment from the homepage.
+
+         ⚠ DRAFT PROSE. Victor's story in his own voice — invented here
+           from the CV. Must become his words before launch.
+         ============================================================ -->
+      <section class="section" id="who">
+        <div class="section__head">
+          <span class="meta meta--mute">01 — Who I am</span>
+        </div>
+
+        <div class="about">
+          <figure class="about__portrait">
+            <div class="portrait__frame">
+              <!-- 1.9MB, and it sits well below the fold on this page —
+                   eager it would compete with the opening statement for a
+                   phone's first seconds of bandwidth. The frame owns the
+                   box via aspect-ratio, so lazy costs no layout shift. -->
+              <img
+                class="portrait__img"
+                id="portraitImg"
+                src="img/victor.jpeg"
+                alt="Portrait of Victor Elugbaju, 2026"
+                width="2048"
+                height="2048"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="portrait__placeholder">
+                <span class="meta meta--signal">Portrait needed</span>
+                <span class="portrait__spec">
+                  Expected at <code>img/victor.jpeg</code>. If you're seeing
+                  this card, the file is missing or the filename doesn't match
+                  the <code>src</code> exactly — including the extension.
+                </span>
+              </div>
+            </div>
+            <figcaption class="portrait__caption">
+              <span class="meta meta--mute">Victor Elugbaju</span>
+              <span class="meta meta--mute">2026</span>
+            </figcaption>
+          </figure>
+
+          <div class="about__body">
+            <!-- The headline is here so this section is a true mirror of
+                 index.html #about rather than the same paragraphs under a
+                 different opening. h2 under the page's h1 ("Product
+                 Designer"), which is the correct level. -->
+            <h2 class="about__lead">I don't mind <em>complicated</em>.</h2>
+
+            <!-- ============================================================
+                 THE ABOUT STATEMENT — ⚠ SHARED COPY, TWO LOCATIONS.
+
+                 These two paragraphs are duplicated VERBATIM at
+                 index.html #about. Victor asked for one statement that
+                 reads the same in both places, so an edit here that is not
+                 made there is a defect, not a variant. The two surfaces
+                 differ only in what follows: the full eleven skills and
+                 Education here, five chips and the onward link there.
+
+                 This REPLACES four paragraphs that were unique to this
+                 page — the logic-underneath paragraph, the upstream-method
+                 paragraph and the unconventional-background paragraph. They
+                 were removed on Victor's instruction to run one statement
+                 everywhere, and because the earlier version positioned him
+                 as an enterprise-systems specialist, which he rejected: he
+                 is job-hunting and needs the page to widen the funnel, not
+                 narrow it.
+
+                 ⚠ STILL DRAFT COPY. See the matching note in index.html.
+                   Every claim traces to provable project material, but it
+                   is his first-person voice in someone else's hand and
+                   needs his approval (LAUNCH-CHECKLIST A2).
+                 ============================================================ -->
+            <p class="about__text about__text--lead">
+              Since 2024 I've worked at both ends of the same job. On one side,
+              consumer products where everything turns on whether someone can
+              finish a task without stopping to think. On the other, internal
+              systems where four roles see four views of the same record and
+              none of them can be wrong. I was team lead on one of those,
+              covering 110+ screens and 21 flows. The domains have been finance
+              software, consumer health and AI, and the tooling a business runs
+              on.
+            </p>
+
+            <p class="about__text">
+              What carries across is the order I work in. I find out what the
+              real problem is, map the flow before I draw a screen, then design
+              the system underneath it: the components, states and rules that
+              keep a product coherent as it grows. I prototype early, because
+              some problems only appear once you can click through. And because
+              I can read the frontend myself, I meet constraints while they are
+              still cheap to design around, instead of at handoff.
+            </p>
+
+            <!-- The full eleven. index.html's About section shows five of
+                 these and its "Read more about me" link promised the rest —
+                 a promise that landed on a page with no skills list at all,
+                 so clicking through made the site look smaller. Same
+                 component, same markup as index.html:627; the only
+                 difference is that this is the complete set.
+
+                 Verbatim from Victor's CV via backup/index--v2-grid.html.
+                 Closed list — do NOT infer additions into it. An invented
+                 skill here is a claim about a person, not a copy tweak. -->
+            <ul class="skills">
+              <li class="skills__chip meta">UX Design</li>
+              <li class="skills__chip meta">
+                User Flows &amp; Journey Mapping
+              </li>
+              <li class="skills__chip meta">Wireframing</li>
+              <li class="skills__chip meta">High-Fidelity UI Design</li>
+              <li class="skills__chip meta">Prototyping</li>
+              <li class="skills__chip meta">Design Systems</li>
+              <li class="skills__chip meta">Interaction Design</li>
+              <li class="skills__chip meta">Visual Design</li>
+              <li class="skills__chip meta">Mobile App Design</li>
+              <li class="skills__chip meta">Web Design</li>
+              <li class="skills__chip meta">HTML5, CSS3, Tailwind CSS</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+         EDUCATION — deliberately restrained.
+
+         Victor asked to downplay the Animal Science → design jump hard,
+         so this is a plain credential, not a story. The First-Class
+         Honours earns its place as a rigour signal regardless of field;
+         everything else is just dates. No narrative, no "pivot" framing.
+         ============================================================ -->
+      <section class="section" id="education">
+        <div class="section__head">
+          <!-- The university name used to sit here as the second half of the
+               lockup. Removed 2026-10-13 at Victor's request: it was the same
+               string as the <h3> four lines below, so the page said it twice
+               in one eyeful. The entry keeps it; the head does not. -->
+          <span class="meta meta--mute">02 — Education</span>
+        </div>
+
+        <ul class="edu">
+          <li class="edu__row">
+            <div class="edu__lead">
+              <h3 class="edu__org">Lagos State University</h3>
+              <p class="edu__detail">
+                Bachelor of Agriculture (B.Ag.), Animal Science
+              </p>
+            </div>
+            <span class="edu__honour meta meta--signal">First-Class Honours</span>
+            <span class="edu__date meta meta--mute">2020 — 2024</span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- ============================================================
+         CTA — the closing reinforcement. The email is the hero: a
+         display-scale, self-underlining mailto is the loudest, most
+         confident action a type-led page can end on. Everything else
+         (socials, résumé) is a quiet rail beneath it.
+
+         The résumé lives at img/Victor_Elugbaju_CV.pdf. The download
+         attribute renames it on the way out, so the visitor saves
+         "Victor-Elugbaju-CV.pdf" rather than the underscored filename.
+         ============================================================ -->
+      <section class="section section--cta" id="contact">
+        <div class="section__head">
+          <span class="meta meta--mute">03 — Contact</span>
+        </div>
+
+        <div class="cta">
+          <!-- LEFT: the statement, and nothing else. No subheading — the
+               body copy above already makes the case, and a paragraph here
+               would be making it a second time in weaker words. -->
+          <div class="cta__lead">
+            <h2 class="cta__display cta__display--lg">
+              Let's<br />
+              <em>Connect.</em>
+            </h2>
+          </div>
+
+          <!-- RIGHT: every way to reach me, ruled as a rail. The email is
+               still the primary — largest, self-underlining on hover/focus,
+               the draw line a real element per the Figma contract. -->
+          <div class="cta__contact">
+            <a class="cta__email" href="mailto:victorajibolaelugbaju@gmail.com">
+              <span class="cta__email-top meta meta--mute"
+                >Write to me directly</span
+              >
+              <span class="cta__email-main">
+                <span class="cta__email-value"
+                  >victorajibolaelugbaju@gmail.com</span
+                >
+                <span class="cta__email-arrow" aria-hidden="true">→</span>
+              </span>
+              <span class="cta__email-line" aria-hidden="true"></span>
+            </a>
+
+            <ul class="cta__links">
+              <li class="cta__link-item">
+                <span class="meta meta--mute">LinkedIn</span>
+                <a
+                  class="cta__link"
+                  href="https://linkedin.com/in/victor-elugbaju"
+                  target="_blank"
+                  rel="noopener"
+                  >/victor-elugbaju</a
+                >
+              </li>
+              <li class="cta__link-item">
+                <span class="meta meta--mute">Behance</span>
+                <a
+                  class="cta__link"
+                  href="https://behance.net/victorelugbaju"
+                  target="_blank"
+                  rel="noopener"
+                  >/victorelugbaju</a
+                >
+              </li>
+              <li class="cta__link-item">
+                <span class="meta meta--mute">Phone</span>
+                <a class="cta__link" href="tel:+2348164288272"
+                  >+234 816 428 8272</a
+                >
+              </li>
+            </ul>
+
+            <a
+              class="btn btn--primary"
+              href="img/Victor_Elugbaju_CV.pdf"
+              download="Victor-Elugbaju-CV.pdf"
+            >
+              <span class="btn__label">Download CV</span>
+              <span class="btn__arrow btn__arrow--down" aria-hidden="true"
+                >↓</span
+              >
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+    <footer class="footer">
+      <span class="meta meta--mute">© 2026 Victor Elugbaju</span>
+    </footer>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+# Local tooling for browser checks — not part of the site.
+tools/node_modules/
+
+# OS noise
+Thumbs.db
+.DS_Store

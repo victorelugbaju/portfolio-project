@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Craveau — Food Delivery App · Victor Elugbaju</title>
+    <meta
+      name="description"
+      content="Craveau — a food-delivery app concept designed around quick browsing, fast checkout and clear order tracking. A case study by Victor Elugbaju."
+    />
+    <!-- ============================================================
+       IDENTITY, SHARING AND ICONS   (added 2026-10-05)
+
+       canonical and the og:/twitter: URLs are the only absolute URLs in
+       this file. They point at https://victor-elugbaju.netlify.app
+       — if that host ever changes, it changes here, in robots.txt and in
+       sitemap.xml, and nowhere else.
+
+       Icon paths are deliberately RELATIVE ("../favicon.svg"), not
+       root-relative. Root-relative would break every local preview opened
+       as a file:// URL, which is how this site is checked in a browser.
+
+       og:image must be absolute — a scraper fetches it from its own
+       server, with no page context to resolve a relative path against.
+       ============================================================ -->
+    <link rel="canonical" href="https://victor-elugbaju.netlify.app/work/craveau.html" />
+
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="../favicon.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+    <meta name="theme-color" content="#0D0D0B" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Victor Elugbaju" />
+    <meta property="og:title" content="Craveau — Food Delivery App · Victor Elugbaju" />
+    <meta
+      property="og:description"
+      content="Craveau — a food-delivery app concept designed around quick browsing, fast checkout and clear order tracking. A case study by Victor Elugbaju."
+    />
+    <meta property="og:url" content="https://victor-elugbaju.netlify.app/work/craveau.html" />
+    <meta property="og:image" content="https://victor-elugbaju.netlify.app/img/og-cover.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Victor Elugbaju — Product Designer. Finance, consumer health and enterprise systems."
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Craveau — Food Delivery App · Victor Elugbaju" />
+    <meta
+      name="twitter:description"
+      content="Craveau — a food-delivery app concept designed around quick browsing, fast checkout and clear order tracking. A case study by Victor Elugbaju."
+    />
+    <meta name="twitter:image" content="https://victor-elugbaju.netlify.app/img/og-cover.png" />
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../css/style.css" />
+
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body class="page">
+    <!-- Read progress. Ships at scaleX(0) and stays there without JS —
+         a bar that reports nothing is invisible, not broken. -->
+    <div class="progress" aria-hidden="true">
+      <div class="progress__fill" id="readProgress"></div>
+    </div>
+
+    <header class="nav">
+      <a class="nav__mark" href="../index.html">
+        <span class="nav__mark-name">Victor Elugbaju</span>
+      </a>
+
+      <nav class="nav__links">
+        <a class="nav__link" href="index.html">Work</a>
+        <a class="nav__link" href="../about.html">About</a>
+        <a class="nav__link" href="../index.html#experience">Experience</a>
+        <a class="nav__link" href="mailto:victorajibolaelugbaju@gmail.com"
+          >Contact</a
+        >
+      </nav>
+
+      <!-- Phones only — display:none above 768px. A disclosure button,
+           so aria-expanded carries the state and the label stays put;
+           the two visible words are decoration and hidden from the
+           accessibility tree, or the button would be named "Menu Close". -->
+      <button
+        class="nav__burger"
+        id="navBurger"
+        type="button"
+        aria-label="Menu"
+        aria-expanded="false"
+        aria-controls="navMenu"
+      >
+        <span class="nav__burger-label meta" aria-hidden="true">
+          <span class="nav__burger-word">Menu</span>
+          <span class="nav__burger-word">Close</span>
+        </span>
+        <span class="nav__burger-bars" aria-hidden="true">
+          <span class="nav__burger-bar"></span>
+          <span class="nav__burger-bar"></span>
+        </span>
+      </button>
+    </header>
+
+    <!-- ============================================================
+       MOBILE MENU — the site's contents as a numbered index.
+
+       Not a dropdown. Below 768px the four mono links become a full
+       sheet, set in display serif and numbered — the same language
+       the work index uses — so the menu reads as part of the system
+       rather than as a phone affordance bolted on.
+
+       Sits under the bar (z-90 against the nav's z-100), so the mark
+       and the burger stay live and in place while it opens.
+       ============================================================ -->
+    <div class="nav-menu" id="navMenu">
+      <div class="nav-menu__inner">
+        <div class="nav-menu__rule" aria-hidden="true"></div>
+
+        <div class="nav-menu__eyebrow">
+          <span class="meta meta--mute">Index</span>
+          <span class="meta meta--mute">Sections 01–04</span>
+        </div>
+
+        <nav class="nav-menu__list" aria-label="Main">
+          <a class="nav-menu__item" href="index.html">
+            <span class="nav-menu__index meta">01</span>
+            <span class="nav-menu__line"
+              ><span class="nav-menu__word">Work</span></span
+            >
+          </a>
+          <a class="nav-menu__item" href="../about.html">
+            <span class="nav-menu__index meta">02</span>
+            <span class="nav-menu__line"
+              ><span class="nav-menu__word">About</span></span
+            >
+          </a>
+          <a class="nav-menu__item" href="../index.html#experience">
+            <span class="nav-menu__index meta">03</span>
+            <span class="nav-menu__line"
+              ><span class="nav-menu__word">Experience</span></span
+            >
+          </a>
+          <a class="nav-menu__item" href="mailto:victorajibolaelugbaju@gmail.com">
+            <span class="nav-menu__index meta">04</span>
+            <span class="nav-menu__line"
+              ><span class="nav-menu__word">Contact</span></span
+            >
+          </a>
+        </nav>
+
+        <div class="nav-menu__foot">
+          <a
+            class="nav-menu__mail"
+            href="mailto:victorajibolaelugbaju@gmail.com"
+            >victorajibolaelugbaju@gmail.com</a
+          >
+
+          <div class="nav-menu__foot-row">
+            <div class="nav-menu__social">
+              <a
+                class="meta"
+                href="https://linkedin.com/in/victor-elugbaju"
+                target="_blank"
+                rel="noopener"
+                >LinkedIn</a
+              >
+              <a
+                class="meta"
+                href="https://behance.net/victorelugbaju"
+                target="_blank"
+                rel="noopener"
+                >Behance</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main>
+      <!-- ============================================================
+         HERO — project name small, title large.
+
+         ⚠ Each line is nowrap under .about-hero--case, so a line
+           longer than ~28 characters will run past the margin on a
+           phone rather than wrapping. Count before you rewrite.
+         ============================================================ -->
+      <section class="about-hero about-hero--case">
+        <div class="about-hero__nav">
+          <!-- The text CTA, not a ghost button. .work-more--back scales
+               it down and reverses the arrow: at full display size it
+               would outshout the <h1> directly beneath it, and an arrow
+               reading "back" while travelling right says two different
+               things at once. -->
+          <a class="work-more work-more--back" href="index.html">
+            <span class="work-more__arrow" aria-hidden="true">←</span>
+            <span class="work-more__label">Back to all projects</span>
+          </a>
+        </div>
+
+        <div class="about-hero__eyebrow about-hero__eyebrow--split">
+          <span class="meta meta--mute">Craveau</span>
+          <span class="meta meta--mute">Food delivery · 2026</span>
+        </div>
+
+        <!-- 24 and 21 characters. Each line is nowrap under
+             .about-hero--case, so anything past ~28 runs off a phone
+             rather than wrapping. Count before you rewrite. -->
+        <h1 class="about-hero__statement" id="caseStatement">
+          <span class="hero__line"
+            ><span class="hero__line-inner"
+              >Food delivery, done fast.</span
+            ></span
+          >
+          <span class="hero__line"
+            ><span class="hero__line-inner">Browse, order, track.</span></span
+          >
+        </h1>
+      </section>
+
+      <!-- ============================================================
+         HERO IMAGE — full bleed, no caption.
+
+         Sits OUTSIDE .section deliberately: a direct child of <main>
+         with no inline padding is what makes it run edge to edge.
+         Never with a negative margin — the import contract bans
+         margin for rhythm, and a negative one lands in Figma as an
+         overlapping frame.
+         ============================================================ -->
+      <section class="plate">
+        <div class="card__frame plate__frame">
+          <img
+            class="card__img"
+            src="../img/craveau.png"
+            alt="Craveau food delivery brand and app"
+            decoding="async"
+          fetchpriority="high"
+              />
+          <div class="card__placeholder">
+            <span class="meta meta--signal">Image needed</span>
+            <span class="card__spec"
+              >3:2 at <code>img/craveau.png</code> — 1200×800 minimum.</span
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+         01 — OVERVIEW
+         The facts rail, then the framing.
+         ============================================================ -->
+      <section class="section">
+        <div class="section__head">
+          <span class="meta meta--mute">01 — Overview</span>
+          <span class="meta meta--mute">The shape of the work</span>
+        </div>
+
+        <dl class="case-facts">
+          <div class="case-fact">
+            <dt class="meta meta--mute">Role</dt>
+            <dd class="case-fact__value">Product Designer</dd>
+          </div>
+          <div class="case-fact">
+            <dt class="meta meta--mute">Year</dt>
+            <dd class="case-fact__value">2026</dd>
+          </div>
+          <div class="case-fact">
+            <dt class="meta meta--mute">Scope</dt>
+            <dd class="case-fact__value">Mobile app design</dd>
+          </div>
+          <div class="case-fact">
+            <dt class="meta meta--mute">Type</dt>
+            <dd class="case-fact__value">Concept project</dd>
+          </div>
+        </dl>
+
+        <p class="about__text about__text--lead">
+          I designed a food delivery mobile app focused on quick browsing, fast
+          checkout, and clear order tracking. It is aimed at people who want to
+          decide, order, and receive food without delay or confusion. The
+          project covers onboarding, discovery, ordering, and post-purchase
+          states, with an emphasis on reducing steps and keeping the interface
+          focused at every stage.
+        </p>
+      </section>
+
+      <!-- ============================================================
+         02 — USER PERSONA
+
+         Sits before problem & solution deliberately: the problem
+         reads as a real complaint once there's someone to attach it
+         to, and as an abstraction before that.
+
+         The persona arrives as one exported board rather than as
+         markup — it's a designed artifact, and rebuilding it in HTML
+         would mean maintaining the same content in two places and
+         letting them drift.
+         ============================================================ -->
+      <section class="section">
+        <div class="section__head">
+          <span class="meta meta--mute">02 — User persona</span>
+          <span class="meta meta--mute">Who this is for</span>
+        </div>
+
+        <div class="card__frame case-figure">
+          <img
+            class="card__img"
+            src="../img/craveau-persona.png"
+            alt="Craveau user persona"
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="card__placeholder">
+            <span class="meta meta--signal">Image needed</span>
+            <span class="card__spec"
+              >16:9 at <code>img/craveau-persona.png</code> — 2400×1350
+              minimum. Export the persona board from Figma.</span
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+         03 — PROBLEM & SOLUTION
+
+         Reuses the split-column component. The solution column
+         carries the section's one signal hairline — the half a
+         reader skimming for the answer goes looking for.
+         ============================================================ -->
+      <section class="section">
+        <div class="section__head">
+          <span class="meta meta--mute">03 — Problem &amp; solution</span>
+          <span class="meta meta--mute">What was wrong, what I did</span>
+        </div>
+
+        <div class="thesis">
+          <div class="thesis__cols">
+            <div class="thesis__col">
+              <span class="meta meta--mute">The problem</span>
+              <p class="thesis__text">
+                Someone opening a food delivery app to order dinner often
+                hesitates, not because of lack of options, but because the
+                process feels slow and unclear. Too many categories, crowded
+                screens, and long checkout flows interrupt momentum. After
+                ordering, they are left uncertain about what is happening next.
+                The issue is not access to food, but the time and mental effort
+                required to move from browsing to receiving it.
+              </p>
+            </div>
+
+            <div class="thesis__col thesis__col--accent">
+              <span class="meta meta--mute">The solution</span>
+              <p class="thesis__text">
+                I designed a focused flow that moves from discovery to checkout
+                in a small number of clear steps, then shifts attention to
+                tracking after purchase. The interface reduces visible options
+                at each stage and highlights only the next action. I prioritised
+                speed and clarity over depth. The trade-off is that advanced
+                filtering and detailed customisation are limited, which reduces
+                flexibility for users who want more control.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+         04 — DESIGN PROCESS
+
+         .process holds all four on one row as a single ruled
+         diagram — one hairline across the top, vertical hairlines
+         between the steps, nothing boxed.
+         ============================================================ -->
+      <section class="section">
+        <div class="section__head">
+          <span class="meta meta--mute">04 — Design process</span>
+          <span class="meta meta--mute">Four steps</span>
+        </div>
+
+        <div class="process">
+          <article class="process__step">
+            <span class="process__num">01</span>
+            <h4 class="process__title">Audit</h4>
+            <p class="process__text">
+              I reviewed common food delivery flows and broke them into stages:
+              browse, select, pay, track. I noted where screens became crowded
+              or required extra decisions. I then reduced the flow to the fewest
+              necessary steps without removing essential information.
+            </p>
+          </article>
+
+          <article class="process__step">
+            <span class="process__num">02</span>
+            <h4 class="process__title">Structure</h4>
+            <p class="process__text">
+              I mapped the navigation to five primary areas and removed anything
+              that did not need constant access. I defined what belongs in flows
+              versus global navigation, ensuring checkout and cart stayed
+              contextual instead of persistent tabs.
+            </p>
+          </article>
+
+          <article class="process__step">
+            <span class="process__num">03</span>
+            <h4 class="process__title">Screens</h4>
+            <p class="process__text">
+              I designed key screens starting from home to order success,
+              focusing on hierarchy and spacing. I created card-based layouts
+              with clear actions and limited text, making sure each screen had a
+              single dominant action.
+            </p>
+          </article>
+
+          <article class="process__step">
+            <span class="process__num">04</span>
+            <h4 class="process__title">Refine</h4>
+            <p class="process__text">
+              I aligned onboarding visuals with actual product screens instead
+              of illustrations. I adjusted spacing, typography, and states to
+              keep consistency across onboarding, ordering, and tracking,
+              ensuring the experience felt like one continuous system.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ============================================================
+         05 — FINISHED SCREENS
+
+         Reuses .shots wholesale, so the "image needed" spec card and
+         the is-empty fallback in main.js already apply.
+
+         .shots--pair holds it to two per row. Four across would give
+         each frame a quarter of the width, and the UI inside stops
+         being legible well before that.
+         ============================================================ -->
+      <section class="section">
+        <div class="section__head">
+          <span class="meta meta--mute">05 — Finished screens</span>
+          <span class="meta meta--mute">The built interface</span>
+        </div>
+
+        <div class="shots shots--pair">
+          <div class="shots__item">
+            <div class="card__frame">
+              <img
+                class="card__img"
+                src="../img/craveau-1.png"
+                alt="Craveau — food discovery"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="card__placeholder">
+                <span class="meta meta--signal">Image needed</span>
+                <span class="card__spec"
+                  >3:2 at <code>img/craveau-1.png</code> — 1200×800
+                  minimum.</span
+                >
+              </div>
+            </div>
+            <span class="meta shots__caption">01 — Food discovery</span>
+          </div>
+
+          <div class="shots__item">
+            <div class="card__frame">
+              <img
+                class="card__img"
+                src="../img/craveau-2.png"
+                alt="Craveau — fast checkout"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="card__placeholder">
+                <span class="meta meta--signal">Image needed</span>
+                <span class="card__spec"
+                  >3:2 at <code>img/craveau-2.png</code> — 1200×800
+                  minimum.</span
+                >
+              </div>
+            </div>
+            <span class="meta shots__caption">02 — Fast checkout</span>
+          </div>
+
+          <div class="shots__item">
+            <div class="card__frame">
+              <img
+                class="card__img"
+                src="../img/craveau-3.png"
+                alt="Craveau — order tracking"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="card__placeholder">
+                <span class="meta meta--signal">Image needed</span>
+                <span class="card__spec"
+                  >3:2 at <code>img/craveau-3.png</code> — 1200×800
+                  minimum.</span
+                >
+              </div>
+            </div>
+            <span class="meta shots__caption">03 — Order tracking</span>
+          </div>
+
+          <div class="shots__item">
+            <div class="card__frame">
+              <img
+                class="card__img"
+                src="../img/craveau-4.png"
+                alt="Craveau — order confirmation"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="card__placeholder">
+                <span class="meta meta--signal">Image needed</span>
+                <span class="card__spec"
+                  >3:2 at <code>img/craveau-4.png</code> — 1200×800
+                  minimum.</span
+                >
+              </div>
+            </div>
+            <span class="meta shots__caption">04 — Order confirmation</span>
+          </div>
+        </div>
+
+        <!-- The one real prototype on the site. Kept because deleting a
+             working asset to satisfy template symmetry is a bad trade —
+             it's the only proof on any of these pages that can't be
+             faked. Opens in a new tab rather than embedding: an inline
+             iframe hands the visitor to Figma's UI mid-study, and
+             getting back means finding the edge of a frame.
+
+             Delete this block if you'd rather all four studies match
+             exactly. -->
+        <a
+          class="work-more"
+          href="https://www.figma.com/proto/8ZRIbJidnIXFKmCDBiPRQy/Craveau?node-id=311-2311&amp;scaling=scale-down&amp;content-scaling=fixed&amp;starting-point-node-id=311%3A2311"
+          target="_blank"
+          rel="noopener"
+        >
+          <span class="work-more__label">Open the prototype</span>
+          <span class="work-more__arrow" aria-hidden="true">↗</span>
+        </a>
+      </section>
+
+      <!-- ============================================================
+         06 — WHAT I LEARNED
+
+         Craveau is the study already framed around a documented
+         failure, so this section has more to work with than the
+         other three. Use it.
+         ============================================================ -->
+      <section class="section">
+        <div class="section__head">
+          <span class="meta meta--mute">06 — What I learned</span>
+        </div>
+
+        <p class="about__text about__text--lead">
+          I initially tried to show too much on each screen, thinking more
+          options meant better usability. It made the flow slower and harder to
+          scan. This project pushed me to remove features and focus on sequence
+          instead of density. I learned to design around what happens next, not
+          everything that could happen.
+        </p>
+
+        <!-- Drafted from the decisions already stated in sections 03 and
+             04 rather than from anything new — each point traces to a
+             specific choice on this project. Read them before publishing:
+             they're first-person claims about your own work. -->
+        <ul class="card__points">
+          <li class="card__point">
+            I kept cart and checkout contextual rather than persistent tabs,
+            which freed the navigation to hold only five areas.
+          </li>
+          <li class="card__point">
+            Limiting filtering and customisation made the flow faster, but it
+            removed control from anyone who shops with specific constraints.
+          </li>
+          <li class="card__point">
+            I would now design onboarding from real product screens first,
+            instead of building illustrations I later had to replace.
+          </li>
+        </ul>
+      </section>
+
+      <!-- ============================================================
+         CTA — last on the page.
+         ============================================================ -->
+      <section class="section section--cta">
+        <div class="cta">
+          <div class="cta__actions">
+            <!-- Runs the index order: Seamfix → Craveau → Sprout → Groovia. -->
+            <a class="btn btn--primary" href="sprout.html">
+              <span class="btn__label">See next project</span>
+              <span class="btn__arrow" aria-hidden="true">→</span>
+            </a>
+            <a class="btn btn--ghost" href="index.html">
+              <span class="btn__arrow btn__arrow--left" aria-hidden="true">←</span>
+              <span class="btn__label">Back to all projects</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span class="meta meta--mute">© 2026 Victor Elugbaju</span>
+    </footer>
+
+    <script src="../js/main.js"></script>
+  </body>
+</html>

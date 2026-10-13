@@ -1,0 +1,1629 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Victor Elugbaju — Product Designer</title>
+    <meta
+      name="description"
+      content="Product designer working across consumer apps, fintech and enterprise software. Case studies, process and selected work."
+    />
+    <!-- ============================================================
+       IDENTITY, SHARING AND ICONS   (added 2026-10-05)
+
+       canonical and the og:/twitter: URLs are the only absolute URLs in
+       this file. They point at https://victor-elugbaju.netlify.app
+       — if that host ever changes, it changes here, in robots.txt and in
+       sitemap.xml, and nowhere else.
+
+       Icon paths are deliberately RELATIVE ("./favicon.svg"), not
+       root-relative. Root-relative would break every local preview opened
+       as a file:// URL, which is how this site is checked in a browser.
+
+       og:image must be absolute — a scraper fetches it from its own
+       server, with no page context to resolve a relative path against.
+       ============================================================ -->
+    <link rel="canonical" href="https://victor-elugbaju.netlify.app/" />
+
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="favicon.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <meta name="theme-color" content="#0D0D0B" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Victor Elugbaju" />
+    <meta property="og:title" content="Victor Elugbaju — Product Designer" />
+    <meta
+      property="og:description"
+      content="Product designer working across consumer apps, fintech and enterprise software. Case studies, process and selected work."
+    />
+    <meta property="og:url" content="https://victor-elugbaju.netlify.app/" />
+    <meta property="og:image" content="https://victor-elugbaju.netlify.app/img/og-cover.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Victor Elugbaju — Product Designer. Finance, consumer health and enterprise systems."
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Victor Elugbaju — Product Designer" />
+    <meta
+      name="twitter:description"
+      content="Product designer working across consumer apps, fintech and enterprise software. Case studies, process and selected work."
+    />
+    <meta name="twitter:image" content="https://victor-elugbaju.netlify.app/img/og-cover.png" />
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Marks that JS is alive, before first paint. The hero's line
+         reveal hides the headline in its start state, so that start
+         state must only exist where something can undo it — without
+         this class a JS failure would eat the headline entirely.
+         Must stay inline and in <head>: in main.js it lands too late
+         and the type flashes. -->
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body class="page">
+    <!-- ============================================================
+       DUOTONE — true gradient map, shadows to --ink, highlights to
+       --signal. Doing this with mix-blend-mode instead muddies every
+       midtone: `darken` against vermilion clamps green and blue on
+       mid-greys and the face turns to brown sludge. feComponentTransfer
+       maps the full ramp properly.
+
+       Two filters because --signal itself changes per theme
+       (#FF5A2B dark / #FF3D00 light). tableValues are the target
+       colours as 0–1 channel values — recompute them if --signal
+       ever moves.
+       ============================================================ -->
+    <svg class="svg-defs" aria-hidden="true" focusable="false">
+      <defs>
+        <filter id="duotone-dark" color-interpolation-filters="sRGB">
+          <feColorMatrix
+            type="matrix"
+            values="0.2126 0.7152 0.0722 0 0
+                    0.2126 0.7152 0.0722 0 0
+                    0.2126 0.7152 0.0722 0 0
+                    0      0      0      1 0"
+          />
+          <feComponentTransfer>
+            <!-- 0 → #0D0D0B    1 → #FF5A2B -->
+            <feFuncR type="table" tableValues="0.051 1" />
+            <feFuncG type="table" tableValues="0.051 0.353" />
+            <feFuncB type="table" tableValues="0.043 0.169" />
+          </feComponentTransfer>
+        </filter>
+      </defs>
+    </svg>
+
+    <!-- ============================================================
+       NAV
+       ============================================================ -->
+    <header class="nav">
+      <a class="nav__mark" href="index.html">
+        <span class="nav__mark-name">Victor Elugbaju</span>
+      </a>
+
+      <nav class="nav__links">
+        <a class="nav__link" href="#work">Work</a>
+        <a class="nav__link" href="about.html">About</a>
+        <a class="nav__link" href="#experience">Experience</a>
+        <a class="nav__link" href="#contact">Contact</a>
+      </nav>
+
+      <!-- Phones only — display:none above 768px. A disclosure button,
+           so aria-expanded carries the state and the label stays put;
+           the two visible words are decoration and hidden from the
+           accessibility tree, or the button would be named "Menu Close". -->
+      <button
+        class="nav__burger"
+        id="navBurger"
+        type="button"
+        aria-label="Menu"
+        aria-expanded="false"
+        aria-controls="navMenu"
+      >
+        <span class="nav__burger-label meta" aria-hidden="true">
+          <span class="nav__burger-word">Menu</span>
+          <span class="nav__burger-word">Close</span>
+        </span>
+        <span class="nav__burger-bars" aria-hidden="true">
+          <span class="nav__burger-bar"></span>
+          <span class="nav__burger-bar"></span>
+        </span>
+      </button>
+    </header>
+
+    <!-- ============================================================
+       MOBILE MENU — the site's contents as a numbered index.
+
+       Not a dropdown. Below 768px the four mono links become a full
+       sheet, set in display serif and numbered — the same language
+       the work index uses — so the menu reads as part of the system
+       rather than as a phone affordance bolted on.
+
+       Sits under the bar (z-90 against the nav's z-100), so the mark
+       and the burger stay live and in place while it opens.
+       ============================================================ -->
+    <div class="nav-menu" id="navMenu">
+      <div class="nav-menu__inner">
+        <div class="nav-menu__rule" aria-hidden="true"></div>
+
+        <div class="nav-menu__eyebrow">
+          <span class="meta meta--mute">Index</span>
+          <span class="meta meta--mute">Sections 01–04</span>
+        </div>
+
+        <nav class="nav-menu__list" aria-label="Main">
+          <a class="nav-menu__item" href="#work">
+            <span class="nav-menu__index meta">01</span>
+            <span class="nav-menu__line"
+              ><span class="nav-menu__word">Work</span></span
+            >
+          </a>
+          <a class="nav-menu__item" href="about.html">
+            <span class="nav-menu__index meta">02</span>
+            <span class="nav-menu__line"
+              ><span class="nav-menu__word">About</span></span
+            >
+          </a>
+          <a class="nav-menu__item" href="#experience">
+            <span class="nav-menu__index meta">03</span>
+            <span class="nav-menu__line"
+              ><span class="nav-menu__word">Experience</span></span
+            >
+          </a>
+          <a class="nav-menu__item" href="#contact">
+            <span class="nav-menu__index meta">04</span>
+            <span class="nav-menu__line"
+              ><span class="nav-menu__word">Contact</span></span
+            >
+          </a>
+        </nav>
+
+        <div class="nav-menu__foot">
+          <a
+            class="nav-menu__mail"
+            href="mailto:victorajibolaelugbaju@gmail.com"
+            >victorajibolaelugbaju@gmail.com</a
+          >
+
+          <div class="nav-menu__foot-row">
+            <div class="nav-menu__social">
+              <a
+                class="meta"
+                href="https://linkedin.com/in/victor-elugbaju"
+                target="_blank"
+                rel="noopener"
+                >LinkedIn</a
+              >
+              <a
+                class="meta"
+                href="https://behance.net/victorelugbaju"
+                target="_blank"
+                rel="noopener"
+                >Behance</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main>
+      <!-- ============================================================
+         HERO
+         ============================================================ -->
+      <section class="hero" id="hero">
+        <!-- Duotoned, and dissolved leftward with a mask so it has no
+             edge — it ends where the page begins. Absolute because a
+             bleed isn't rhythm; Figma wants this as a positioned layer
+             regardless. -->
+        <div class="hero__portrait">
+          <img
+            class="hero__portrait-img"
+            id="heroPortrait"
+            src="img/victor.jpeg"
+            alt="Portrait of Victor Elugbaju, 2026"
+            width="2048"
+            height="2048"
+            decoding="async"
+          fetchpriority="high"
+              />
+        </div>
+
+        <div class="hero__inner">
+          <div class="hero__eyebrow">
+            <span class="meta">Product Designer</span>
+          </div>
+
+          <!-- Each line is a clipping frame; the inner rises out of it on
+               load. Sentence case, not caps — caps at this scale is the
+               one thing Mauricio and Laura both do, and the serif is
+               what keeps this from being their page in your colours. -->
+          <h1 class="hero__display" id="heroDisplay">
+            <span class="hero__line"
+              ><span class="hero__line-inner">Victor</span></span
+            >
+            <span class="hero__line"
+              ><span class="hero__line-inner">Elugbaju.</span></span
+            >
+          </h1>
+
+          <!-- The hero rail was removed entirely 2026-10-05 at Victor's
+               request: Location, Status and Local time are all gone, and the
+               site now names no city, country, timezone or availability
+               anywhere. The whole .hero__rail was taken out rather than its
+               children, because the rail carries its own border-top — an
+               emptied rail would have left a hairline under the display type
+               with nothing beneath it. The specimen in design-system.html was
+               retired in the same pass. -->
+        </div>
+      </section>
+
+      <!-- ============================================================
+         WORK INDEX
+         ============================================================ -->
+      <section class="section" id="work">
+        <div class="section__head">
+          <span class="meta meta--mute">01 — My Case Studies</span>
+          <!-- Full project index — all projects as alternating feature
+               spreads, each linking to its case study under work/. -->
+          <a class="section__action" href="work/index.html">
+            <span class="meta">See all projects</span>
+            <span class="section__action-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <!-- 2×2. Nested flex, not CSS Grid — flex maps 1:1 onto Figma
+             auto-layout; grid-template lands as absolute junk.
+
+             Card images live at img/<name>.png. Each spec card hides
+             itself once its image loads, so a missing board is loud.
+             Ordered by publication year, newest first. All four slots
+             are real projects now — the reserved placeholder is gone. -->
+        <!-- STACKED SCROLL — each project is a full-width panel pinned with
+             position: sticky. As you scroll, the next panel rises and covers
+             the one before it, leaving a stacked edge at the top.
+
+             Sides alternate (.stack__card--flip) so the image and the panel
+             swap each row. Nested flex, never CSS Grid — same Figma
+             auto-layout contract as the rest of the page.
+
+             ⚠ id="workGrid" is load-bearing: main.js scopes the VIEW cursor
+               to it and binds the triggers to .card. Keep both if you
+               rename anything here.
+             ⚠ Sticky breaks if any ancestor gets overflow:hidden or a
+               transform. The reveal class is deliberately NOT on .stack. -->
+        <div class="stack" id="workGrid">
+          <article class="card stack__card">
+            <a class="card__link stack__inner" href="work/seamfix.html">
+              <div class="stack__media">
+                <div class="card__frame">
+                  <img
+                    class="card__img"
+                    src="img/seamfix.png"
+                    alt="Seamfix asset tracking system"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="card__placeholder">
+                    <span class="meta meta--signal">Image needed</span>
+                    <span class="card__spec"
+                      >3:2 at <code>img/seamfix.png</code> — 1200×800
+                      minimum.</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="stack__panel">
+                <div class="card__head">
+                  <span class="card__num meta">01</span>
+                  <span class="meta meta--mute">Enterprise · 2026</span>
+                </div>
+
+                <div class="card__body">
+                  <div class="card__text">
+                    <h3 class="card__title">Seamfix</h3>
+                    <p class="card__desc">Asset Tracking Management System</p>
+
+                    <ul class="card__points">
+                      <li class="card__point">
+                        Four roles, each given a permission-specific view of one
+                        system — Admin, Asset Manager, Employee, Auditor.
+                      </li>
+                      <li class="card__point">
+                        110+ screens across 21 flows: asset and user management,
+                        maintenance, audit monitoring, reporting, session
+                        control.
+                      </li>
+                    </ul>
+                  </div>
+
+                  <ul class="card__tags">
+                    <li class="card__tag meta">Enterprise</li>
+                    <li class="card__tag meta">Role-based access</li>
+                    <li class="card__tag meta">Design systems</li>
+                    <li class="card__tag meta">Dashboard</li>
+                  </ul>
+                </div>
+
+                <span class="stack__view">
+                  <span class="meta">View case study</span>
+                  <span class="stack__view-arrow" aria-hidden="true">→</span>
+                </span>
+              </div>
+            </a>
+          </article>
+
+          <article class="card stack__card stack__card--flip">
+            <a class="card__link stack__inner" href="work/craveau.html">
+              <div class="stack__media">
+                <div class="card__frame">
+                  <img
+                    class="card__img"
+                    src="img/craveau.png"
+                    alt="Craveau food delivery brand and app"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="card__placeholder">
+                    <span class="meta meta--signal">Image needed</span>
+                    <span class="card__spec"
+                      >3:2 at <code>img/craveau.png</code> — 1200×800
+                      minimum.</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="stack__panel">
+                <div class="card__head">
+                  <span class="card__num meta">02</span>
+                  <span class="meta meta--mute">Food delivery · 2026</span>
+                </div>
+
+                <div class="card__body">
+                  <div class="card__text">
+                    <h3 class="card__title">Craveau</h3>
+                    <p class="card__desc">Food Delivery App</p>
+
+                    <ul class="card__points">
+                      <li class="card__point">
+                        Quick browsing, fast checkout and clear order tracking —
+                        onboarding through post-purchase.
+                      </li>
+                      <li class="card__point">
+                        Fewer visible options at every stage, so each screen has
+                        one dominant action and the next step is never in doubt.
+                      </li>
+                    </ul>
+                  </div>
+
+                  <ul class="card__tags">
+                    <li class="card__tag meta">Food delivery</li>
+                    <li class="card__tag meta">Mobile app</li>
+                    <li class="card__tag meta">Checkout</li>
+                    <li class="card__tag meta">Order tracking</li>
+                  </ul>
+                </div>
+
+                <span class="stack__view">
+                  <span class="meta">View case study</span>
+                  <span class="stack__view-arrow" aria-hidden="true">→</span>
+                </span>
+              </div>
+            </a>
+          </article>
+
+          <article class="card stack__card">
+            <a class="card__link stack__inner" href="work/sprout.html">
+              <div class="stack__media">
+                <div class="card__frame">
+                  <img
+                    class="card__img"
+                    src="img/sprout.png"
+                    alt="Sprout savings app"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="card__placeholder">
+                    <span class="meta meta--signal">Image needed</span>
+                    <span class="card__spec"
+                      >3:2 at <code>img/sprout.png</code> — 1200×800
+                      minimum.</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="stack__panel">
+                <div class="card__head">
+                  <span class="card__num meta">03</span>
+                  <span class="meta meta--mute">Fintech · 2025</span>
+                </div>
+
+                <div class="card__body">
+                  <div class="card__text">
+                    <h3 class="card__title">Sprout</h3>
+                    <p class="card__desc">Savings &amp; Personal Finance</p>
+
+                    <ul class="card__points">
+                      <li class="card__point">
+                        End-to-end: goal-based savings, automated contributions,
+                        spending insights, progress tracking.
+                      </li>
+                      <li class="card__point">
+                        Self-directed concept — designed to make saving feel
+                        like progress rather than deprivation.
+                      </li>
+                    </ul>
+                  </div>
+
+                  <ul class="card__tags">
+                    <li class="card__tag meta">Fintech</li>
+                    <li class="card__tag meta">Mobile</li>
+                    <li class="card__tag meta">Personal finance</li>
+                    <li class="card__tag meta">Data visualisation</li>
+                  </ul>
+                </div>
+
+                <span class="stack__view">
+                  <span class="meta">View case study</span>
+                  <span class="stack__view-arrow" aria-hidden="true">→</span>
+                </span>
+              </div>
+            </a>
+          </article>
+
+          <article class="card stack__card stack__card--flip">
+            <a class="card__link stack__inner" href="work/groovia.html">
+              <div class="stack__media">
+                <div class="card__frame">
+                  <img
+                    class="card__img"
+                    src="img/groovia.png"
+                    alt="Groovia grocery app"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="card__placeholder">
+                    <span class="meta meta--signal">Image needed</span>
+                    <span class="card__spec"
+                      >3:2 at <code>img/groovia.png</code> — 1200×800
+                      minimum.</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="stack__panel">
+                <div class="card__head">
+                  <span class="card__num meta">04</span>
+                  <span class="meta meta--mute">E-commerce · 2025</span>
+                </div>
+
+                <div class="card__body">
+                  <div class="card__text">
+                    <h3 class="card__title">Groovia</h3>
+                    <p class="card__desc">Grocery Shopping App</p>
+
+                    <ul class="card__points">
+                      <li class="card__point">
+                        Product discovery, smart search and filtering, cart and
+                        checkout, order tracking.
+                      </li>
+                      <li class="card__point">
+                        Self-directed e-commerce concept — built around the
+                        shopper who already knows what they want.
+                      </li>
+                    </ul>
+                  </div>
+
+                  <ul class="card__tags">
+                    <li class="card__tag meta">E-commerce</li>
+                    <li class="card__tag meta">Mobile</li>
+                    <li class="card__tag meta">Shopping</li>
+                    <li class="card__tag meta">Product discovery</li>
+                  </ul>
+                </div>
+
+                <span class="stack__view">
+                  <span class="meta">View case study</span>
+                  <span class="stack__view-arrow" aria-hidden="true">→</span>
+                </span>
+              </div>
+            </a>
+          </article>
+
+          <!-- Runway. Gives the last panel a beat pinned at the top before
+               the deck releases. It MUST be a sibling: margin-bottom on the
+               last card travels with the card's own margin box and moves the
+               release point by exactly what it adds, so the pin window
+               collapses to zero and the final panel never pins at all.
+               Padding on .stack is likewise a no-op — the sticky constraint
+               tracks the flex container's content box. Both were measured. -->
+          <div class="stack__runway" aria-hidden="true"></div>
+        </div>
+
+        <!-- The section's exit. The old link lived only in the section head,
+             above the work — the wrong moment for it, and 13px tall. This
+             one lands where the intent actually forms. -->
+        <a class="work-more" href="work/index.html">
+          <span class="work-more__label">See all projects</span>
+          <span class="work-more__arrow" aria-hidden="true">→</span>
+        </a>
+
+        <!-- Cursor-following VIEW disc. Outer element is translated by JS
+             every frame; inner scales via CSS class. Keeping them apart
+             stops the lerp loop from stomping the transition. -->
+        <div class="view-badge" id="viewBadge" aria-hidden="true">
+          <div class="view-badge__inner">
+            <span class="view-badge__label">View</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+         ABOUT
+         System holds. Warmth comes from the copy and the portrait —
+         the grid does not soften here.
+
+         ⚠ PROSE BELOW IS A DRAFT. It describes an approach, not verified
+           history — deliberately, since it was not written from the CV.
+           No years, employers or metrics are claimed. Keep it that way
+           unless Victor supplies the facts. Approve before shipping.
+         ============================================================ -->
+      <section class="section" id="about">
+        <!-- The second span carried "Lagos, Nigeria" until 2026-10-05. It is
+             not simply deleted: every other head on this page is a two-part
+             lockup ("03 — Principles / How I shape products"), so a single
+             span here would read as a dropped element. It now does useful
+             work instead, stating the range at the top of the section. -->
+        <div class="section__head">
+          <span class="meta meta--mute">02 — About</span>
+          <span class="meta meta--mute">Across consumer and enterprise</span>
+        </div>
+
+        <div class="about">
+          <figure class="about__portrait">
+            <div class="portrait__frame">
+              <!-- Same file as the hero, so the network cost is already
+                   paid by the time a reader gets here — but decoding a
+                   2048² image is not free either, and on a phone it lands
+                   on the main thread mid-scroll. lazy + async keeps that
+                   work off the critical path. The frame owns the box via
+                   aspect-ratio, so nothing shifts when it arrives. -->
+              <img
+                class="portrait__img"
+                id="portraitImg"
+                src="img/victor.jpeg"
+                alt="Portrait of Victor Elugbaju, 2026"
+                width="2048"
+                height="2048"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="portrait__placeholder">
+                <span class="meta meta--signal">Portrait needed</span>
+                <span class="portrait__spec">
+                  Expected at <code>img/victor.jpeg</code>. If you're seeing
+                  this card, the file is missing or the filename doesn't match
+                  the <code>src</code> exactly — including the extension.
+                </span>
+              </div>
+            </div>
+            <figcaption class="portrait__caption">
+              <span class="meta meta--mute">Victor Elugbaju</span>
+              <span class="meta meta--mute">2026</span>
+            </figcaption>
+          </figure>
+
+          <div class="about__body">
+            <h2 class="about__lead">
+              I don't mind <em>complicated</em>.
+            </h2>
+
+            <!-- ============================================================
+                 THE ABOUT STATEMENT — ⚠ SHARED COPY, TWO LOCATIONS.
+
+                 These two paragraphs are duplicated VERBATIM at
+                 about.html #who. Victor asked for one statement that reads
+                 the same in both places, so an edit here that is not made
+                 there is a defect, not a variant. The two surfaces differ
+                 only in what follows: five skill chips and the onward link
+                 here, the full eleven and Education there.
+
+                 This REPLACES the earlier trailer/film split, where each
+                 page carried different paragraphs. That split was removed
+                 on Victor's instruction — it is not an oversight, and the
+                 dedupe notes that used to sit here are gone with it.
+
+                 ⚠ STILL DRAFT COPY. First person, and not dictated by him.
+                   Written only from material already provable in this
+                   project — the four role domains and dates, the Seamfix
+                   figures, the CV skills, and his own Principles section as
+                   the voice sample. No claim here is unsupported, but it is
+                   still his voice in someone else's hand, so it needs his
+                   approval before launch (LAUNCH-CHECKLIST A2).
+
+                 Deliberately does NOT name the four case studies. On this
+                 page the section sits directly under "01 — My Case
+                 Studies", and the cards already say what each project is;
+                 listing them again in prose would be a transcription of the
+                 thing immediately above it.
+
+                 No self-introduction: the headline above sets the voice and
+                 the nav carries his name. No location anywhere, per
+                 2026-10-05.
+                 ============================================================ -->
+            <p class="about__text about__text--lead">
+              Since 2024 I've worked at both ends of the same job. On one side,
+              consumer products where everything turns on whether someone can
+              finish a task without stopping to think. On the other, internal
+              systems where four roles see four views of the same record and
+              none of them can be wrong. I was team lead on one of those,
+              covering 110+ screens and 21 flows. The domains have been finance
+              software, consumer health and AI, and the tooling a business runs
+              on.
+            </p>
+
+            <p class="about__text">
+              What carries across is the order I work in. I find out what the
+              real problem is, map the flow before I draw a screen, then design
+              the system underneath it: the components, states and rules that
+              keep a product coherent as it grows. I prototype early, because
+              some problems only appear once you can click through. And because
+              I can read the frontend myself, I meet constraints while they are
+              still cheap to design around, instead of at handoff.
+            </p>
+
+            <!-- Six of Victor's eleven. Re-picked 2026-10-05 to match the
+                 statement above, which now argues range rather than a
+                 specialism. The previous five were systems-weighted (it
+                 dropped Mobile App Design and Web Design, and the note here
+                 said they were chosen for "systems, flows, upstream work"),
+                 which quietly contradicted the paragraph it sat under.
+
+                 Each of these six is claimed or implied directly above:
+                 flows ("map the flow before I draw a screen"), design
+                 systems ("the components, states and rules"), prototyping
+                 ("I prototype early"), and mobile + web as the platform
+                 breadth that "both ends of the same job" asserts.
+
+                 Six, not five — .skills is flex-wrap with a 6px gap, so the
+                 count is free; the full eleven are on about.html. Dropping
+                 High-Fidelity UI Design here is a summary choice, not a
+                 deletion; restore it if you'd rather lead on visual craft.
+
+                 Still verbatim and still closed. Don't infer additions
+                 into it: an invented skill here is a claim about a person,
+                 not a copy tweak. -->
+            <ul class="skills">
+              <li class="skills__chip meta">UX Design</li>
+              <li class="skills__chip meta">
+                User Flows &amp; Journey Mapping
+              </li>
+              <li class="skills__chip meta">Design Systems</li>
+              <li class="skills__chip meta">Prototyping</li>
+              <li class="skills__chip meta">Mobile App Design</li>
+              <li class="skills__chip meta">Web Design</li>
+            </ul>
+
+            <!-- The text CTA, not a ghost button. Full .work-more here
+                 rather than the --back variant: this leads onward, so the
+                 arrow travels right, and it sits after content rather than
+                 opening a page. -->
+            <a class="work-more" href="about.html">
+              <span class="work-more__label">Read more about me</span>
+              <span class="work-more__arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+         PRINCIPLES
+
+         Victor's own words, supplied directly — no longer the drafted
+         placeholder text this section used to carry. Spelling was
+         normalised to British ("prioritise") and two comma splices were
+         repaired; nothing else was altered.
+
+         ⚠ Still the one section where invented copy becomes a claim he
+           has to defend out loud. A design lead WILL ask about these.
+           Don't reword them on his behalf.
+         ============================================================ -->
+      <section class="section" id="principles">
+        <div class="section__head">
+          <span class="meta meta--mute">03 — Principles</span>
+          <span class="meta meta--mute">How I shape products</span>
+        </div>
+
+        <!-- Each column carries a real hairline element, not a border, so
+             it can be drawn top-to-bottom on scroll. Real div, never a
+             pseudo — it has to survive the Figma import. -->
+
+        <!-- ============================================================
+             SHORTENED 2026-10-05, BY CUTTING ONLY.
+
+             Each of these was a 44–52 word paragraph. Every phrase that
+             remains is still Victor's own — the long versions were
+             CONDENSED BY DELETION, never reworded, because these are the
+             one section he supplied directly and the one a design lead
+             will ask him to expand on out loud. Nothing here is a claim
+             he did not write.
+
+             01 and 02 are now verbatim the design system's .principle
+             specimen (design-system.html:2134, :2143), which had already
+             been written in the short form. The live page was the thing
+             out of step with it, not the other way round.
+
+             Lengths are deliberately even (19–24 words). .principles is
+             flex-wrap, so four wildly uneven columns was the visible
+             symptom of the old copy.
+
+             ⚠ The full originals are preserved at the foot of this
+               section. Restore from there rather than rewriting if the
+               long form is ever wanted — for a CV, a cover letter, or a
+               LinkedIn About.
+             ============================================================ -->
+        <div class="principles">
+          <article class="principle">
+            <div class="principle__rule" aria-hidden="true"></div>
+            <span class="principle__num">01</span>
+            <h3 class="principle__title">Clarity over cleverness</h3>
+            <p class="principle__text">
+              I design for understanding first. If a user has to think too hard
+              about what to do next, the design has already failed.
+            </p>
+          </article>
+
+          <article class="principle">
+            <div class="principle__rule" aria-hidden="true"></div>
+            <span class="principle__num">02</span>
+            <h3 class="principle__title">Systems, not screens</h3>
+            <p class="principle__text">
+              I don't just design individual screens — I design systems that
+              scale. This keeps products cohesive as they grow.
+            </p>
+          </article>
+
+          <article class="principle">
+            <div class="principle__rule" aria-hidden="true"></div>
+            <span class="principle__num">03</span>
+            <h3 class="principle__title">Real problems, practical solutions</h3>
+            <p class="principle__text">
+              I focus on solving the problems that actually matter — driven by
+              user needs, context and business goals, not trends or assumptions.
+            </p>
+          </article>
+
+          <article class="principle">
+            <div class="principle__rule" aria-hidden="true"></div>
+            <span class="principle__num">04</span>
+            <h3 class="principle__title">
+              Bridge between design and engineering
+            </h3>
+            <p class="principle__text">
+              I design with implementation in mind. A working knowledge of
+              frontend development means my designs are not just visually strong
+              but efficient to build.
+            </p>
+          </article>
+        </div>
+
+        <!-- ============================================================
+             ORIGINALS — Victor's full supplied text, kept verbatim.
+             Not rendered. Do not edit; this is the source of record.
+
+             01 — Clarity over cleverness
+             "I design for understanding first. Every interface should
+              communicate its purpose instantly, without forcing users to
+              pause, guess, or overthink. Across my work I prioritise clean
+              layouts, clear hierarchy and intuitive navigation. If a user
+              has to think too hard about what to do next, the design has
+              already failed."
+
+             02 — Systems, not screens
+             "I don't just design individual screens — I design systems
+              that scale. Whether building a design system or structuring
+              multi-role enterprise workflows, I focus on consistency,
+              reusable components and logical patterns. This keeps products
+              cohesive as they grow, and means both users and developers
+              can rely on predictable interactions."
+
+             03 — Real problems, practical solutions
+             "I focus on solving the problems that actually matter. Every
+              design decision is intentional and driven by user needs,
+              context and business goals — not trends or assumptions.
+              Whether simplifying a checkout flow or structuring complex
+              enterprise features, I turn complexity into clear, usable
+              paths that help people get things done without friction."
+
+             04 — Bridge between design and engineering
+             "I design with implementation in mind. With a working knowledge
+              of frontend development, I understand constraints, feasibility
+              and handoff realities. That lets me make designs that are not
+              only visually strong but efficient to build, which reduces
+              friction between design and development."
+             ============================================================ -->
+      </section>
+
+      <!-- ============================================================
+         TOOLKIT — four across, two rows.
+
+         Eight tools fill the row exactly twice. A ninth starts a third
+         row on its own; if you add one, add a tenth before shipping so
+         the last row isn't a single orphan card.
+
+         THE MARKS. Two kinds, deliberately:
+           · Drawn logos (Figma, GitHub, VS Code, Claude) as inline SVG
+             with fill/stroke set to currentColor, so the card's colour
+             drives them.
+           · Typographic monograms (Ai, Ca, FJ, N) for the tools whose
+             real icons ARE a letterform in a rounded square. This is
+             their actual construction, not a stand-in for one.
+
+         Every mark sits monochrome and takes its brand colour only on
+         hover, one card at a time. To swap in an official SVG, replace
+         the contents of that card's .tool__mark and make sure the paths
+         carry fill="currentColor" — the colour comes from --tool-brand
+         on the card, set in the stylesheet, not from the file.
+         ============================================================ -->
+      <section class="section" id="toolkit">
+        <div class="section__head">
+          <span class="meta meta--mute">04 — My Toolkit</span>
+          <span class="meta meta--mute">Eight tools</span>
+        </div>
+
+        <div class="toolkit">
+          <article class="tool tool--figma">
+            <div class="tool__mark">
+              <img
+                class="tool__logo"
+                src="img/logos/figma.svg"
+                alt=""
+                width="30"
+                height="30"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <h3 class="tool__name">Figma</h3>
+            <span class="meta meta--mute tool__role">Design</span>
+          </article>
+
+          <article class="tool tool--figjam">
+            <div class="tool__mark">
+              <img
+                class="tool__logo"
+                src="img/logos/figjam.svg"
+                alt=""
+                width="30"
+                height="30"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <h3 class="tool__name">FigJam</h3>
+            <span class="meta meta--mute tool__role">Collaboration</span>
+          </article>
+
+          <article class="tool tool--vscode">
+            <div class="tool__mark">
+              <img
+                class="tool__logo"
+                src="img/logos/vscode.svg"
+                alt=""
+                width="30"
+                height="30"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <h3 class="tool__name">VS Code</h3>
+            <span class="meta meta--mute tool__role">Coding</span>
+          </article>
+
+          <article class="tool tool--claude">
+            <div class="tool__mark">
+              <img
+                class="tool__logo"
+                src="img/logos/claude.svg"
+                alt=""
+                width="30"
+                height="30"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <h3 class="tool__name">Claude</h3>
+            <span class="meta meta--mute tool__role">Development</span>
+          </article>
+
+          <article class="tool tool--illustrator">
+            <div class="tool__mark">
+              <img
+                class="tool__logo"
+                src="img/logos/illustrator.svg"
+                alt=""
+                width="30"
+                height="30"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <h3 class="tool__name">Illustrator</h3>
+            <span class="meta meta--mute tool__role">Vector</span>
+          </article>
+
+          <article class="tool tool--canva">
+            <div class="tool__mark">
+              <img
+                class="tool__logo"
+                src="img/logos/canva.svg"
+                alt=""
+                width="30"
+                height="30"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <h3 class="tool__name">Canva</h3>
+            <span class="meta meta--mute tool__role">Quick assets</span>
+          </article>
+
+          <article class="tool tool--notion">
+            <div class="tool__mark">
+              <img
+                class="tool__logo"
+                src="img/logos/notion.svg"
+                alt=""
+                width="30"
+                height="30"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <h3 class="tool__name">Notion</h3>
+            <span class="meta meta--mute tool__role">Docs &amp; specs</span>
+          </article>
+
+          <article class="tool tool--github">
+            <div class="tool__mark">
+              <img
+                class="tool__logo"
+                src="img/logos/github.svg"
+                alt=""
+                width="30"
+                height="30"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <h3 class="tool__name">GitHub</h3>
+            <span class="meta meta--mute tool__role">Version control</span>
+          </article>
+        </div>
+      </section>
+
+      <!-- ============================================================
+         TESTIMONIALS.
+
+         These are real quotes from named people. Keep them VERBATIM —
+         a testimonial edited for flow is no longer the sentence that
+         person agreed to have attributed to them. Fix an obvious typo;
+         change nothing else. Attribution is name + role only, by their
+         choice; there is no company or year line, so don't add one back
+         from a template.
+
+         ⚠ Both quotes are SHORTENED, and shortened one specific way: whole
+           sentences were dropped, and every sentence left is exactly as its
+           author wrote it. Nothing was reworded. Keep it that way — the
+           moment a sentence is rewritten "for flow" it stops being theirs.
+           The full originals are longer; ask Victor for them before
+           re-expanding.
+
+         The stage shows one quote; the index on the right selects it,
+         by click or keyboard. To add a third, copy one .quote figure
+         and one .words__row button, keep their id/aria-controls paired
+         (quote-N ↔ tab-N), and JS wires the rest — it reads the count
+         and the start slot off the DOM.
+         ============================================================ -->
+      <section class="section" id="testimonials">
+        <div class="section__head">
+          <span class="meta meta--mute">05 — Testimonials</span>
+          <span class="meta meta--mute" id="wordsCount">01 / 04</span>
+        </div>
+
+        <div class="words">
+          <div class="words__stage">
+            <span class="words__mark" aria-hidden="true">&ldquo;</span>
+
+            <div class="words__panels">
+              <figure
+                class="quote is-active"
+                id="quote-1"
+                role="tabpanel"
+                aria-labelledby="tab-1"
+                tabindex="0"
+              >
+                <blockquote class="quote__body">
+                  <span class="quote__frame"
+                    ><span class="quote__inner"
+                      >Victor is a talented Product Designer with a strong eye
+                      for detail and user-centered design. Throughout our
+                      collaboration, Victor was professional, creative, and
+                      always open to feedback. His ability to turn ideas into
+                      intuitive, well-crafted designs made working with him both
+                      smooth and enjoyable.</span
+                    ></span
+                  >
+                </blockquote>
+                <figcaption class="quote__foot">
+                  <span class="quote__frame"
+                    ><span class="quote__inner">
+                      <span class="quote__attr">
+                        <span class="quote__name">Zeynep Ünal</span>
+                        <span class="meta meta--mute quote__role"
+                          >Visual &amp; Product Designer</span
+                        >
+                      </span>
+                    </span></span
+                  >
+                </figcaption>
+              </figure>
+
+              <figure
+                class="quote"
+                id="quote-2"
+                role="tabpanel"
+                aria-labelledby="tab-2"
+                tabindex="0"
+              >
+                <blockquote class="quote__body">
+                  <span class="quote__frame"
+                    ><span class="quote__inner"
+                      >Victor is one of the best product designers I've had the
+                      opportunity to work with. He has excellent communication
+                      skills and is a great listener, which made collaboration
+                      smooth and enjoyable. His deep understanding of product
+                      design is evident in the way he explains concepts and the
+                      reasoning behind every design choice.</span
+                    ></span
+                  >
+                </blockquote>
+                <figcaption class="quote__foot">
+                  <span class="quote__frame"
+                    ><span class="quote__inner">
+                      <span class="quote__attr">
+                        <span class="quote__name">Wisdom Ogedengbe</span>
+                        <span class="meta meta--mute quote__role"
+                          >Full Stack Developer</span
+                        >
+                      </span>
+                    </span></span
+                  >
+                </figcaption>
+              </figure>
+
+              <figure
+                class="quote"
+                id="quote-3"
+                role="tabpanel"
+                aria-labelledby="tab-3"
+                tabindex="0"
+              >
+                <blockquote class="quote__body">
+                  <span class="quote__frame"
+                    ><span class="quote__inner"
+                      >Working with Victor was a great experience. As our Team lead, he guided the team effectively, encouraged collaboration, and kept us organized throughout the project. His creativity, leadership, and reliability made a significant contribution to our success.</span
+                    ></span
+                  >
+                </blockquote>
+                <figcaption class="quote__foot">
+                  <span class="quote__frame"
+                    ><span class="quote__inner">
+                      <span class="quote__attr">
+                        <span class="quote__name">Oyindamola Awoniyi</span>
+                        <span class="meta meta--mute quote__role"
+                          >Product Designer</span
+                        >
+                      </span>
+                    </span></span
+                  >
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <!-- A real tablist. aria-selected and the roving tabindex are
+               set by JS, which owns the selection — hardcoding them here
+               would just be a second source of truth to forget to
+               update. -->
+          <div
+            class="words__index"
+            id="wordsIndex"
+            role="tablist"
+            aria-orientation="vertical"
+            aria-label="Testimonials"
+          >
+            <button
+              class="words__row is-active"
+              id="tab-1"
+              type="button"
+              role="tab"
+              aria-controls="quote-1"
+            >
+              <div class="words__row-rule" aria-hidden="true"></div>
+              <span class="words__row-num meta">01</span>
+              <span class="words__row-body">
+                <span class="words__row-name">Zeynep Ünal</span>
+                <span class="meta meta--mute words__row-role"
+                  >Visual &amp; Product Designer</span
+                >
+              </span>
+            </button>
+
+            <button
+              class="words__row"
+              id="tab-2"
+              type="button"
+              role="tab"
+              aria-controls="quote-2"
+            >
+              <div class="words__row-rule" aria-hidden="true"></div>
+              <span class="words__row-num meta">02</span>
+              <span class="words__row-body">
+                <span class="words__row-name">Wisdom Ogedengbe</span>
+                <span class="meta meta--mute words__row-role"
+                  >Full Stack Developer</span
+                >
+              </span>
+            </button>
+
+            <button
+              class="words__row"
+              id="tab-3"
+              type="button"
+              role="tab"
+              aria-controls="quote-3"
+            >
+              <div class="words__row-rule" aria-hidden="true"></div>
+              <span class="words__row-num meta">03</span>
+              <span class="words__row-body">
+                <span class="words__row-name">Oyindamola Awoniyi</span>
+                <span class="meta meta--mute words__row-role"
+                  >Product Designer</span
+                >
+              </span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+         INFO / EXPERIENCE
+         A rail that holds position against a chronology that scrolls
+         past it. Text-only — no screens, no metrics, NDA-safe by
+         construction.
+
+         Serif carries the ORG, not a chapter title. An employer scans
+         this section for company names; making them the largest thing
+         on the row is the whole job. Role, domain and dates stay in
+         the mono voice above it.
+
+         ⚠ THE PARAGRAPHS ARE DRAFTED, NOT DICTATED. Org, role, domain
+           and dates are Victor's and are correct — they came off the
+           old credits list. The prose under each org did not: it is
+           written from the domain label alone and describes the kind
+           of problem that sector poses, never what he shipped, owned
+           or touched. That line is deliberate and load-bearing — an
+           invented deliverable here is a claim a single interview
+           question would expose, and it's under an NDA notice, which
+           makes it worse. Approve or replace each one before launch.
+         ============================================================ -->
+      <section class="section" id="experience">
+        <div class="section__head">
+          <span class="meta meta--mute">06 — Experience</span>
+        </div>
+
+        <div class="xp">
+          <div class="xp__rail">
+            <h2 class="xp__display">Where I have <em>worked</em>.</h2>
+
+            <!-- Scroll position as chronology: the rail holds still, so it
+                 can afford to say where in the timeline you are. Hidden
+                 without JS — an empty track is furniture, and a full one
+                 would be a lie. The fill is a real element scaled from its
+                 left edge; animating width would relayout every frame.
+
+                 PRESENT sits on the LEFT because the list is newest-first.
+                 Scrolling down walks backwards to 2024, so the bar fills in
+                 that direction too. Labelled 2024 → PRESENT it would fill
+                 against its own axis — right for a CV read top-down, exactly
+                 wrong for the thing under it. If the list is ever reordered
+                 oldest-first, these two swap back. -->
+            <div class="xp__progress">
+              <div class="xp__progress-head">
+                <span class="meta meta--mute">Present</span>
+                <span class="meta meta--mute">2024</span>
+              </div>
+              <div class="xp__track">
+                <div class="xp__fill" id="xpFill" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="xp__body">
+            <!-- Rows carry padding-bottom rather than the list carrying gap,
+                 so each row's spine runs the full height of its own box and
+                 the four of them meet end to end as one continuous line. -->
+            <ol class="xp__list" id="xpList">
+              <li class="xp__row">
+                <div class="xp__spine" aria-hidden="true"></div>
+                <div class="xp__node" aria-hidden="true"></div>
+
+                <div class="xp__entry">
+                  <div class="xp__stamp">
+                    <div class="xp__stamp-lead">
+                      <span class="meta meta--signal">Product Designer</span>
+                      <span class="xp__where meta meta--mute"
+                        >Finance software</span
+                      >
+                    </div>
+                    <span class="xp__date meta meta--mute">2026 — Present</span>
+                  </div>
+
+                  <h3 class="xp__org">Ledgaflow</h3>
+
+                  <p class="xp__text">
+                    Financial software, where the screen is the last mile of a
+                    much longer problem — what reconciles, what needs approving,
+                    and the history a number has to carry with it.
+                  </p>
+                </div>
+              </li>
+
+              <li class="xp__row">
+                <div class="xp__spine" aria-hidden="true"></div>
+                <div class="xp__node" aria-hidden="true"></div>
+
+                <div class="xp__entry">
+                  <div class="xp__stamp">
+                    <div class="xp__stamp-lead">
+                      <span class="meta meta--signal">Product Designer</span>
+                      <span class="xp__where meta meta--mute"
+                        >Consumer health · AI</span
+                      >
+                    </div>
+                    <span class="xp__date meta meta--mute">2025 — 2026</span>
+                  </div>
+
+                  <h3 class="xp__org">Bluesense AI</h3>
+
+                  <p class="xp__text">
+                    Consumer health with a model underneath it. Two hard
+                    constraints meeting at once: people are making decisions
+                    about their own bodies, and a system's confidence is not the
+                    same thing as a fact.
+                  </p>
+                </div>
+              </li>
+
+              <li class="xp__row">
+                <div class="xp__spine" aria-hidden="true"></div>
+                <div class="xp__node" aria-hidden="true"></div>
+
+                <div class="xp__entry">
+                  <div class="xp__stamp">
+                    <div class="xp__stamp-lead">
+                      <span class="meta meta--signal">Product Designer</span>
+                      <span class="xp__where meta meta--mute"
+                        >Enterprise tooling</span
+                      >
+                    </div>
+                    <span class="xp__date meta meta--mute">2025</span>
+                  </div>
+
+                  <h3 class="xp__org">NexQuantum</h3>
+
+                  <p class="xp__text">
+                    Internal tooling — the assigned software nobody can churn
+                    away from. Nothing external forces this kind of product to
+                    be good, which makes the standard entirely the designer's to
+                    hold.
+                  </p>
+                </div>
+              </li>
+
+              <li class="xp__row">
+                <div class="xp__spine" aria-hidden="true"></div>
+                <div class="xp__node" aria-hidden="true"></div>
+
+                <div class="xp__entry">
+                  <div class="xp__stamp">
+                    <div class="xp__stamp-lead">
+                      <span class="meta meta--signal"
+                        >Product Design Intern</span
+                      >
+                      <span class="xp__where meta meta--mute"
+                        >Web · Mobile</span
+                      >
+                    </div>
+                    <span class="xp__date meta meta--mute">2024</span>
+                  </div>
+
+                  <h3 class="xp__org">HNG</h3>
+
+                  <p class="xp__text">
+                    Where it started. Web and mobile briefs at volume on short
+                    cycles — enough repetition to learn what a spec leaves out,
+                    and how much of the job is asking the second question.
+                  </p>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+         CONTACT
+         ============================================================ -->
+      <section class="section section--contact" id="contact">
+        <div class="section__head">
+          <span class="meta meta--mute">07 — Contact</span>
+        </div>
+
+        <div class="contact">
+          <h2 class="contact__display">
+            Let's<br />
+            <em>Connect.</em>
+          </h2>
+        </div>
+
+        <!-- ============================================================
+             SEND A MESSAGE — merged in from the former contact.html.
+
+             Two columns. The rail holds the direct lines (email carries
+             a copy button); the form is the considered path. The channel
+             list replaces the old .contact__links here — same four
+             links, richer treatment, no duplication.
+
+             The form is honest about having no backend: submit composes
+             a mailto draft. Without JS the form's own action="mailto:"
+             does the same, more crudely. main.js (already loaded on this
+             page) sets noValidate and takes over validation + a cleaner
+             mailto on submit; it's null-guarded, so it simply activates
+             now that #contactForm lives here.
+             ============================================================ -->
+        <div class="reach">
+          <!-- LEFT: direct lines. -->
+          <aside class="reach__rail">
+            <ul class="channels">
+              <li class="channel">
+                <span class="channel__label meta meta--mute">Email</span>
+                <a
+                  class="channel__value"
+                  href="mailto:victorajibolaelugbaju@gmail.com"
+                  >victorajibolaelugbaju@gmail.com</a
+                >
+                <button
+                  class="channel__copy meta"
+                  type="button"
+                  data-copy="victorajibolaelugbaju@gmail.com"
+                  aria-label="Copy email address"
+                >
+                  Copy
+                </button>
+              </li>
+
+              <li class="channel">
+                <span class="channel__label meta meta--mute">LinkedIn</span>
+                <a
+                  class="channel__value"
+                  href="https://linkedin.com/in/victor-elugbaju"
+                  target="_blank"
+                  rel="noopener"
+                  >/victor-elugbaju</a
+                >
+              </li>
+
+              <li class="channel">
+                <span class="channel__label meta meta--mute">Behance</span>
+                <a
+                  class="channel__value"
+                  href="https://behance.net/victorelugbaju"
+                  target="_blank"
+                  rel="noopener"
+                  >/victorelugbaju</a
+                >
+              </li>
+
+              <li class="channel">
+                <span class="channel__label meta meta--mute">Phone</span>
+                <a class="channel__value" href="tel:+2348164288272"
+                  >+234 816 428 8272</a
+                >
+              </li>
+            </ul>
+
+            <!-- ADDED 2026-10-05. The CV used to be reachable from
+                 about.html ONLY, so a reviewer who read the homepage,
+                 scrolled to Contact and wanted the document had no way to
+                 get it without first guessing that it lived one page
+                 deeper. Byte-identical to the button at about.html:361 —
+                 same href, same download rename, same arrow modifier — so
+                 the two pages offer the same thing in the same words. -->
+            <a
+              class="btn btn--primary"
+              href="img/Victor_Elugbaju_CV.pdf"
+              download="Victor-Elugbaju-CV.pdf"
+            >
+              <span class="btn__label">Download CV</span>
+              <span class="btn__arrow btn__arrow--down" aria-hidden="true"
+                >↓</span
+              >
+            </a>
+          </aside>
+
+          <!-- RIGHT: the form. -->
+          <div class="reach__form-wrap">
+            <!-- action/method/enctype are the no-JS fallback: they open a
+                 mail draft the crude way. main.js sets form.noValidate and
+                 takes over both validation and a cleaner mailto on submit. -->
+            <form
+              class="form"
+              id="contactForm"
+              action="mailto:victorajibolaelugbaju@gmail.com"
+              method="post"
+              enctype="text/plain"
+            >
+              <div class="form__row">
+                <div class="field">
+                  <label class="field__label meta meta--mute" for="cf-name"
+                    >Your name</label
+                  >
+                  <div class="field__control">
+                    <input
+                      class="field__input"
+                      id="cf-name"
+                      name="name"
+                      type="text"
+                      required
+                      autocomplete="name"
+                      placeholder="First and last"
+                    />
+                    <div class="field__line" aria-hidden="true"></div>
+                  </div>
+                  <span class="field__error meta" data-error>
+                    Add your name so I know who I'm replying to.
+                  </span>
+                </div>
+
+                <div class="field">
+                  <label class="field__label meta meta--mute" for="cf-email"
+                    >Email</label
+                  >
+                  <div class="field__control">
+                    <input
+                      class="field__input"
+                      id="cf-email"
+                      name="email"
+                      type="email"
+                      required
+                      autocomplete="email"
+                      placeholder="you@company.com"
+                    />
+                    <div class="field__line" aria-hidden="true"></div>
+                  </div>
+                  <span class="field__error meta" data-error>
+                    That doesn't look like an email I can reply to.
+                  </span>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field__label meta meta--mute" for="cf-org"
+                  >Organisation
+                  <span class="field__opt">— optional</span></label
+                >
+                <div class="field__control">
+                  <input
+                    class="field__input"
+                    id="cf-org"
+                    name="organisation"
+                    type="text"
+                    autocomplete="organization"
+                    placeholder="Where you're writing from"
+                  />
+                  <div class="field__line" aria-hidden="true"></div>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field__label meta meta--mute" for="cf-message"
+                  >Message</label
+                >
+                <div class="field__control">
+                  <textarea
+                    class="field__input field__input--area"
+                    id="cf-message"
+                    name="message"
+                    rows="4"
+                    required
+                    placeholder="What are you building, and where does the logic get hard?"
+                  ></textarea>
+                  <div class="field__line" aria-hidden="true"></div>
+                </div>
+                <span class="field__error meta" data-error>
+                  Give me a sentence or two to reply to.
+                </span>
+              </div>
+
+              <div class="form__submit">
+                <button class="btn btn--primary" type="submit">
+                  <span class="btn__label">Send message</span>
+                  <span class="btn__arrow" aria-hidden="true">→</span>
+                </button>
+              </div>
+
+              <!-- Owned by JS. Empty and silent until there's something to
+                   announce; aria-live carries errors to a screen reader. -->
+              <p
+                class="form__status meta"
+                id="formStatus"
+                role="status"
+                aria-live="polite"
+              ></p>
+            </form>
+
+            <!-- Swapped in for the form once a draft is composed. -->
+            <div class="form__success" id="formSuccess" hidden>
+              <span class="meta meta--signal">
+                <span class="dot" aria-hidden="true"></span>
+                Draft ready
+              </span>
+              <h3 class="form__success-title">Check your mail app.</h3>
+              <p class="form__success-text">
+                Your message is composed and waiting to send. If nothing opened,
+                write to
+                <a href="mailto:victorajibolaelugbaju@gmail.com"
+                  >victorajibolaelugbaju@gmail.com</a
+                >
+                directly — either way I'll reply within a day.
+              </p>
+              <button class="form__restart" type="button" id="formRestart">
+                <span class="btn__label">Write another</span>
+                <span class="btn__arrow" aria-hidden="true">→</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+    <footer class="footer">
+      <span class="meta meta--mute">© 2026 Victor Elugbaju</span>
+    </footer>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>

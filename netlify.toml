@@ -1,0 +1,71 @@
+# Netlify configuration — Victor Elugbaju portfolio
+#
+# There is no build step. The site is static HTML, one stylesheet and one
+# script, so Netlify just serves this directory as-is.
+#
+# To deploy: drag this folder onto app.netlify.com/drop, or connect the repo
+# once it is under git. Netlify serves 404.html automatically for unknown paths.
+
+[build]
+  publish = "."
+  command = ""
+
+# ---------------------------------------------------------------------------
+# Caching.
+#
+# HTML must revalidate every time, or a visitor keeps seeing yesterday's copy
+# after an update. Fingerprinted-by-content assets could be cached forever, but
+# nothing here is fingerprinted — style.css and main.js keep their names across
+# deploys — so they get a short cache with revalidation instead. Images never
+# change once published, so they can be cached hard.
+# ---------------------------------------------------------------------------
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
+[[headers]]
+  for = "/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# ---------------------------------------------------------------------------
+# Baseline security headers. None of these change how the site looks; they
+# stop other sites framing it, stop browsers guessing content types, and keep
+# the referrer from leaking full URLs to third parties.
+# ---------------------------------------------------------------------------
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# ---------------------------------------------------------------------------
+# /work/ is a directory with its own index.html, so /work resolves already.
+# This only normalises the no-trailing-slash form so both spellings work.
+# ---------------------------------------------------------------------------
+
+[[redirects]]
+  from = "/work"
+  to = "/work/"
+  status = 301
+
+# The backup/ directory is dead code kept for local reference only.
+[[redirects]]
+  from = "/backup/*"
+  to = "/404.html"
+  status = 404
