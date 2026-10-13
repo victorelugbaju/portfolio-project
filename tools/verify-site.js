@@ -40,7 +40,7 @@ const server = http.createServer((req, res) => {
 
 const PAGES = [
   ['/portfolio-project/', 'Home'], ['/portfolio-project/about/', 'About'], ['/portfolio-project/design-system/', 'Design system'],
-  ['/portfolio-project/work/', 'Work index'], ['/portfolio-project/work/seamfix/', 'Seamfix'], ['/portfolio-project/work/sprout/', 'Sprout'],
+  ['/portfolio-project/work/', 'Work index'], ['/portfolio-project/work/settle/', 'Settle'], ['/portfolio-project/work/seamfix/', 'Seamfix'], ['/portfolio-project/work/sprout/', 'Sprout'],
   ['/portfolio-project/work/groovia/', 'Groovia'], ['/portfolio-project/work/craveau/', 'Craveau'],
   ['/portfolio-project/deliberately-missing', '404'],
 ];

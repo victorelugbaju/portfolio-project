@@ -1340,6 +1340,10 @@ html { scroll-padding-top: 92px; }
 .stack__card:nth-child(2) { --stack-top: 100px; }
 .stack__card:nth-child(3) { --stack-top: 116px; }
 .stack__card:nth-child(4) { --stack-top: 132px; }
+/* Added 2026-10-13 with Settle. Each panel sits 16px lower than the one
+   before so the stack reads as a deck; a 5th card without this would
+   inherit the base offset and sit directly on top of the 4th. */
+.stack__card:nth-child(5) { --stack-top: 148px; }
 
 /* Overrides .card__link, which is a 16px-gap column by default. */
 .stack__inner {

@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settle — Furniture Studio Concept · Victor Elugbaju</title>
+    <meta
+      name="description"
+      content="Settle — a concept site for a furniture studio in Lagos, designed and built as plain HTML, CSS and JavaScript. A short piece by Victor Elugbaju."
+    />
+    <!-- ============================================================
+       IDENTITY, SHARING AND ICONS   (added 2026-10-05)
+
+       canonical and the og:/twitter: URLs are the only absolute URLs in
+       this file. They point at https://victorelugbaju.github.io/portfolio-project/
+       — if that host ever changes, it changes here, in robots.txt and in
+       sitemap.xml, and nowhere else.
+
+       Icon paths are deliberately RELATIVE ("../favicon.svg"), not
+       root-relative. Root-relative would break every local preview opened
+       as a file:// URL, which is how this site is checked in a browser.
+
+       og:image must be absolute — a scraper fetches it from its own
+       server, with no page context to resolve a relative path against.
+       ============================================================ -->
+    <link rel="canonical" href="https://victorelugbaju.github.io/portfolio-project/work/settle/" />
+
+    <link rel="icon" href="/portfolio-project/img/brand/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/portfolio-project/img/brand/favicon.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/portfolio-project/img/brand/apple-touch-icon.png" />
+    <meta name="theme-color" content="#0D0D0B" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Victor Elugbaju" />
+    <meta property="og:title" content="Settle — Furniture Studio Concept · Victor Elugbaju" />
+    <meta
+      property="og:description"
+      content="Settle — a concept site for a furniture studio in Lagos, designed and built as plain HTML, CSS and JavaScript. A short piece by Victor Elugbaju."
+    />
+    <meta property="og:url" content="https://victorelugbaju.github.io/portfolio-project/work/settle/" />
+    <meta property="og:image" content="https://victorelugbaju.github.io/portfolio-project/img/brand/og-cover.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Victor Elugbaju — Product Designer. Finance, consumer health and enterprise systems."
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Settle — Furniture Studio Concept · Victor Elugbaju" />
+    <meta
+      name="twitter:description"
+      content="Settle — a concept site for a furniture studio in Lagos, designed and built as plain HTML, CSS and JavaScript. A short piece by Victor Elugbaju."
+    />
+    <meta name="twitter:image" content="https://victorelugbaju.github.io/portfolio-project/img/brand/og-cover.png" />
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/portfolio-project/css/style.css" />
+
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body class="page">
+    <!-- Read progress. Ships at scaleX(0) and stays there without JS —
+         a bar that reports nothing is invisible, not broken. -->
+    <div class="progress" aria-hidden="true">
+      <div class="progress__fill" id="readProgress"></div>
+    </div>
+
+    <header class="nav">
+      <a class="nav__mark" href="/portfolio-project/">
+        <span class="nav__mark-name">Victor Elugbaju</span>
+      </a>
+
+      <nav class="nav__links">
+        <a class="nav__link" href="/portfolio-project/">Work</a>
+        <a class="nav__link" href="/portfolio-project/about/">About</a>
+        <a class="nav__link" href="/portfolio-project/#experience">Experience</a>
+        <a class="nav__link" href="mailto:victorajibolaelugbaju@gmail.com"
+          >Contact</a
+        >
+      </nav>
+
+      <!-- Phones only — display:none above 768px. A disclosure button,
+           so aria-expanded carries the state and the label stays put;
+           the two visible words are decoration and hidden from the
+           accessibility tree, or the button would be named "Menu Close". -->
+      <button
+        class="nav__burger"
+        id="navBurger"
+        type="button"
+        aria-label="Menu"
+        aria-expanded="false"
+        aria-controls="navMenu"
+      >
+        <span class="nav__burger-label meta" aria-hidden="true">
+          <span class="nav__burger-word">Menu</span>
+          <span class="nav__burger-word">Close</span>
+        </span>
+        <span class="nav__burger-bars" aria-hidden="true">
+          <span class="nav__burger-bar"></span>
+          <span class="nav__burger-bar"></span>
+        </span>
+      </button>
+    </header>
+
+    <!-- ============================================================
+       MOBILE MENU — the site's contents as a numbered index.
+
+       Not a dropdown. Below 768px the four mono links become a full
+       sheet, set in display serif and numbered — the same language
+       the work index uses — so the menu reads as part of the system
+       rather than as a phone affordance bolted on.
+
+       Sits under the bar (z-90 against the nav's z-100), so the mark
+       and the burger stay live and in place while it opens.
+       ============================================================ -->
+    <div class="nav-menu" id="navMenu">
+      <div class="nav-menu__inner">
+        <div class="nav-menu__rule" aria-hidden="true"></div>
+
+        <div class="nav-menu__eyebrow">
+          <span class="meta meta--mute">Index</span>
+          <span class="meta meta--mute">Sections 01–04</span>
+        </div>
+
+        <nav class="nav-menu__list" aria-label="Main">
+          <a class="nav-menu__item" href="/portfolio-project/">
+            <span class="nav-menu__index meta">01</span>
+            <span class="nav-menu__line"
+              ><span class="nav-menu__word">Work</span></span
+            >
+          </a>
+          <a class="nav-menu__item" href="/portfolio-project/about/">
+            <span class="nav-menu__index meta">02</span>
+            <span class="nav-menu__line"
+              ><span class="nav-menu__word">About</span></span
+            >
+          </a>
+          <a class="nav-menu__item" href="/portfolio-project/#experience">
+            <span class="nav-menu__index meta">03</span>
+            <span class="nav-menu__line"
+              ><span class="nav-menu__word">Experience</span></span
+            >
+          </a>
+          <a class="nav-menu__item" href="mailto:victorajibolaelugbaju@gmail.com">
+            <span class="nav-menu__index meta">04</span>
+            <span class="nav-menu__line"
+              ><span class="nav-menu__word">Contact</span></span
+            >
+          </a>
+        </nav>
+
+        <div class="nav-menu__foot">
+          <a
+            class="nav-menu__mail"
+            href="mailto:victorajibolaelugbaju@gmail.com"
+            >victorajibolaelugbaju@gmail.com</a
+          >
+
+          <div class="nav-menu__foot-row">
+            <div class="nav-menu__social">
+              <a
+                class="meta"
+                href="https://linkedin.com/in/victor-elugbaju"
+                target="_blank"
+                rel="noopener"
+                >LinkedIn</a
+              >
+              <a
+                class="meta"
+                href="https://behance.net/victorelugbaju"
+                target="_blank"
+                rel="noopener"
+                >Behance</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main>
+      <!-- ============================================================
+         SETTLE — a SHORT concept piece, not a full case study.
+
+         Deliberately lighter than seamfix / sprout / groovia: it carries
+         the brief, what was built and two images, and it links out to the
+         live site rather than retelling it. Victor asked for the short
+         format on 2026-10-13.
+
+         ⚠ THE PROSE BELOW IS A DRAFT, written from the Settle repository —
+           its README, its commit history and its code. Every sentence is
+           checkable against that repo, and nothing about his intent,
+           process or reasoning has been invented. That is also the limit:
+           it says what the thing IS, never what he decided or learned.
+
+           There is NO "what I learned" section here, and that absence is
+           deliberate. On the other four studies that section is the most
+           valuable one, and it is the one that cannot be drafted on
+           someone's behalf. Ask him for it, then add it.
+         ============================================================ -->
+      <section class="about-hero about-hero--case">
+        <div class="about-hero__nav">
+          <a class="work-more work-more--back" href="/portfolio-project/">
+            <span class="work-more__arrow" aria-hidden="true">←</span>
+            <span class="work-more__label">Back to all projects</span>
+          </a>
+        </div>
+
+        <div class="about-hero__eyebrow about-hero__eyebrow--split">
+          <span class="meta meta--mute">Settle</span>
+          <span class="meta meta--mute">Furniture · 2026</span>
+        </div>
+
+        <!-- 27 and 17 characters. Each line is nowrap under
+             .about-hero--case, so anything past ~28 runs off a phone
+             rather than wrapping. Count before you rewrite.
+             Both lines are Victor's own, from the project's README. -->
+        <h1 class="about-hero__statement" id="caseStatement">
+          <span class="hero__line"
+            ><span class="hero__line-inner"
+              >Furniture that stays still.</span
+            ></span
+          >
+          <span class="hero__line"
+            ><span class="hero__line-inner">While life moves.</span></span
+          >
+        </h1>
+      </section>
+
+      <!-- Full bleed, no caption. Same component as the other studies;
+           the source is 16:9 against a 16:9 frame, so nothing is cropped. -->
+      <section class="plate">
+        <div class="card__frame plate__frame">
+          <img
+            class="card__img"
+            src="/portfolio-project/img/work/settle.webp"
+            alt="Settle — an oak chair photographed against concrete"
+            decoding="async"
+            fetchpriority="high"
+          />
+          <div class="card__placeholder">
+            <span class="meta meta--signal">Image needed</span>
+            <span class="card__spec"
+              >3:2 at <code>img/work/settle.webp</code> — 1200×800 minimum.</span
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+         01 — OVERVIEW
+         ============================================================ -->
+      <section class="section">
+        <div class="section__head">
+          <span class="meta meta--mute">01 — Overview</span>
+          <span class="meta meta--mute">The shape of the work</span>
+        </div>
+
+        <!-- The Type fact says "Self-initiated concept" for the same reason
+             the Craveau page does: there is no client, and a study that
+             does not say so invites the question as an accusation rather
+             than a fact. The Live fact is the thing this project has that
+             none of the others do — it is finished and you can open it. -->
+        <dl class="case-facts">
+          <div class="case-fact">
+            <dt class="meta meta--mute">Role</dt>
+            <dd class="case-fact__value">Design &amp; build</dd>
+          </div>
+          <div class="case-fact">
+            <dt class="meta meta--mute">Year</dt>
+            <dd class="case-fact__value">2026</dd>
+          </div>
+          <div class="case-fact">
+            <dt class="meta meta--mute">Scope</dt>
+            <dd class="case-fact__value">Concept site · 3 page types</dd>
+          </div>
+          <div class="case-fact">
+            <dt class="meta meta--mute">Type</dt>
+            <dd class="case-fact__value">Self-initiated concept</dd>
+          </div>
+          <div class="case-fact">
+            <dt class="meta meta--mute">Live</dt>
+            <dd class="case-fact__value">
+              <a class="cta__link" href="https://victorelugbaju.github.io/Settle/" target="_blank" rel="noopener"
+                >Open the site →</a
+              >
+            </dd>
+          </div>
+        </dl>
+
+        <p class="about__text about__text--lead">
+          Settle is a self-initiated concept for a furniture studio in Lagos,
+          designed and built end to end. The site is three page types rather
+          than a single landing page: a landing page, an index of every piece,
+          and a product page that takes the piece as a parameter so all six
+          share one template instead of six near-identical files.
+        </p>
+      </section>
+
+      <!-- ============================================================
+         02 — HOW IT IS BUILT
+
+         This section exists because it is the part of this project that
+         is provable without Victor having to say anything — it is all
+         readable in the repository. It is also the thing that separates
+         this piece from the other four: he designed it and shipped it.
+         ============================================================ -->
+      <section class="section">
+        <div class="section__head">
+          <span class="meta meta--mute">02 — How it is built</span>
+          <span class="meta meta--mute">Design through to deployment</span>
+        </div>
+
+        <p class="about__text">
+          Plain HTML, CSS and JavaScript with no build step, published as
+          static files. The photography is responsive at the file level —
+          every image ships as WebP with a JPEG fallback at several widths,
+          so a phone is never sent a desktop-sized photograph.
+        </p>
+
+        <ul class="card__points">
+          <li class="card__point">
+            Six pieces — halden, moss, turn, pause, weave and low — run
+            through one product template rather than six separate pages.
+          </li>
+          <li class="card__point">
+            Every page has a static snapshot generated for it, so the design
+            can be pulled back into Figma without rebuilding it by hand.
+          </li>
+          <li class="card__point">
+            Reveals are tuned to settle rather than announce themselves,
+            matching what the furniture is meant to do.
+          </li>
+        </ul>
+      </section>
+
+      <!-- ============================================================
+         03 — PIECES
+         Two shots, not four. This is the short format.
+         ============================================================ -->
+      <section class="section">
+        <div class="section__head">
+          <span class="meta meta--mute">03 — The pieces</span>
+          <span class="meta meta--mute">Product and material</span>
+        </div>
+
+        <div class="shots shots--pair">
+          <div class="shots__item">
+            <div class="card__frame">
+              <img
+                class="card__img"
+                src="/portfolio-project/img/work/settle-1.webp"
+                alt="Settle — an oak chair shot against a plain studio backdrop"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="card__placeholder">
+                <span class="meta meta--signal">Image needed</span>
+                <span class="card__spec"
+                  >3:2 at <code>img/work/settle-1.webp</code> — 1200×800
+                  minimum.</span
+                >
+              </div>
+            </div>
+            <span class="meta shots__caption">01 — A piece in the studio</span>
+          </div>
+
+          <div class="shots__item">
+            <div class="card__frame">
+              <img
+                class="card__img"
+                src="/portfolio-project/img/work/settle-2.webp"
+                alt="Settle — a close crop of oak, one of the materials in the range"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="card__placeholder">
+                <span class="meta meta--signal">Image needed</span>
+                <span class="card__spec"
+                  >3:2 at <code>img/work/settle-2.webp</code> — 1200×800
+                  minimum.</span
+                >
+              </div>
+            </div>
+            <span class="meta shots__caption">02 — Material, up close</span>
+          </div>
+        </div>
+
+        <!-- Non-negotiable. The photography is Unsplash, not his, and a
+             design portfolio that lets a reader assume otherwise is making
+             a claim it cannot defend. The project credits every photographer
+             individually in its own CREDITS.md; this is the short form. -->
+        <p class="about__text">
+          Photography from Unsplash contributors, used under the Unsplash
+          licence and credited in full in the project repository.
+        </p>
+      </section>
+
+      <!-- ============================================================
+         CTA — last on the page. Settle is first in the index order, so
+         "next" goes to the second project rather than wrapping.
+         ============================================================ -->
+      <section class="section section--cta">
+        <div class="cta">
+          <div class="cta__actions">
+            <a class="btn btn--primary" href="/portfolio-project/work/seamfix/">
+              <span class="btn__label">See next project</span>
+              <span class="btn__arrow" aria-hidden="true">→</span>
+            </a>
+            <a class="btn btn--ghost" href="/portfolio-project/">
+              <span class="btn__arrow btn__arrow--left" aria-hidden="true">←</span>
+              <span class="btn__label">Back to all projects</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span class="meta meta--mute">© 2026 Victor Elugbaju</span>
+    </footer>
+
+    <script src="/portfolio-project/js/main.js"></script>
+  </body>
+</html>
