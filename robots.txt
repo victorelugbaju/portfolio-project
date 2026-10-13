@@ -6,4 +6,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://victor-elugbaju.netlify.app/sitemap.xml
+Sitemap: https://victorelugbaju.github.io/sitemap.xml

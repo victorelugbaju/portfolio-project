@@ -3,16 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sprout — Savings &amp; Personal Finance · Victor Elugbaju</title>
+    <title>Groovia — Grocery Shopping App · Victor Elugbaju</title>
     <meta
       name="description"
-      content="Sprout — a self-directed personal-finance concept built to make saving feel like progress rather than deprivation. A case study by Victor Elugbaju."
+      content="Groovia — a collaborative e-commerce concept designed around list-first grocery shopping for busy homes. A case study by Victor Elugbaju."
     />
     <!-- ============================================================
        IDENTITY, SHARING AND ICONS   (added 2026-10-05)
 
        canonical and the og:/twitter: URLs are the only absolute URLs in
-       this file. They point at https://victor-elugbaju.netlify.app
+       this file. They point at https://victorelugbaju.github.io/
        — if that host ever changes, it changes here, in robots.txt and in
        sitemap.xml, and nowhere else.
 
@@ -23,22 +23,22 @@
        og:image must be absolute — a scraper fetches it from its own
        server, with no page context to resolve a relative path against.
        ============================================================ -->
-    <link rel="canonical" href="https://victor-elugbaju.netlify.app/work/sprout.html" />
+    <link rel="canonical" href="https://victorelugbaju.github.io/work/groovia/" />
 
-    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
-    <link rel="icon" href="../favicon.png" sizes="32x32" type="image/png" />
-    <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+    <link rel="icon" href="/img/brand/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/img/brand/favicon.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/img/brand/apple-touch-icon.png" />
     <meta name="theme-color" content="#0D0D0B" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Victor Elugbaju" />
-    <meta property="og:title" content="Sprout — Savings &amp; Personal Finance · Victor Elugbaju" />
+    <meta property="og:title" content="Groovia — Grocery Shopping App · Victor Elugbaju" />
     <meta
       property="og:description"
-      content="Sprout — a self-directed personal-finance concept built to make saving feel like progress rather than deprivation. A case study by Victor Elugbaju."
+      content="Groovia — a collaborative e-commerce concept designed around list-first grocery shopping for busy homes. A case study by Victor Elugbaju."
     />
-    <meta property="og:url" content="https://victor-elugbaju.netlify.app/work/sprout.html" />
-    <meta property="og:image" content="https://victor-elugbaju.netlify.app/img/brand/og-cover.png" />
+    <meta property="og:url" content="https://victorelugbaju.github.io/work/groovia/" />
+    <meta property="og:image" content="https://victorelugbaju.github.io/img/brand/og-cover.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta
@@ -47,12 +47,12 @@
     />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Sprout — Savings &amp; Personal Finance · Victor Elugbaju" />
+    <meta name="twitter:title" content="Groovia — Grocery Shopping App · Victor Elugbaju" />
     <meta
       name="twitter:description"
-      content="Sprout — a self-directed personal-finance concept built to make saving feel like progress rather than deprivation. A case study by Victor Elugbaju."
+      content="Groovia — a collaborative e-commerce concept designed around list-first grocery shopping for busy homes. A case study by Victor Elugbaju."
     />
-    <meta name="twitter:image" content="https://victor-elugbaju.netlify.app/img/brand/og-cover.png" />
+    <meta name="twitter:image" content="https://victorelugbaju.github.io/img/brand/og-cover.png" />
 
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -62,7 +62,7 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="/css/style.css" />
 
     <script>
       document.documentElement.classList.add("js");
@@ -76,14 +76,14 @@
     </div>
 
     <header class="nav">
-      <a class="nav__mark" href="../index.html">
+      <a class="nav__mark" href="/">
         <span class="nav__mark-name">Victor Elugbaju</span>
       </a>
 
       <nav class="nav__links">
-        <a class="nav__link" href="index.html">Work</a>
-        <a class="nav__link" href="../about.html">About</a>
-        <a class="nav__link" href="../index.html#experience">Experience</a>
+        <a class="nav__link" href="/">Work</a>
+        <a class="nav__link" href="/about/">About</a>
+        <a class="nav__link" href="/#experience">Experience</a>
         <a class="nav__link" href="mailto:victorajibolaelugbaju@gmail.com"
           >Contact</a
         >
@@ -133,19 +133,19 @@
         </div>
 
         <nav class="nav-menu__list" aria-label="Main">
-          <a class="nav-menu__item" href="index.html">
+          <a class="nav-menu__item" href="/">
             <span class="nav-menu__index meta">01</span>
             <span class="nav-menu__line"
               ><span class="nav-menu__word">Work</span></span
             >
           </a>
-          <a class="nav-menu__item" href="../about.html">
+          <a class="nav-menu__item" href="/about/">
             <span class="nav-menu__index meta">02</span>
             <span class="nav-menu__line"
               ><span class="nav-menu__word">About</span></span
             >
           </a>
-          <a class="nav-menu__item" href="../index.html#experience">
+          <a class="nav-menu__item" href="/#experience">
             <span class="nav-menu__index meta">03</span>
             <span class="nav-menu__line"
               ><span class="nav-menu__word">Experience</span></span
@@ -192,9 +192,10 @@
       <!-- ============================================================
          HERO — project name small, title large.
 
-         ⚠ Each line is nowrap under .about-hero--case, so a line
-           longer than ~28 characters will run past the margin on a
-           phone rather than wrapping. Count before you rewrite.
+         Reuses .about-hero so the line-reveal already applies.
+         #caseStatement drives it. Two .hero__line spans because the
+         title runs to two lines; each needs its own clipping mask or
+         the second one reveals nothing.
          ============================================================ -->
       <section class="about-hero about-hero--case">
         <div class="about-hero__nav">
@@ -203,28 +204,28 @@
                would outshout the <h1> directly beneath it, and an arrow
                reading "back" while travelling right says two different
                things at once. -->
-          <a class="work-more work-more--back" href="index.html">
+          <a class="work-more work-more--back" href="/">
             <span class="work-more__arrow" aria-hidden="true">←</span>
             <span class="work-more__label">Back to all projects</span>
           </a>
         </div>
 
         <div class="about-hero__eyebrow about-hero__eyebrow--split">
-          <span class="meta meta--mute">Sprout</span>
-          <span class="meta meta--mute">Fintech · 2025</span>
+          <span class="meta meta--mute">Groovia</span>
+          <span class="meta meta--mute">E-commerce · 2025</span>
         </div>
 
-        <!-- 23 and 25 characters. Each line is nowrap under
+        <!-- 27 and 15 characters. Each line is nowrap under
              .about-hero--case, so anything past ~28 runs off a phone
              rather than wrapping. Count before you rewrite. -->
         <h1 class="about-hero__statement" id="caseStatement">
           <span class="hero__line"
-            ><span class="hero__line-inner">Designing better saving</span></span
+            ><span class="hero__line-inner"
+              >Designing grocery shopping.</span
+            ></span
           >
           <span class="hero__line"
-            ><span class="hero__line-inner"
-              >through everyday actions.</span
-            ></span
+            ><span class="hero__line-inner">For busy homes.</span></span
           >
         </h1>
       </section>
@@ -237,20 +238,25 @@
          Never with a negative margin — the import contract bans
          margin for rhythm, and a negative one lands in Figma as an
          overlapping frame.
+
+         The source is 3:2 and the frame is 16:9, so .card__img's
+         object-fit crops roughly 11% off the height. That's the
+         intended hero proportion; swap .plate__frame off if you'd
+         rather see the whole board uncropped.
          ============================================================ -->
       <section class="plate">
         <div class="card__frame plate__frame">
           <img
             class="card__img"
-            src="../img/work/sprout.png"
-            alt="Sprout savings app"
+            src="/img/work/groovia.png"
+            alt="Groovia grocery shopping app"
             decoding="async"
           fetchpriority="high"
               />
           <div class="card__placeholder">
             <span class="meta meta--signal">Image needed</span>
             <span class="card__spec"
-              >3:2 at <code>img/work/sprout.png</code> — 1200×800 minimum.</span
+              >3:2 at <code>img/work/groovia.png</code> — 1200×800 minimum.</span
             >
           </div>
         </div>
@@ -266,10 +272,19 @@
           <span class="meta meta--mute">The shape of the work</span>
         </div>
 
+        <!-- Groovia is the one collaborative project on the site, which
+             is why this page says "we" throughout while the other three
+             say "I". The Team fact is what stops that reading as a royal
+             we — a study written in the plural with no second name is
+             the first thing a reviewer asks about. -->
         <dl class="case-facts">
           <div class="case-fact">
             <dt class="meta meta--mute">Role</dt>
             <dd class="case-fact__value">Product Designer</dd>
+          </div>
+          <div class="case-fact">
+            <dt class="meta meta--mute">Team</dt>
+            <dd class="case-fact__value">With Jadesola Olaitan</dd>
           </div>
           <div class="case-fact">
             <dt class="meta meta--mute">Year</dt>
@@ -281,17 +296,17 @@
           </div>
           <div class="case-fact">
             <dt class="meta meta--mute">Type</dt>
-            <dd class="case-fact__value">Concept project</dd>
+            <dd class="case-fact__value">Collaboration · Concept</dd>
           </div>
         </dl>
 
         <p class="about__text about__text--lead">
-          Sprout is a mobile savings app designed to help young professionals
-          manage money with more structure and clarity. I focused on people who
-          earn regularly but struggle to stay consistent with saving. The
-          product combines goal-based saving with a wallet system, allowing
-          users to organise funds, track progress, and understand spending
-          without relying on multiple tools.
+          We designed Groovia as a self-directed concept for grocery shopping,
+          focused on busy parents managing work and home routines. The app
+          centres on quick selection, saved lists, and scheduled delivery rather
+          than open-ended browsing. We worked through flows from discovery to
+          checkout, defining how people move from a planned list to a confirmed
+          order without losing time or context.
         </p>
       </section>
 
@@ -306,6 +321,10 @@
          markup — it's a designed artifact, and rebuilding it in HTML
          would mean maintaining the same content in two places and
          letting them drift.
+
+         .case-figure is just an aspect ratio on .card__frame, so the
+         "image needed" spec card and the is-empty fallback in
+         main.js already apply.
          ============================================================ -->
       <section class="section">
         <div class="section__head">
@@ -313,19 +332,21 @@
           <span class="meta meta--mute">Who this is for</span>
         </div>
 
-        <!-- 4800×2700 — exactly 16:9, so .case-figure crops nothing. -->
-        <div class="card__frame case-figure">
+        <!-- 3600×2400, so the frame takes --3-2 rather than the 16:9
+             default. The board is mostly type; the default would crop
+             18% off its height. -->
+        <div class="card__frame case-figure case-figure--3-2">
           <img
             class="card__img"
-            src="../img/work/sprout-persona.png"
-            alt="Sprout user persona — a young professional who earns regularly but struggles to save consistently"
+            src="/img/work/groovia-persona.png"
+            alt="Groovia user persona — a busy parent restocking a household around work"
             loading="lazy"
             decoding="async"
           />
           <div class="card__placeholder">
             <span class="meta meta--signal">Image needed</span>
             <span class="card__spec"
-              >16:9 at <code>img/work/sprout-persona.png</code> — 2400×1350
+              >3:2 at <code>img/work/groovia-persona.png</code> — 2400×1600
               minimum. Export the persona board from Figma.</span
             >
           </div>
@@ -350,26 +371,27 @@
             <div class="thesis__col">
               <span class="meta meta--mute">The problem</span>
               <p class="thesis__text">
-                A working professional receives their salary, pays a few bills,
-                then spends the rest without a clear plan. Saving is treated as
-                an afterthought. They move money between apps, forget to set
-                anything aside, and lose track of what remains. Over time, they
-                feel stuck — not because they earn too little, but because their
-                money lacks structure, visibility, and intention at the point
-                decisions are made.
+                Grocery shopping often breaks down at the point of repetition. A
+                parent knows what they need, but still has to search, scroll,
+                and rebuild the same cart each week. Delays, missing items, and
+                unclear delivery timing add more friction. The problem shows up
+                when someone tries to quickly restock essentials but gets pulled
+                into a slow, cluttered process that doesn't reflect how
+                predictable their needs already are.
               </p>
             </div>
 
             <div class="thesis__col thesis__col--accent">
               <span class="meta meta--mute">The solution</span>
               <p class="thesis__text">
-                I designed Sprout to make saving a primary action, not a
-                leftover. Users create goals first, then allocate money through
-                a wallet system that separates spending and savings. Progress is
-                always visible, and actions are reduced to a few clear steps. I
-                chose to limit flexibility in favour of structure, which means
-                users cannot freely move money without intention, trading
-                control for consistency and better saving behaviour.
+                We designed Groovia around list-first shopping. Users build or
+                reuse a shopping list, then move it directly into a cart and
+                schedule delivery in a few steps. Tracking focuses on the full
+                order rather than individual items. This approach reduces
+                unnecessary browsing, but it also limits discovery, promotions,
+                and impulse buying. We chose to prioritise speed and
+                predictability, knowing it makes the experience less flexible
+                for casual shoppers.
               </p>
             </div>
           </div>
@@ -393,12 +415,12 @@
         <div class="process">
           <article class="process__step">
             <span class="process__num">01</span>
-            <h4 class="process__title">Mapping</h4>
+            <h4 class="process__title">Research</h4>
             <p class="process__text">
-              I mapped how money moves from income to spending and saving. I
-              broke this into stages — receive, allocate, track, adjust — and
-              used this to define what each screen needed to support without
-              overloading the user.
+              We spoke with people who regularly handle household shopping and
+              mapped how they plan, buy, and restock groceries. We focused on
+              repeated behaviour, not one-off purchases, and noted where time
+              was lost or decisions felt unnecessary.
             </p>
           </article>
 
@@ -406,32 +428,32 @@
             <span class="process__num">02</span>
             <h4 class="process__title">Structure</h4>
             <p class="process__text">
-              I explored different ways to organise money inside the app. I
-              tested separating wallet and goals versus merging them. I settled
-              on a split system so users could clearly distinguish available
-              funds from committed savings.
+              We mapped the core flow from list creation to checkout, keeping it
+              linear and short. We removed optional paths like deep browsing and
+              focused on clear transitions between list, cart, and delivery
+              scheduling.
             </p>
           </article>
 
           <article class="process__step">
             <span class="process__num">03</span>
-            <h4 class="process__title">Flows</h4>
+            <h4 class="process__title">Wireframes</h4>
             <p class="process__text">
-              I designed the core flows for creating goals, funding them, and
-              withdrawing money. Each flow was reduced to a small number of
-              steps, removing optional paths that created hesitation or slowed
-              decisions.
+              We sketched low-fidelity screens for onboarding, shop, cart, and
+              tracking. We tested how many steps each action required and
+              simplified where possible, especially around adding items and
+              confirming orders.
             </p>
           </article>
 
           <article class="process__step">
             <span class="process__num">04</span>
-            <h4 class="process__title">Interface</h4>
+            <h4 class="process__title">UI</h4>
             <p class="process__text">
-              I designed high-fidelity screens focusing on hierarchy and
-              readability. I prioritised balance, spacing, and clear labels over
-              decorative elements. Some earlier visual ideas were removed when
-              they distracted from understanding money at a glance.
+              We designed high-fidelity screens with a clean layout and clear
+              hierarchy. We defined product cards, filters, and tracking states,
+              making sure each screen supported quick decisions without adding
+              visual noise.
             </p>
           </article>
         </div>
@@ -458,90 +480,90 @@
             <div class="card__frame">
               <img
                 class="card__img"
-                src="../img/work/sprout-1.png"
-                alt="Sprout — home screen"
+                src="/img/work/groovia-1.png"
+                alt="Groovia — home and search, returning results as you type"
                 loading="lazy"
                 decoding="async"
               />
               <div class="card__placeholder">
                 <span class="meta meta--signal">Image needed</span>
                 <span class="card__spec"
-                  >3:2 at <code>img/work/sprout-1.png</code> — 1200×800
+                  >3:2 at <code>img/work/groovia-1.png</code> — 1200×800
                   minimum.</span
                 >
               </div>
             </div>
-            <span class="meta shots__caption">01 — Home</span>
+            <span class="meta shots__caption">01 — Home &amp; search</span>
           </div>
 
           <div class="shots__item">
             <div class="card__frame">
               <img
                 class="card__img"
-                src="../img/work/sprout-2.png"
-                alt="Sprout — savings dashboard, showing progress across every goal"
+                src="/img/work/groovia-2.png"
+                alt="Groovia — shopping, building a cart from a saved list"
                 loading="lazy"
                 decoding="async"
               />
               <div class="card__placeholder">
                 <span class="meta meta--signal">Image needed</span>
                 <span class="card__spec"
-                  >3:2 at <code>img/work/sprout-2.png</code> — 1200×800
+                  >3:2 at <code>img/work/groovia-2.png</code> — 1200×800
                   minimum.</span
                 >
               </div>
             </div>
-            <span class="meta shots__caption">02 — Savings dashboard</span>
+            <span class="meta shots__caption">02 — Shopping</span>
           </div>
 
           <div class="shots__item">
             <div class="card__frame">
               <img
                 class="card__img"
-                src="../img/work/sprout-3.png"
-                alt="Sprout — goal details, showing a single target and what's been set aside for it"
+                src="/img/work/groovia-3.png"
+                alt="Groovia — checkout, reviewing the order before confirming"
                 loading="lazy"
                 decoding="async"
               />
               <div class="card__placeholder">
                 <span class="meta meta--signal">Image needed</span>
                 <span class="card__spec"
-                  >3:2 at <code>img/work/sprout-3.png</code> — 1200×800
+                  >3:2 at <code>img/work/groovia-3.png</code> — 1200×800
                   minimum.</span
                 >
               </div>
             </div>
-            <span class="meta shots__caption">03 — Goal details</span>
+            <span class="meta shots__caption">03 — Checkout</span>
           </div>
 
           <div class="shots__item">
             <div class="card__frame">
               <img
                 class="card__img"
-                src="../img/work/sprout-4.png"
-                alt="Sprout — reserve and wallet, separating available funds from committed savings"
+                src="/img/work/groovia-4.png"
+                alt="Groovia — checkout, scheduling delivery and confirming the order"
                 loading="lazy"
                 decoding="async"
               />
               <div class="card__placeholder">
                 <span class="meta meta--signal">Image needed</span>
                 <span class="card__spec"
-                  >3:2 at <code>img/work/sprout-4.png</code> — 1200×800
+                  >3:2 at <code>img/work/groovia-4.png</code> — 1200×800
                   minimum.</span
                 >
               </div>
             </div>
-            <span class="meta shots__caption">04 — Reserve &amp; wallet</span>
+            <span class="meta shots__caption">04 — Checkout</span>
           </div>
         </div>
 
         <!-- Opens in a new tab rather than embedding: an inline iframe
              hands the visitor to Figma's own UI mid-study, and getting
              back means finding the edge of a frame. Same treatment as
-             Craveau's. -->
+             Craveau's and Sprout's. -->
         <a
           class="work-more"
-          href="https://www.figma.com/proto/L6b7j1lHvDVeFol8gfo62k/Sprout?node-id=693-2292&amp;t=se15dx8qQYLKCOlG-1&amp;scaling=min-zoom&amp;content-scaling=fixed&amp;page-id=693%3A1949&amp;starting-point-node-id=693%3A2504"
+          href="https://www.figma.com/proto/Atl9Q88zue7f92IYBlOQWA/Grocery-Delivery?node-id=502-3462&amp;t=sBMmwcPxiN7bV3e3-1&amp;scaling=scale-down&amp;content-scaling=fixed&amp;page-id=0%3A1&amp;starting-point-node-id=495%3A1555&amp;show-proto-sidebar=1"
           target="_blank"
           rel="noopener"
         >
@@ -556,6 +578,9 @@
          The closing beat. Written last, and written honestly: a
          reflection that only reports successes is a highlight reel
          wearing a reflection's clothes, and a reader can tell.
+
+         No new component — a lead paragraph and the same
+         hairline-marked point list the persona uses.
          ============================================================ -->
       <section class="section">
         <div class="section__head">
@@ -563,29 +588,29 @@
         </div>
 
         <p class="about__text about__text--lead">
-          I initially tried to make the app flexible, allowing users to move
-          money freely. This made the experience harder to understand and
-          reduced commitment to saving. This project shifted my approach — I now
-          prioritise structure over freedom when behaviour change is the goal,
-          even if it limits user control.
+          We initially leaned too much into features like promotions and
+          discovery before focusing on the actual problem. This project pushed
+          us to prioritise repeated behaviour over variety. We learned to design
+          around what people already know they need, instead of trying to
+          influence what they might want, and to accept the trade-offs that come
+          with that decision.
         </p>
 
-        <!-- Drafted from the decisions already stated in sections 03 and
-             04 rather than from anything new — each point traces to a
-             specific choice on this project. Read them before publishing:
-             they're first-person claims about your own work. -->
+        <!-- The third point is the one that earns this section — it names
+             something we'd do differently rather than something that went
+             well. Keep it last; it's the line a reader leaves on. -->
         <ul class="card__points">
           <li class="card__point">
-            I split the wallet from goals so available funds and committed
-            savings could never be mistaken for each other.
+            We reduced the flow to move from list to checkout in a few steps,
+            removing extra browsing layers.
           </li>
           <li class="card__point">
-            Restricting free movement of money improved commitment, but it costs
-            users control when their circumstances change unexpectedly.
+            We chose to track full orders instead of items, which simplified the
+            interface but removed detailed visibility.
           </li>
           <li class="card__point">
-            I would now test the wallet split with real users before refining
-            the high-fidelity screens around it.
+            I would now test the list-first approach earlier, instead of
+            refining UI before validating that core behaviour.
           </li>
         </ul>
       </section>
@@ -596,12 +621,13 @@
       <section class="section section--cta">
         <div class="cta">
           <div class="cta__actions">
-            <!-- Runs the index order: Seamfix → Craveau → Sprout → Groovia. -->
-            <a class="btn btn--primary" href="groovia.html">
+            <!-- Last in the index order, so "next" wraps back to the first
+                 project rather than dead-ending. -->
+            <a class="btn btn--primary" href="/work/seamfix/">
               <span class="btn__label">See next project</span>
               <span class="btn__arrow" aria-hidden="true">→</span>
             </a>
-            <a class="btn btn--ghost" href="index.html">
+            <a class="btn btn--ghost" href="/">
               <span class="btn__arrow btn__arrow--left" aria-hidden="true">←</span>
               <span class="btn__label">Back to all projects</span>
             </a>
@@ -614,6 +640,6 @@
       <span class="meta meta--mute">© 2026 Victor Elugbaju</span>
     </footer>
 
-    <script src="../js/main.js"></script>
+    <script src="/js/main.js"></script>
   </body>
 </html>

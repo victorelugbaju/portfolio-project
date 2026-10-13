@@ -3,16 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Craveau — Food Delivery App · Victor Elugbaju</title>
+    <title>Seamfix — Asset Tracking System · Victor Elugbaju</title>
     <meta
       name="description"
-      content="Craveau — a food-delivery app concept designed around quick browsing, fast checkout and clear order tracking. A case study by Victor Elugbaju."
+      content="Seamfix — an enterprise asset-tracking management system with four permission-scoped roles. A case study by Victor Elugbaju."
     />
     <!-- ============================================================
        IDENTITY, SHARING AND ICONS   (added 2026-10-05)
 
        canonical and the og:/twitter: URLs are the only absolute URLs in
-       this file. They point at https://victor-elugbaju.netlify.app
+       this file. They point at https://victorelugbaju.github.io/
        — if that host ever changes, it changes here, in robots.txt and in
        sitemap.xml, and nowhere else.
 
@@ -23,22 +23,22 @@
        og:image must be absolute — a scraper fetches it from its own
        server, with no page context to resolve a relative path against.
        ============================================================ -->
-    <link rel="canonical" href="https://victor-elugbaju.netlify.app/work/craveau.html" />
+    <link rel="canonical" href="https://victorelugbaju.github.io/work/seamfix/" />
 
-    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
-    <link rel="icon" href="../favicon.png" sizes="32x32" type="image/png" />
-    <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+    <link rel="icon" href="/img/brand/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/img/brand/favicon.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/img/brand/apple-touch-icon.png" />
     <meta name="theme-color" content="#0D0D0B" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Victor Elugbaju" />
-    <meta property="og:title" content="Craveau — Food Delivery App · Victor Elugbaju" />
+    <meta property="og:title" content="Seamfix — Asset Tracking System · Victor Elugbaju" />
     <meta
       property="og:description"
-      content="Craveau — a food-delivery app concept designed around quick browsing, fast checkout and clear order tracking. A case study by Victor Elugbaju."
+      content="Seamfix — an enterprise asset-tracking management system with four permission-scoped roles. A case study by Victor Elugbaju."
     />
-    <meta property="og:url" content="https://victor-elugbaju.netlify.app/work/craveau.html" />
-    <meta property="og:image" content="https://victor-elugbaju.netlify.app/img/brand/og-cover.png" />
+    <meta property="og:url" content="https://victorelugbaju.github.io/work/seamfix/" />
+    <meta property="og:image" content="https://victorelugbaju.github.io/img/brand/og-cover.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta
@@ -47,12 +47,12 @@
     />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Craveau — Food Delivery App · Victor Elugbaju" />
+    <meta name="twitter:title" content="Seamfix — Asset Tracking System · Victor Elugbaju" />
     <meta
       name="twitter:description"
-      content="Craveau — a food-delivery app concept designed around quick browsing, fast checkout and clear order tracking. A case study by Victor Elugbaju."
+      content="Seamfix — an enterprise asset-tracking management system with four permission-scoped roles. A case study by Victor Elugbaju."
     />
-    <meta name="twitter:image" content="https://victor-elugbaju.netlify.app/img/brand/og-cover.png" />
+    <meta name="twitter:image" content="https://victorelugbaju.github.io/img/brand/og-cover.png" />
 
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -62,7 +62,7 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="/css/style.css" />
 
     <script>
       document.documentElement.classList.add("js");
@@ -76,14 +76,14 @@
     </div>
 
     <header class="nav">
-      <a class="nav__mark" href="../index.html">
+      <a class="nav__mark" href="/">
         <span class="nav__mark-name">Victor Elugbaju</span>
       </a>
 
       <nav class="nav__links">
-        <a class="nav__link" href="index.html">Work</a>
-        <a class="nav__link" href="../about.html">About</a>
-        <a class="nav__link" href="../index.html#experience">Experience</a>
+        <a class="nav__link" href="/">Work</a>
+        <a class="nav__link" href="/about/">About</a>
+        <a class="nav__link" href="/#experience">Experience</a>
         <a class="nav__link" href="mailto:victorajibolaelugbaju@gmail.com"
           >Contact</a
         >
@@ -133,19 +133,19 @@
         </div>
 
         <nav class="nav-menu__list" aria-label="Main">
-          <a class="nav-menu__item" href="index.html">
+          <a class="nav-menu__item" href="/">
             <span class="nav-menu__index meta">01</span>
             <span class="nav-menu__line"
               ><span class="nav-menu__word">Work</span></span
             >
           </a>
-          <a class="nav-menu__item" href="../about.html">
+          <a class="nav-menu__item" href="/about/">
             <span class="nav-menu__index meta">02</span>
             <span class="nav-menu__line"
               ><span class="nav-menu__word">About</span></span
             >
           </a>
-          <a class="nav-menu__item" href="../index.html#experience">
+          <a class="nav-menu__item" href="/#experience">
             <span class="nav-menu__index meta">03</span>
             <span class="nav-menu__line"
               ><span class="nav-menu__word">Experience</span></span
@@ -192,9 +192,15 @@
       <!-- ============================================================
          HERO — project name small, title large.
 
-         ⚠ Each line is nowrap under .about-hero--case, so a line
-           longer than ~28 characters will run past the margin on a
-           phone rather than wrapping. Count before you rewrite.
+         Reuses .about-hero so the line-reveal already applies.
+         #caseStatement drives it. Two .hero__line spans because the
+         title runs to two lines; each needs its own clipping mask or
+         the second one reveals nothing.
+
+         ⚠ 23 and 19 characters. Each line is nowrap under
+           .about-hero--case, so anything past ~28 runs past the
+           margin on a phone rather than wrapping. Count before you
+           rewrite.
          ============================================================ -->
       <section class="about-hero about-hero--case">
         <div class="about-hero__nav">
@@ -203,28 +209,23 @@
                would outshout the <h1> directly beneath it, and an arrow
                reading "back" while travelling right says two different
                things at once. -->
-          <a class="work-more work-more--back" href="index.html">
+          <a class="work-more work-more--back" href="/">
             <span class="work-more__arrow" aria-hidden="true">←</span>
             <span class="work-more__label">Back to all projects</span>
           </a>
         </div>
 
         <div class="about-hero__eyebrow about-hero__eyebrow--split">
-          <span class="meta meta--mute">Craveau</span>
-          <span class="meta meta--mute">Food delivery · 2026</span>
+          <span class="meta meta--mute">Seamfix</span>
+          <span class="meta meta--mute">Enterprise · 2026</span>
         </div>
 
-        <!-- 24 and 21 characters. Each line is nowrap under
-             .about-hero--case, so anything past ~28 runs off a phone
-             rather than wrapping. Count before you rewrite. -->
         <h1 class="about-hero__statement" id="caseStatement">
           <span class="hero__line"
-            ><span class="hero__line-inner"
-              >Food delivery, done fast.</span
-            ></span
+            ><span class="hero__line-inner">Built for asset control</span></span
           >
           <span class="hero__line"
-            ><span class="hero__line-inner">Browse, order, track.</span></span
+            ><span class="hero__line-inner">across every stage.</span></span
           >
         </h1>
       </section>
@@ -242,15 +243,15 @@
         <div class="card__frame plate__frame">
           <img
             class="card__img"
-            src="../img/work/craveau.png"
-            alt="Craveau food delivery brand and app"
+            src="/img/work/seamfix.png"
+            alt="Seamfix asset tracking system"
             decoding="async"
           fetchpriority="high"
               />
           <div class="card__placeholder">
             <span class="meta meta--signal">Image needed</span>
             <span class="card__spec"
-              >3:2 at <code>img/work/craveau.png</code> — 1200×800 minimum.</span
+              >3:2 at <code>img/work/seamfix.png</code> — 1200×800 minimum.</span
             >
           </div>
         </div>
@@ -277,21 +278,21 @@
           </div>
           <div class="case-fact">
             <dt class="meta meta--mute">Scope</dt>
-            <dd class="case-fact__value">Mobile app design</dd>
+            <dd class="case-fact__value">110+ screens · 21 flows</dd>
           </div>
           <div class="case-fact">
             <dt class="meta meta--mute">Type</dt>
-            <dd class="case-fact__value">Concept project</dd>
+            <dd class="case-fact__value">Team lab project — Seamfix</dd>
           </div>
         </dl>
 
         <p class="about__text about__text--lead">
-          I designed a food delivery mobile app focused on quick browsing, fast
-          checkout, and clear order tracking. It is aimed at people who want to
-          decide, order, and receive food without delay or confusion. The
-          project covers onboarding, discovery, ordering, and post-purchase
-          states, with an emphasis on reducing steps and keeping the interface
-          focused at every stage.
+          Seamfix is an enterprise asset-tracking system for organisations that
+          need to manage company-owned assets throughout their lifecycle. I
+          designed workflows for Admins, Asset Managers, Employees and
+          Auditors, covering authentication, governance, operational tasks,
+          reporting and audit visibility while keeping role-based access and
+          long-term scalability at the centre of every design decision.
         </p>
       </section>
 
@@ -306,6 +307,10 @@
          markup — it's a designed artifact, and rebuilding it in HTML
          would mean maintaining the same content in two places and
          letting them drift.
+
+         ⚠ Seamfix has four roles, not one shopper. Either export a
+           board covering all four, or pick the single role the study
+           is actually told through and say which in the caption.
          ============================================================ -->
       <section class="section">
         <div class="section__head">
@@ -316,15 +321,15 @@
         <div class="card__frame case-figure">
           <img
             class="card__img"
-            src="../img/work/craveau-persona.png"
-            alt="Craveau user persona"
+            src="/img/work/seamfix-persona.png"
+            alt="Seamfix user persona"
             loading="lazy"
             decoding="async"
           />
           <div class="card__placeholder">
             <span class="meta meta--signal">Image needed</span>
             <span class="card__spec"
-              >16:9 at <code>img/work/craveau-persona.png</code> — 2400×1350
+              >16:9 at <code>img/work/seamfix-persona.png</code> — 2400×1350
               minimum. Export the persona board from Figma.</span
             >
           </div>
@@ -349,26 +354,30 @@
             <div class="thesis__col">
               <span class="meta meta--mute">The problem</span>
               <p class="thesis__text">
-                Someone opening a food delivery app to order dinner often
-                hesitates, not because of lack of options, but because the
-                process feels slow and unclear. Too many categories, crowded
-                screens, and long checkout flows interrupt momentum. After
-                ordering, they are left uncertain about what is happening next.
-                The issue is not access to food, but the time and mental effort
-                required to move from browsing to receiving it.
+                An Asset Manager could register, assign and recover hundreds of
+                assets, but every action depended on accurate records, clear
+                ownership and reliable history. When information was scattered
+                or difficult to verify, routine tasks became slower and
+                mistakes became harder to trace. Administrators needed
+                organisation-wide oversight, employees needed straightforward
+                self-service, and auditors needed confidence that every
+                important change could be reviewed without relying on manual
+                records or memory.
               </p>
             </div>
 
             <div class="thesis__col thesis__col--accent">
               <span class="meta meta--mute">The solution</span>
               <p class="thesis__text">
-                I designed a focused flow that moves from discovery to checkout
-                in a small number of clear steps, then shifts attention to
-                tracking after purchase. The interface reduces visible options
-                at each stage and highlights only the next action. I prioritised
-                speed and clarity over depth. The trade-off is that advanced
-                filtering and detailed customisation are limited, which reduces
-                flexibility for users who want more control.
+                I designed the platform around the complete asset lifecycle
+                instead of isolated features. Each role received a focused
+                dashboard and workflows tailored to its responsibilities, while
+                shared patterns such as notifications, audit logs, search and
+                permissions remained consistent across the product. The
+                trade-off was accepting a larger upfront investment in reusable
+                systems and role mapping before moving into detailed screen
+                design, which slowed early progress but created a more
+                consistent foundation.
               </p>
             </div>
           </div>
@@ -380,7 +389,8 @@
 
          .process holds all four on one row as a single ruled
          diagram — one hairline across the top, vertical hairlines
-         between the steps, nothing boxed.
+         between the steps, nothing boxed. Rename the steps to your
+         actual process rather than keeping these generic ones.
          ============================================================ -->
       <section class="section">
         <div class="section__head">
@@ -391,45 +401,45 @@
         <div class="process">
           <article class="process__step">
             <span class="process__num">01</span>
-            <h4 class="process__title">Audit</h4>
+            <h4 class="process__title">Journey mapping</h4>
             <p class="process__text">
-              I reviewed common food delivery flows and broke them into stages:
-              browse, select, pay, track. I noted where screens became crowded
-              or required extra decisions. I then reduced the flow to the fewest
-              necessary steps without removing essential information.
+              I mapped the complete lifecycle from account provisioning to audit
+              reporting, then broke each journey into role-specific tasks. This
+              exposed where responsibilities overlapped and where each role
+              needed different information, permissions and navigation.
             </p>
           </article>
 
           <article class="process__step">
             <span class="process__num">02</span>
-            <h4 class="process__title">Structure</h4>
+            <h4 class="process__title">Information architecture</h4>
             <p class="process__text">
-              I mapped the navigation to five primary areas and removed anything
-              that did not need constant access. I defined what belongs in flows
-              versus global navigation, ensuring checkout and cart stayed
-              contextual instead of persistent tabs.
+              I organised the product into reusable modules instead of separate
+              feature groups. Authentication, asset management, reporting,
+              notifications and governance became consistent structures that
+              could support every user role without duplicating patterns.
             </p>
           </article>
 
           <article class="process__step">
             <span class="process__num">03</span>
-            <h4 class="process__title">Screens</h4>
+            <h4 class="process__title">Workflow design</h4>
             <p class="process__text">
-              I designed key screens starting from home to order success,
-              focusing on hierarchy and spacing. I created card-based layouts
-              with clear actions and limited text, making sure each screen had a
-              single dominant action.
+              I designed detailed flows for authentication, dashboard access and
+              user management before expanding into operational workflows. I
+              considered loading, empty, error and permission states alongside
+              the primary journeys instead of treating them as later additions.
             </p>
           </article>
 
           <article class="process__step">
             <span class="process__num">04</span>
-            <h4 class="process__title">Refine</h4>
+            <h4 class="process__title">System refinement</h4>
             <p class="process__text">
-              I aligned onboarding visuals with actual product screens instead
-              of illustrations. I adjusted spacing, typography, and states to
-              keep consistency across onboarding, ordering, and tracking,
-              ensuring the experience felt like one continuous system.
+              I standardised interface patterns including tables, status badges,
+              forms, filters, modals and notification behaviour. This helped
+              keep interactions consistent as the product grew across multiple
+              modules and user types.
             </p>
           </article>
         </div>
@@ -443,7 +453,9 @@
 
          .shots--pair holds it to two per row. Four across would give
          each frame a quarter of the width, and the UI inside stops
-         being legible well before that.
+         being legible well before that — which matters more here
+         than anywhere else on the site, since these are dense
+         enterprise tables.
          ============================================================ -->
       <section class="section">
         <div class="section__head">
@@ -456,109 +468,90 @@
             <div class="card__frame">
               <img
                 class="card__img"
-                src="../img/work/craveau-1.png"
-                alt="Craveau — food discovery"
+                src="/img/work/seamfix-1.png"
+                alt="Seamfix — system overview"
                 loading="lazy"
                 decoding="async"
               />
               <div class="card__placeholder">
                 <span class="meta meta--signal">Image needed</span>
                 <span class="card__spec"
-                  >3:2 at <code>img/work/craveau-1.png</code> — 1200×800
+                  >3:2 at <code>img/work/seamfix-1.png</code> — 1200×800
                   minimum.</span
                 >
               </div>
             </div>
-            <span class="meta shots__caption">01 — Food discovery</span>
+            <span class="meta shots__caption">01 — System overview</span>
           </div>
 
           <div class="shots__item">
             <div class="card__frame">
               <img
                 class="card__img"
-                src="../img/work/craveau-2.png"
-                alt="Craveau — fast checkout"
+                src="/img/work/seamfix-2.png"
+                alt="Seamfix — user management"
                 loading="lazy"
                 decoding="async"
               />
               <div class="card__placeholder">
                 <span class="meta meta--signal">Image needed</span>
                 <span class="card__spec"
-                  >3:2 at <code>img/work/craveau-2.png</code> — 1200×800
+                  >3:2 at <code>img/work/seamfix-2.png</code> — 1200×800
                   minimum.</span
                 >
               </div>
             </div>
-            <span class="meta shots__caption">02 — Fast checkout</span>
+            <span class="meta shots__caption">02 — User management</span>
           </div>
 
           <div class="shots__item">
             <div class="card__frame">
               <img
                 class="card__img"
-                src="../img/work/craveau-3.png"
-                alt="Craveau — order tracking"
+                src="/img/work/seamfix-3.png"
+                alt="Seamfix — asset registration"
                 loading="lazy"
                 decoding="async"
               />
               <div class="card__placeholder">
                 <span class="meta meta--signal">Image needed</span>
                 <span class="card__spec"
-                  >3:2 at <code>img/work/craveau-3.png</code> — 1200×800
+                  >3:2 at <code>img/work/seamfix-3.png</code> — 1200×800
                   minimum.</span
                 >
               </div>
             </div>
-            <span class="meta shots__caption">03 — Order tracking</span>
+            <span class="meta shots__caption">03 — Asset registration</span>
           </div>
 
           <div class="shots__item">
             <div class="card__frame">
               <img
                 class="card__img"
-                src="../img/work/craveau-4.png"
-                alt="Craveau — order confirmation"
+                src="/img/work/seamfix-4.png"
+                alt="Seamfix — audit history"
                 loading="lazy"
                 decoding="async"
               />
               <div class="card__placeholder">
                 <span class="meta meta--signal">Image needed</span>
                 <span class="card__spec"
-                  >3:2 at <code>img/work/craveau-4.png</code> — 1200×800
+                  >3:2 at <code>img/work/seamfix-4.png</code> — 1200×800
                   minimum.</span
                 >
               </div>
             </div>
-            <span class="meta shots__caption">04 — Order confirmation</span>
+            <span class="meta shots__caption">04 — Audit history</span>
           </div>
         </div>
-
-        <!-- The one real prototype on the site. Kept because deleting a
-             working asset to satisfy template symmetry is a bad trade —
-             it's the only proof on any of these pages that can't be
-             faked. Opens in a new tab rather than embedding: an inline
-             iframe hands the visitor to Figma's UI mid-study, and
-             getting back means finding the edge of a frame.
-
-             Delete this block if you'd rather all four studies match
-             exactly. -->
-        <a
-          class="work-more"
-          href="https://www.figma.com/proto/8ZRIbJidnIXFKmCDBiPRQy/Craveau?node-id=311-2311&amp;scaling=scale-down&amp;content-scaling=fixed&amp;starting-point-node-id=311%3A2311"
-          target="_blank"
-          rel="noopener"
-        >
-          <span class="work-more__label">Open the prototype</span>
-          <span class="work-more__arrow" aria-hidden="true">↗</span>
-        </a>
       </section>
 
       <!-- ============================================================
          06 — WHAT I LEARNED
 
-         Craveau is the study already framed around a documented
-         failure, so this section has more to work with than the
-         other three. Use it.
+         The closing beat. Written last, and written honestly: a
+         reflection that only reports successes is a highlight reel
+         wearing a reflection's clothes, and a reader can tell.
          ============================================================ -->
       <section class="section">
         <div class="section__head">
@@ -566,29 +559,30 @@
         </div>
 
         <p class="about__text about__text--lead">
-          I initially tried to show too much on each screen, thinking more
-          options meant better usability. It made the flow slower and harder to
-          scan. This project pushed me to remove features and focus on sequence
-          instead of density. I learned to design around what happens next, not
-          everything that could happen.
+          I realised I had previously focused too much on individual screens
+          before fully understanding how responsibilities changed across
+          different user roles. On this project I worked from workflows first,
+          then designed interfaces around those decisions. That approach made it
+          easier to keep navigation, permissions and shared components
+          consistent across a much larger enterprise product.
         </p>
 
-        <!-- Drafted from the decisions already stated in sections 03 and
-             04 rather than from anything new — each point traces to a
-             specific choice on this project. Read them before publishing:
-             they're first-person claims about your own work. -->
+        <!-- The third point is the one that earns this section — it names
+             something I'd do differently rather than something that went
+             well. Keep it last; it's the line a reader leaves on. -->
         <ul class="card__points">
           <li class="card__point">
-            I kept cart and checkout contextual rather than persistent tabs,
-            which freed the navigation to hold only five areas.
+            Designing role permissions early prevented later conflicts between
+            operational workflows and governance requirements.
           </li>
           <li class="card__point">
-            Limiting filtering and customisation made the flow faster, but it
-            removed control from anyone who shops with specific constraints.
+            Planning loading, empty and error states alongside primary flows
+            produced more complete designs than adding them afterwards.
           </li>
           <li class="card__point">
-            I would now design onboarding from real product screens first,
-            instead of building illustrations I later had to replace.
+            I would spend more time validating the information architecture
+            before designing high-fidelity screens, especially for large
+            enterprise platforms.
           </li>
         </ul>
       </section>
@@ -599,12 +593,14 @@
       <section class="section section--cta">
         <div class="cta">
           <div class="cta__actions">
-            <!-- Runs the index order: Seamfix → Craveau → Sprout → Groovia. -->
-            <a class="btn btn--primary" href="sprout.html">
+            <!-- Runs the index order: Seamfix → Craveau → Sprout → Groovia,
+                 and the last one wraps back to the first so the sequence
+                 never dead-ends. -->
+            <a class="btn btn--primary" href="/work/craveau/">
               <span class="btn__label">See next project</span>
               <span class="btn__arrow" aria-hidden="true">→</span>
             </a>
-            <a class="btn btn--ghost" href="index.html">
+            <a class="btn btn--ghost" href="/">
               <span class="btn__arrow btn__arrow--left" aria-hidden="true">←</span>
               <span class="btn__label">Back to all projects</span>
             </a>
@@ -617,6 +613,6 @@
       <span class="meta meta--mute">© 2026 Victor Elugbaju</span>
     </footer>
 
-    <script src="../js/main.js"></script>
+    <script src="/js/main.js"></script>
   </body>
 </html>
