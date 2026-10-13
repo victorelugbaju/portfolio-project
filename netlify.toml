@@ -64,8 +64,7 @@
   to = "/work/"
   status = 301
 
-# The backup/ directory is dead code kept for local reference only.
-[[redirects]]
-  from = "/backup/*"
-  to = "/404.html"
-  status = 404
+# No exclusion rules are needed any more. As of 2026-10-13 this folder holds
+# nothing but the site: the internal checklists and the old backups moved to
+# ../portfolio-notes/, and the standalone governance-assessment app moved to
+# its own folder on the Desktop. Everything left here is meant to ship.
